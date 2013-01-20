@@ -1,0 +1,25 @@
+LAYOUT_INFO_FILE_V1.1
+SVGFilename:	E14_5.svg
+KeyElementID:	Layer_2	
+BoundingRectRealWorldCoordinates:	0	0	0
+BoundingRectScaleCoefficients:	1.0	1.0	1.0
+FloorLevel:	5
+NumLocationNodes:	6
+LocationNode:	1
+LocationID:	1
+LocationPosition:	148.26	193.76	0
+LocationNode:	2
+LocationID:	2
+LocationPosition:	256.87	210.36	0
+LocationNode:	3
+LocationID:	3
+LocationPosition:	288.21	222.98	0
+LocationNode:	4
+LocationID:	4
+LocationPosition:	148.26	193.76	0
+LocationNode:	5
+LocationID:	5
+LocationPosition:	256.87	210.36	0
+LocationNode:	6
+LocationID:	6
+LocationPosition:	288.21	222.98	0
