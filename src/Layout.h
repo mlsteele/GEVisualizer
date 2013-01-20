@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "geometry.h"
 #include "LocationData.h"
 
 // class LayoutInfo {
@@ -14,30 +15,21 @@
 //     POINT boundingRectScaleCoefficients;
 // };
 
-typedef struct {
-    double x = 0;
-    double y = 0;
-    double z = 0;
-} POINT3D;
 
 typedef struct {
-    double x = 0;
-    double y = 0;
-    double width = 0;
-    double height = 0;
-} RECT;
-
-typedef struct {
-    double x1 = 0;
-    double y1 = 0;
-    double x2 = 0;
-    double y2 = 0;
-} LINE;
+    POINT3D offset = {0, 0, 0};
+    POINT3D scale = {1, 1, 1};
+} LayoutProjection;
 
 class Layout {
 public:
     bool loadLayoutFiles(string dataPath, string infoPath);
+    void setupProjection();
+    void setupLocationStreams();
     void render();
+
+    vector< LINE > wallLines;
+    vector< LocationStream > locationStreams;
 
 private:
     // temporary (for parsing)
@@ -53,9 +45,8 @@ private:
     // map id_map;
 
     // permanent
-    vector< LINE > wallLines;
+    LayoutProjection projection;
     vector< Location > locations;
-    vector< LocationStream > locationStreams;
 
     bool loadSVG(string svgPath);
     bool loadInfo(string infoPath);

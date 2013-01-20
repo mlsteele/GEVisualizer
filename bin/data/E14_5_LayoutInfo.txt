@@ -1,7 +1,7 @@
 LAYOUT_INFO_FILE_V1.1
 SVGFilename:	E14_5.svg
 KeyElementID:	Layer_2	
-BoundingRectRealWorldCoordinates:	0	0	0
+BoundingRectRealWorldCoordinates:	1	1	0
 BoundingRectScaleCoefficients:	1.0	1.0	1.0
 FloorLevel:	5
 NumLocationNodes:	6

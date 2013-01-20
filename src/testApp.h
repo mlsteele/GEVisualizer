@@ -4,7 +4,7 @@
 #include "Layout.h"
 #include "LocationData.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp {
 public:
     void setup();
     void update();
@@ -22,4 +22,6 @@ public:
 
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
+
+    Layout layout1;
 };
