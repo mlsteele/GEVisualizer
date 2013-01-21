@@ -1,8 +1,8 @@
 #include "testApp.h"
 
 void testApp::setup(){
-
-    ofSetFrameRate( 30 );
+    ofSetWindowTitle("Map");
+    ofSetFrameRate(30);
 
     mainAppDataDirectory = getMainAppDataDirectory();
 
@@ -12,28 +12,88 @@ void testApp::setup(){
 
     ofEnableSmoothing();
 
-    // layoutManager.setMainAppDataDirectory( mainAppDataDirectory );
+    // setup OSC IO
+    clientSender.setup("127.0.0.1", ge_server_port);
+    clientReceiver.setup(listening_port);
 
-    // layoutManager.init();
+    // register with GE Server
+    printf("registering with GE server... ");
+    ofxOscMessage m;
+    m.setAddress("/Register");
+    m.addIntArg(listening_port);
+    clientSender.sendMessage(m);
+    printf("done\n");
 }
 
 void testApp::update(){
+    processOSCQueue();
+}
 
-    //Update the sensor manager, this gets any new sensor data from the network
-    // locationManager.update();
+void testApp::processOSCQueue() {
+    // process OSC queue
+    ofxOscMessage m;
+    while (clientReceiver.hasWaitingMessages()) {
+        clientReceiver.getNextMessage(&m);
+        printf("received OSC message\n");
+        printf("from: %s:%i\n", m.getRemoteIp().c_str(), m.getRemotePort());
+        printf("address: %s\n", m.getAddress().c_str());
+        printf("args[%u]\n", m.getNumArgs());
 
-    //Update the layout manager, this updates the view
-    // layoutManager.update();
+        processOSCMsg(m);
+    }
 
-    //Give the layout manager the most recent sensor data so it can draw it
-    // layoutManager.updateLocationData( locationManager.getLocationData() );
+    // layout1.locationStreams[0].presenceInfo = LocationStream::PRESENCE_PRESENT;
+}
 
-    layout1.locationStreams[0].presenceInfo = LocationStream::PRESENCE_PRESENT;
+void testApp::processOSCMsg(ofxOscMessage& m) {
+    if (m.getAddress() == "/UserPresenceData") {
+        printf("dump /UserPresenceData -> ");
+        for(int i = 0; i < m.getNumArgs(); i++) {
+            printf(" %i", m.getArgAsInt32(i));
+        }
+        printf("\n");
+
+
+        int numDatas = m.getArgAsInt32(0);
+        if (m.getNumArgs() == numDatas * 2 + 1) {
+            for (int i = 0; i < numDatas; i++) {
+                int location_id = m.getArgAsInt32(i + 1);
+                int new_presence_info = m.getArgAsInt32(i + numDatas + 1);
+                attemptToSetPresenceInfo(location_id, new_presence_info);
+            }
+        } else {
+            printf("m.getNumArgs() -> %i\n", numDatas);
+            printf("WARN: malformed OSC message (%s) [nArgs:%i].\n", m.getAddress().c_str(), m.getNumArgs());
+        }
+    } else {
+        printf("WARN: ignoring OSC message (%s) [nArgs:%i].\n", m.getAddress().c_str(), m.getNumArgs());
+    }
+}
+
+void testApp::attemptToSetPresenceInfo(int location_id, int new_presence_info) {
+    for (LocationStream& locationStream : layout1.locationStreams) {
+        if (locationStream.location.ge_id == location_id) {
+            locationStream.presenceInfo = new_presence_info;
+            printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info);
+            return;
+        }
+    }
+    printf("failed to find matching location in layout [%i]\n", location_id);
 }
 
 void testApp::draw(){
     ofBackground(0xFFFFFF);
     layout1.render();
+}
+
+void testApp::exit() {
+    // unregister
+    printf("unregistering form GE server... ");
+    ofxOscMessage m;
+    m.setAddress("/Unregister");
+    m.addIntArg(listening_port);
+    clientSender.sendMessage(m);
+    printf("done\n");
 }
 
 void testApp::keyPressed(int key){
