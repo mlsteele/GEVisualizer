@@ -17,12 +17,25 @@ void testApp::setup(){
     clientReceiver.setup(listening_port);
 
     // register with GE Server
+    {
     printf("registering with GE server... ");
     ofxOscMessage m;
     m.setAddress("/Register");
     m.addIntArg(listening_port);
     clientSender.sendMessage(m);
     printf("done\n");
+    }
+
+    // subscribe to presence data
+    {
+    printf("subscring to user presence data... ");
+    ofxOscMessage m;
+    m.setAddress("/StreamUserPresenceData");
+    m.addIntArg(1); // subscription state
+    m.addIntArg(1); // allLocations
+    clientSender.sendMessage(m);
+    printf("done\n");
+    }
 }
 
 void testApp::update(){
