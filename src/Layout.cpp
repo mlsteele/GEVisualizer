@@ -51,6 +51,8 @@ void Layout::render() {
     ofPushMatrix();
     ofTranslate(projection.offset.x * projection.scale.x, projection.offset.y * projection.scale.y);
 
+    ofSetLineWidth(1);
+
     // // test circles (corners)
     // ofSetHexColor(0xFFAA16);
     // ofFill();
@@ -83,6 +85,7 @@ void Layout::render() {
             case LocationStream::PRESENCE_EMPTY:
                 ofSetHexColor(0xD83DFF);
                 ofNoFill();
+                ofSetLineWidth(2);
                 break;
             case LocationStream::PRESENCE_PRESENT:
                 ofSetHexColor(0xD83DFF);

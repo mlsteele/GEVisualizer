@@ -2,12 +2,17 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LocationData.h"
 
 class testApp : public ofBaseApp {
 public:
     void setup();
+    void setupLayouts();
+    void setupUI();
+    void setupOSC();
+
     void update();
     void processOSCQueue();
     void processOSCMsg(ofxOscMessage& m);
@@ -25,9 +30,11 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    ofTrueTypeFont mainAppFont;
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
+    ofUIMainView UImainView;
     Layout layout1;
 
     ofxOscSender clientSender;
@@ -37,3 +44,5 @@ public:
     const int ge_server_port = 5094;
     const int listening_port = 5087;
 };
+
+void buttonCallback(ofUIButton* button, void* appPointer);

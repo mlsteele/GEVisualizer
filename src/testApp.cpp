@@ -2,17 +2,57 @@
 
 void testApp::setup(){
     ofSetWindowTitle("Map");
+    ofSeedRandom();
+    ofEnableSmoothing();
     ofSetFrameRate(30);
 
     mainAppDataDirectory = getMainAppDataDirectory();
+    mainAppFont.loadFont("verdana.ttf", 10);
 
+    setupLayouts();
+    setupUI();
+    setupOSC();
+}
+
+void testApp::setupLayouts() {
     layout1.loadLayoutFiles(mainAppDataDirectory, "E14_5_LayoutInfo.txt");
     layout1.setupLocationStreams();
     layout1.setupProjection();
+}
 
-    ofEnableSmoothing();
+void testApp::setupUI() {
+    ofColor backgroundColor(255, 255, 255);
+    ofColor foregroundColor(0, 0, 0);
+    ofColor borderColor(0, 0, 0);
 
-    // setup OSC IO
+    UImainView.init((void*) this, ofRectangle(0, 0, 300, 300), backgroundColor, foregroundColor);
+    UImainView.showBorder = true;
+    UImainView.borderWidth = 1;
+    UImainView.borderColor = borderColor;
+
+    ofUISubView UImainSubView;
+    UImainSubView.init("UImainSubView",
+        ofRectangle( UImainView.getBounds().x, UImainView.getBounds().y          ,
+                     UImainView.getBounds().width, UImainView.getBounds().height ),
+        backgroundColor, foregroundColor);
+    UImainSubView.showBorder = true;
+    UImainSubView.borderWidth = 1;
+    UImainSubView.borderColor = borderColor;
+
+    ofUIButton buttonFactory;
+    buttonFactory.setFont(mainAppFont);
+    buttonFactory.setCallback(buttonCallback);
+
+    buttonFactory.init("button1",
+        ofRectangle(12, 12, 130, 40), "Button 1",
+        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+    UImainSubView.addButton(buttonFactory);
+
+    UImainView.addSubView(UImainSubView);
+}
+
+void testApp::setupOSC() {
+    // OSC IO
     clientSender.setup("127.0.0.1", ge_server_port);
     clientReceiver.setup(listening_port);
 
@@ -39,6 +79,7 @@ void testApp::setup(){
 }
 
 void testApp::update(){
+    UImainView.update();
     processOSCQueue();
 }
 
@@ -96,12 +137,13 @@ void testApp::attemptToSetPresenceInfo(int location_id, int new_presence_info) {
 
 void testApp::draw(){
     ofBackground(0xFFFFFF);
-    layout1.render();
+    UImainView.draw(0, 0);
+    // layout1.render();
 }
 
 void testApp::exit() {
     // unregister
-    printf("unregistering form GE server... ");
+    printf("unregistering from GE server... ");
     ofxOscMessage m;
     m.setAddress("/Unregister");
     m.addIntArg(listening_port);
@@ -109,7 +151,20 @@ void testApp::exit() {
     printf("done\n");
 }
 
+void buttonCallback(ofUIButton* button, void* appPointer){
+    testApp& mainAppHandle = *(testApp*)appPointer;
+
+    printf("buttonCallbackFunction()\n");
+    printf("getButtonID() -> %s\n", button->getButtonID().c_str());
+    
+    //Only respond to a button down press
+    if( !button->isButtonDownState() ) return;
+    printf("isButtonDownState() -> true\n");
+}
+
 void testApp::keyPressed(int key){
+    UImainView.keyPressedEvent(key);
+
     switch( key ){
         case 'q':
             break;
@@ -119,15 +174,15 @@ void testApp::keyPressed(int key){
     }
 }
 
-void testApp::keyReleased(int key) {}
+void testApp::keyReleased(int key) { UImainView.keyPressedEvent(key); }
 
-void testApp::mouseMoved(int x, int y ) {}
+void testApp::mouseMoved(int x, int y ) { UImainView.mouseMovedEvent(x,y); }
 
-void testApp::mouseDragged(int x, int y, int button) {}
+void testApp::mouseDragged(int x, int y, int button) { UImainView.mouseDraggedEvent(x,y); }
 
-void testApp::mousePressed(int x, int y, int button) {}
+void testApp::mousePressed(int x, int y, int button) { UImainView.mousePressedEvent(x,y); }
 
-void testApp::mouseReleased(int x, int y, int button) {}
+void testApp::mouseReleased(int x, int y, int button) { UImainView.mouseReleasedEvent(x,y); }
 
 void testApp::windowResized(int w, int h) {}
 
