@@ -108,7 +108,9 @@ bool ofUISubView::draw(float parentX,float parentY){
         
         if( showBorder ){
             ofPtr<ofGLRenderer> render = ofGetGLRenderer();
-            float currentLineWidth = render->getLineWidth();
+            // float currentLineWidth = render->getLineWidth();
+            // hard default -> line width
+            float currentLineWidth = 2;
             ofSetLineWidth( borderWidth );
             ofNoFill();
             ofSetColor(borderColor);
