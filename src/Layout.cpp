@@ -69,6 +69,7 @@ void Layout::render() {
         svgBoundingRect.width * boundingRectScaleCoefficients.y * projection.scale.y );
 
     // walls
+    ofDisableSmoothing();
     for (LINE& wall : wallLines) {
         ofSetHexColor(0x000000);
         ofFill();
@@ -78,6 +79,7 @@ void Layout::render() {
             wall.x2 * projection.scale.x ,
             wall.y2 * projection.scale.y );
     }
+    ofEnableSmoothing();
 
     // locations
     for (LocationStream& locationStream : locationStreams) {

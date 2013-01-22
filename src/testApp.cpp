@@ -43,8 +43,38 @@ void testApp::setupUI() {
     buttonFactory.setFont(mainAppFont);
     buttonFactory.setCallback(buttonCallback);
 
-    buttonFactory.init("button1",
-        ofRectangle(12, 12, 130, 40), "Button 1",
+    float xo = 12; // origin / cursor
+    float xb = 130; // size
+    float xs = 10; // spacing
+    float xi = xb + xs; // increment
+    float yo = 12;
+    float yb = 40;
+    float ys = 10;
+    float yi = yb + ys;
+
+    ofRectangle cookieCutter(xo, yo, xb, yb);
+
+    buttonFactory.init("register",
+        cookieCutter, "Register",
+        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+    UImainSubView.addButton(buttonFactory);
+
+    // yo += yi;
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("unregister",
+        cookieCutter, "Unregister",
+        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+    UImainSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(xi, -yi);
+    buttonFactory.init("stream",
+        cookieCutter, "Stream",
+        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+    UImainSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("unstream",
+        cookieCutter, "Unstream",
         ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
     UImainSubView.addButton(buttonFactory);
 
@@ -52,103 +82,43 @@ void testApp::setupUI() {
 }
 
 void testApp::setupOSC() {
-    // OSC IO
-    clientSender.setup("127.0.0.1", ge_server_port);
-    clientReceiver.setup(listening_port);
-
-    // register with GE Server
-    {
-    printf("registering with GE server... ");
-    ofxOscMessage m;
-    m.setAddress("/Register");
-    m.addIntArg(listening_port);
-    clientSender.sendMessage(m);
-    printf("done\n");
-    }
-
-    // subscribe to presence data
-    {
-    printf("subscring to user presence data... ");
-    ofxOscMessage m;
-    m.setAddress("/StreamUserPresenceData");
-    m.addIntArg(1); // subscription state
-    m.addIntArg(1); // allLocations
-    clientSender.sendMessage(m);
-    printf("done\n");
-    }
+    gelink.setup();
+    gelink.connect();
+    gelink.subscribeToStreamingPresenceInfo(this, streamingPresenceInfoCallback);
 }
 
 void testApp::update(){
     UImainView.update();
-    processOSCQueue();
+    gelink.processQueue();
 }
 
-void testApp::processOSCQueue() {
-    // process OSC queue
-    ofxOscMessage m;
-    while (clientReceiver.hasWaitingMessages()) {
-        clientReceiver.getNextMessage(&m);
-        printf("received OSC message\n");
-        printf("from: %s:%i\n", m.getRemoteIp().c_str(), m.getRemotePort());
-        printf("address: %s\n", m.getAddress().c_str());
-        printf("args[%u]\n", m.getNumArgs());
-
-        processOSCMsg(m);
-    }
-
-    // layout1.locationStreams[0].presenceInfo = LocationStream::PRESENCE_PRESENT;
-}
-
-void testApp::processOSCMsg(ofxOscMessage& m) {
-    if (m.getAddress() == "/UserPresenceData") {
-        printf("dump /UserPresenceData -> ");
-        for(int i = 0; i < m.getNumArgs(); i++) {
-            printf(" %i", m.getArgAsInt32(i));
-        }
-        printf("\n");
-
-
-        int numDatas = m.getArgAsInt32(0);
-        if (m.getNumArgs() == numDatas * 2 + 1) {
-            for (int i = 0; i < numDatas; i++) {
-                int location_id = m.getArgAsInt32(i + 1);
-                int new_presence_info = m.getArgAsInt32(i + numDatas + 1);
-                attemptToSetPresenceInfo(location_id, new_presence_info);
-            }
-        } else {
-            printf("m.getNumArgs() -> %i\n", numDatas);
-            printf("WARN: malformed OSC message (%s) [nArgs:%i].\n", m.getAddress().c_str(), m.getNumArgs());
-        }
-    } else {
-        printf("WARN: ignoring OSC message (%s) [nArgs:%i].\n", m.getAddress().c_str(), m.getNumArgs());
-    }
-}
-
-void testApp::attemptToSetPresenceInfo(int location_id, int new_presence_info) {
-    for (LocationStream& locationStream : layout1.locationStreams) {
-        if (locationStream.location.ge_id == location_id) {
-            locationStream.presenceInfo = new_presence_info;
-            printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info);
-            return;
-        }
-    }
-    printf("failed to find matching location in layout [%i]\n", location_id);
-}
+//void testApp::attemptToSetPresenceInfo(int location_id, int new_presence_info) {
+//    for (LocationStream& locationStream : layout1.locationStreams) {
+//        if (locationStream.location.ge_id == location_id) {
+//            locationStream.presenceInfo = new_presence_info;
+//            printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info);
+//            return;
+//        }
+//    }
+//    printf("failed to find matching location in layout [%i]\n", location_id);
+//}
 
 void testApp::draw(){
     ofBackground(0xFFFFFF);
     UImainView.draw(0, 0);
-    // layout1.render();
+    layout1.render();
 }
 
 void testApp::exit() {
-    // unregister
-    printf("unregistering from GE server... ");
-    ofxOscMessage m;
-    m.setAddress("/Unregister");
-    m.addIntArg(listening_port);
-    clientSender.sendMessage(m);
-    printf("done\n");
+    gelink.disconnect();
+}
+
+void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data) {
+    testApp& mainAppHandle = *(testApp*)appPointer;
+    printf("handling presence info [%i, %i, %f]\n",
+        data.locationID         ,
+        data.presenceEstimate   ,
+        data.presenceLikelihood );
 }
 
 void buttonCallback(ofUIButton* button, void* appPointer){
@@ -156,10 +126,26 @@ void buttonCallback(ofUIButton* button, void* appPointer){
 
     printf("buttonCallbackFunction()\n");
     printf("getButtonID() -> %s\n", button->getButtonID().c_str());
-    
+
     //Only respond to a button down press
     if( !button->isButtonDownState() ) return;
     printf("isButtonDownState() -> true\n");
+
+    if (button->getButtonID() == "register") {
+
+    }
+
+    if (button->getButtonID() == "unregister") {
+
+    }
+
+    if (button->getButtonID() == "stream") {
+
+    }
+
+    if (button->getButtonID() == "unstream") {
+
+    }
 }
 
 void testApp::keyPressed(int key){

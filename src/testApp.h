@@ -5,6 +5,7 @@
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LocationData.h"
+#include "GELink.h"
 
 class testApp : public ofBaseApp {
 public:
@@ -14,9 +15,6 @@ public:
     void setupOSC();
 
     void update();
-    void processOSCQueue();
-    void processOSCMsg(ofxOscMessage& m);
-    void attemptToSetPresenceInfo(int location_id, int new_presence_info);
     void draw();
     void exit();
 
@@ -36,13 +34,8 @@ public:
 
     ofUIMainView UImainView;
     Layout layout1;
-
-    ofxOscSender clientSender;
-    ofxOscReceiver clientReceiver;
-
-    const string ge_server_host = "127.0.0.1";
-    const int ge_server_port = 5094;
-    const int listening_port = 5087;
+    GELink gelink;
 };
 
 void buttonCallback(ofUIButton* button, void* appPointer);
+void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data);
