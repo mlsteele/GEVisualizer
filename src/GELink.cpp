@@ -33,28 +33,26 @@ void GELink::processQueue() {
     }
 }
 
-void GELink::subscribeToStreamingPresenceInfo(void* app, streamingPresenceInfoCallback_t callback) {
-    if (app != NULL && callback != NULL) {
-        printf("registering for streaming presence info... ");
-        streamingPresenceInfoCallbackReferent = app;
-        streamingPresenceInfoCallback = callback;
-        ofxOscMessage m;
-        m.setAddress("/StreamUserPresenceData");
-        m.addIntArg( (int)listening_port );
-        m.addIntArg( (int)1 );
-        sendMessage(m);
-        printf("done\n");
-    } else {
-        printf("unregistering for streaming presence info... ");
-        streamingPresenceInfoCallbackReferent = NULL;
-        streamingPresenceInfoCallback = NULL;
-        ofxOscMessage m;
-        m.setAddress("/StreamUserPresenceData");
-        m.addIntArg( (int)listening_port );
-        m.addIntArg( (int)0 );
-        sendMessage(m);
-        printf("done\n");
-    }
+void subscribe_helper(GELink& gelink, string address, bool state) {
+    printf("%s for streaming %s... ", (state ? "registering" : "unregistering"), address);
+    ofxOscMessage m;
+    m.setAddress("/StreamUserPresenceData");
+    m.addIntArg( (int)gelink.listening_port );
+    m.addIntArg( (int)(state ? 1 : 0) );
+    gelink.sendMessage(m);
+    printf("done\n");
+}
+
+void GELink::subscribeToPresenceInfo(streamingPresenceInfoCallback_t callback) {
+    if (streamingCallbackReferent == NULL) printf("ERROR: tried to subscribe against empty callback target\n");
+    streamingPresenceInfoCallback = callback;
+    subscribe_helper(*this, "/StreamUserPresenceData", callback != NULL);
+}
+
+void GELink::subscribeToCount(streamingCountCallback_t callback) {
+    if (streamingCallbackReferent == NULL) printf("ERROR: tried to subscribe against empty callback target\n");
+    streamingCountCallback = callback;
+    subscribe_helper(*this, "/StreamUserCountData", callback != NULL);
 }
 
 void GELink::processOSCMsg(ofxOscMessage& m) {
@@ -73,32 +71,33 @@ void GELink::processOSCMsg(ofxOscMessage& m) {
 
     if (m.getAddress() == "/UserPresenceData") {
         printf("recvd /UserPresenceData\n");
-        // printf("dump /UserPresenceData -> ");
-        // for(int i = 0; i < m.getNumArgs(); i++) {
-        //     printf(" %i", m.getArgAsInt32(i));
-        // }
-        // printf("\n");
-
-        if (streamingPresenceInfoCallbackReferent != NULL && streamingPresenceInfoCallback != NULL) {
-            // printf("<procOSC> [C] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
-
+        if (streamingCallbackReferent != NULL && streamingPresenceInfoCallback != NULL) {
             int numLocations = m.getArgAsInt32(0);
-            // printf("numLocations %i\n", numLocations);
-            int messageIndex = 0;
-            // printf("<procOSC> [D] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
-            for(int i = 0; i < numLocations; i++) {
-                // printf("<procOSC> [E,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
-                // printf("messageIndex %i\n", messageIndex);
-                unsigned int locationID = m.getArgAsInt32(messageIndex + 1);
-                unsigned int presenceEstimate = m.getArgAsInt32(messageIndex + 2);
-                double presenceLikelihood = m.getArgAsFloat(messageIndex + 3);
+            for(int i = 0; i < numLocations; i += 3) {
+                unsigned int locationID       = m.getArgAsInt32(i + 1);
+                unsigned int presenceEstimate = m.getArgAsInt32(i + 2);
+                double presenceLikelihood     = m.getArgAsFloat(i + 3);
 
-                streamingPresenceInfoCallback( streamingPresenceInfoCallbackReferent, (presenceInfoStreamData){
+                streamingPresenceInfoCallback( streamingCallbackReferent, (presenceInfoStreamData) {
                     locationID ,
                     presenceEstimate ,
                     presenceLikelihood });
-
-                messageIndex += 3;
+            }
+        }
+    } else if (m.getAddress() == "/UserCountData") {
+        printf("recvd /UserCountData\n");
+        if (streamingCallbackReferent != NULL && streamingCountCallback != NULL) {
+            int numLocations = m.getArgAsInt32(0);
+            int messageIndex = 1;
+            for(int i = 0; i < numLocations; i++) {
+                presenceCountStreamData
+                unsigned int locationID      = m.getArgAsInt32(i + 1);
+                unsigned int countEstimate   = m.getArgAsInt32(i + 2);
+                double countLikelihood       = m.getArgAsFloat(i + 3);
+                streamingCountCallback( streamingCallbackReferent, (countStreamData) {
+                    locationID ,
+                    countEstimate ,
+                    countLikelihood });
             }
         }
     } else {

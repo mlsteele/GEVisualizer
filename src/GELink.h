@@ -12,7 +12,14 @@ typedef struct {
     double presenceLikelihood;
 } presenceInfoStreamData;
 
+typedef struct {
+    unsigned int locationID;
+    unsigned int countEstimate;
+    double countLikelihood;
+} countStreamData;
+
 typedef void (*streamingPresenceInfoCallback_t) (void *appPointer, presenceInfoStreamData data);
+typedef void (*streamingCountCallback_t)        (void *appPointer, countStreamData        data);
 
 class GELink {
 public:
@@ -21,10 +28,12 @@ public:
     void disconnect();
     void processQueue();
 
+    void setStreamingCallbackTarget(void* target) { streamingCallbackReferent = target; }
     // takes callback, if null then cancel streaming
-    void subscribeToStreamingPresenceInfo(void* app, streamingPresenceInfoCallback_t callback);
+    void subscribeToPresenceInfo(streamingPresenceInfoCallback_t callback);
+    void subscribeToCount       (streamingCountCallback_t        callback);
 
-    bool registered = false;
+    // bool registered = false;
 
 private:
     void processOSCMsg(ofxOscMessage& m);
@@ -33,8 +42,9 @@ private:
     ofxOscSender sender;
     ofxOscReceiver receiver;
 
-    void* streamingPresenceInfoCallbackReferent = NULL;
+    void* streamingCallbackReferent = NULL;
     streamingPresenceInfoCallback_t streamingPresenceInfoCallback = NULL;
+    streamingCountCallback_t        streamingCountCallback        = NULL;
 
     const bool debug = true;
 

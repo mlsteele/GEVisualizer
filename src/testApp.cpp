@@ -83,6 +83,7 @@ void testApp::setupUI() {
 
 void testApp::setupOSC() {
     gelink.setup();
+    gelink.setStreamingCallbackTarget(this);
 }
 
 void testApp::update(){
@@ -91,13 +92,22 @@ void testApp::update(){
 }
 
 void testApp::attemptToSetPresenceInfo(int location_id, presenceInfoStreamData new_presence_info) {
-    // for (LocationStream& locationStream : layout1.locationStreams) {
-    // printf("hunting for location_id %i\n", location_id);
-    int lslen = layout1.locationStreams.size();
-    for(int i = 0; i < lslen; i++ ) {
+    for(int i = 0; i < layout1.locationStreams.size(); i++ ) {
         if (layout1.locationStreams[i].location->ge_id == location_id) {
             layout1.locationStreams[i].presenceInfo = new_presence_info.presenceEstimate;
             printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info.presenceEstimate);
+            return;
+        }
+   }
+
+   // printf("failed to find matching location in layout [%i]\n", location_id);
+}
+
+void testApp::attemptToSetCount(int location_id, countStreamData new_count_data) {
+    for(int i = 0; i < layout1.locationStreams.size(); i++ ) {
+        if (layout1.locationStreams[i].location->ge_id == location_id) {
+            layout1.locationStreams[i].count = new_count_data.count;
+            printf("set presence info for [%i] to (%i)\n", location_id, new_count_data.countEstimate);
             return;
         }
    }
@@ -112,6 +122,8 @@ void testApp::draw(){
 }
 
 void testApp::exit() {
+    gelink.subscribeToPresenceInfo(NULL);
+    gelink.subscribeToCount(NULL);
     gelink.disconnect();
 }
 
@@ -124,15 +136,25 @@ void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data
     mainAppHandle.attemptToSetPresenceInfo(data.locationID, data);
 }
 
+void streamingCountCallback(void* appPointer, presenceInfoStreamData data) {
+    testApp& mainAppHandle = *(testApp*)appPointer;
+    // printf("handling presence info [%i, %i, %f]\n",
+    //     data.locationID         ,
+    //     data.presenceEstimate   ,
+    //     data.presenceLikelihood );
+    mainAppHandle.attemptToSetCount(data.locationID, data);
+}
+
 void buttonCallback(ofUIButton* button, void* appPointer){
     testApp& mainAppHandle = *(testApp*)appPointer;
 
-    printf("buttonCallbackFunction()\n");
-    printf("getButtonID() -> %s\n", button->getButtonID().c_str());
+    // printf("buttonCallbackFunction()\n");
 
-    //Only respond to a button down press
+    // Only respond to a button down press
     if( !button->isButtonDownState() ) return;
-    printf("isButtonDownState() -> true\n");
+    // printf("isButtonDownState() -> true\n");
+
+    printf("button pressed (%s)\n", button->getButtonID().c_str());
 
     if (button->getButtonID() == "register") {
         mainAppHandle.gelink.connect();
@@ -143,11 +165,11 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     }
 
     if (button->getButtonID() == "stream") {
-        mainAppHandle.gelink.subscribeToStreamingPresenceInfo(appPointer, streamingPresenceInfoCallback);
+        mainAppHandle.gelink.subscribeToPresenceInfo(streamingPresenceInfoCallback);
     }
 
     if (button->getButtonID() == "unstream") {
-        mainAppHandle.gelink.subscribeToStreamingPresenceInfo(appPointer, NULL);
+        mainAppHandle.gelink.subscribeToCount(streamingCountCallback);
     }
 }
 

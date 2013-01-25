@@ -23,6 +23,7 @@ public:
 
     Location* location = NULL;
     int presenceInfo = PRESENCE_EMPTY;
+    int count = 0;
 
     // This will be a 1 if a user is present at that location, 0 otherwise.
     enum presenceInfoVals {PRESENCE_EMPTY=0, PRESENCE_PRESENT=1};
