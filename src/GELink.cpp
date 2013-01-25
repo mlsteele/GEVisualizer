@@ -3,8 +3,6 @@
 void GELink::setup() {
     sender.setup(ge_server_host, ge_server_port);
     receiver.setup(listening_port);
-
-    if (layout_debug->sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[gelsetup]\n"); exit(1);}
 }
 
 void GELink::connect() {
@@ -75,8 +73,6 @@ void GELink::processOSCMsg(ofxOscMessage& m) {
 
     if (m.getAddress() == "/UserPresenceData") {
         printf("recvd /UserPresenceData\n");
-        // printf("<procOSC> [B] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
-
         // printf("dump /UserPresenceData -> ");
         // for(int i = 0; i < m.getNumArgs(); i++) {
         //     printf(" %i", m.getArgAsInt32(i));
@@ -97,17 +93,11 @@ void GELink::processOSCMsg(ofxOscMessage& m) {
                 unsigned int presenceEstimate = m.getArgAsInt32(messageIndex + 2);
                 double presenceLikelihood = m.getArgAsFloat(messageIndex + 3);
 
-                // printf("<procOSC> locationID %i, presenceEstimate %i, presenceLikelihood %f\n", locationID, presenceEstimate, presenceLikelihood);
-
-                // printf("<procOSC> [F,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
-                // printf("Here's the vector -> %i\n", &(layout_debug->locationStreams));
-                // printf("Here's the testApp -> %i\n", layout_debug);
-                // if (layout_debug->sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[lad]\n"); exit(1);}
                 streamingPresenceInfoCallback( streamingPresenceInfoCallbackReferent, (presenceInfoStreamData){
                     locationID ,
                     presenceEstimate ,
                     presenceLikelihood });
-                // printf("<procOSC> [G,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
+
                 messageIndex += 3;
             }
         }

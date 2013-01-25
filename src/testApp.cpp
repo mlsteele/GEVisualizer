@@ -9,13 +9,9 @@ void testApp::setup(){
     mainAppDataDirectory = getMainAppDataDirectory();
     mainAppFont.loadFont("verdana.ttf", 10);
 
-    gelink.layout_debug = &layout1;
-
     setupLayouts();
     setupUI();
     setupOSC();
-
-    printf("Here's this -> %i\n", this);
 }
 
 void testApp::setupLayouts() {
@@ -99,10 +95,6 @@ void testApp::attemptToSetPresenceInfo(int location_id, presenceInfoStreamData n
     // printf("hunting for location_id %i\n", location_id);
     int lslen = layout1.locationStreams.size();
     for(int i = 0; i < lslen; i++ ) {
-        // printf("about to test against [%i] of <%i>\n", i, lslen);
-        // printf("about to test against locationStream with pval %i\n", layout1.locationStreams[i].presenceInfo);
-        // printf("about to test against ge_id %i\n", layout1.locationStreams[i].location->ge_id);
-
         if (layout1.locationStreams[i].location->ge_id == location_id) {
             layout1.locationStreams[i].presenceInfo = new_presence_info.presenceEstimate;
             printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info.presenceEstimate);
@@ -129,11 +121,6 @@ void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data
     //     data.locationID         ,
     //     data.presenceEstimate   ,
     //     data.presenceLikelihood );
-    // printf("<spic> locationStreams.size() -> %i\n", mainAppHandle.layout1.locationStreams.size());
-    // printf("Here's the vector -> %i\n", &(mainAppHandle.layout1.locationStreams));
-    // printf("Here's the testApp -> %i\n", &mainAppHandle);
-    // printf("Here's the testApp void* -> %i\n", appPointer);
-    // if (mainAppHandle.layout1.sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[mah]\n"); exit(1);}
     mainAppHandle.attemptToSetPresenceInfo(data.locationID, data);
 }
 

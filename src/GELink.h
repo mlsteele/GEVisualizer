@@ -26,8 +26,6 @@ public:
 
     bool registered = false;
 
-    Layout* layout_debug = NULL;
-
 private:
     void processOSCMsg(ofxOscMessage& m);
     bool sendMessage(ofxOscMessage message);

@@ -15,8 +15,6 @@
 //     POINT boundingRectScaleCoefficients;
 // };
 
-#define LAYOUT_SANE 49148
-
 typedef struct {
     POINT3D offset = {0, 0, 0};
     POINT3D scale = {1, 1, 1};
@@ -31,8 +29,6 @@ public:
 
     vector< LINE > wallLines;
     vector< LocationStream > locationStreams;
-
-    int sanity_check = LAYOUT_SANE;
 
 private:
     // temporary (for parsing)
