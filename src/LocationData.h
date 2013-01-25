@@ -13,14 +13,15 @@ public:
 
 class LocationStream {
 public:
-    LocationStream(Location& location) : location(location) {}
+    LocationStream(Location* location) : location(location) {}
     // LocationStream(const LocationStream &rhs) : location(rhs.location) {}
-    LocationStream &operator= (const LocationStream &rhs) {
-        location = rhs.location; // TODO: this should be const
-        return *this;
-    }
+    // LocationStream &operator= (const LocationStream &rhs) {
+    //     if 
+    //     location = rhs.location; // TODO: this should be const
+    //     return *this;
+    // }
 
-    Location& location;
+    Location* location = NULL;
     int presenceInfo = PRESENCE_EMPTY;
 
     // This will be a 1 if a user is present at that location, 0 otherwise.

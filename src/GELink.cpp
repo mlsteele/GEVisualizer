@@ -1,8 +1,10 @@
 #include "GELink.h"
 
 void GELink::setup() {
-    sender.setup("127.0.0.1", ge_server_port);
+    sender.setup(ge_server_host, ge_server_port);
     receiver.setup(listening_port);
+
+    if (layout_debug->sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[gelsetup]\n"); exit(1);}
 }
 
 void GELink::connect() {
@@ -65,21 +67,48 @@ void GELink::processOSCMsg(ofxOscMessage& m) {
         printf("args[%u]\n", m.getNumArgs());
     }
 
-    if (m.getAddress() == "/UserPresenceData") {
-        printf("dump /UserPresenceData -> ");
-        for(int i = 0; i < m.getNumArgs(); i++) {
-            printf(" %i", m.getArgAsInt32(i));
-        }
-        printf("\n");
+    // printf("<procOSC> [A] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
 
-        if (streamingPresenceInfoCallback != NULL) {
+    // if (m.getAddress() == "Response" && m.getArgAsString(0) == "/Register") {
+    //     printf("received response \n");
+    // }
+
+    if (m.getAddress() == "/UserPresenceData") {
+        printf("recvd /UserPresenceData\n");
+        // printf("<procOSC> [B] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
+
+        // printf("dump /UserPresenceData -> ");
+        // for(int i = 0; i < m.getNumArgs(); i++) {
+        //     printf(" %i", m.getArgAsInt32(i));
+        // }
+        // printf("\n");
+
+        if (streamingPresenceInfoCallbackReferent != NULL && streamingPresenceInfoCallback != NULL) {
+            // printf("<procOSC> [C] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
+
             int numLocations = m.getArgAsInt32(0);
-            int messageIndex = 1;
+            // printf("numLocations %i\n", numLocations);
+            int messageIndex = 0;
+            // printf("<procOSC> [D] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
             for(int i = 0; i < numLocations; i++) {
-                streamingPresenceInfoCallback( &streamingPresenceInfoCallbackReferent, (presenceInfoStreamData){
-                    m.getArgAsInt32(messageIndex++) ,
-                    m.getArgAsInt32(messageIndex++) ,
-                    m.getArgAsFloat(messageIndex++) });
+                // printf("<procOSC> [E,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
+                // printf("messageIndex %i\n", messageIndex);
+                unsigned int locationID = m.getArgAsInt32(messageIndex + 1);
+                unsigned int presenceEstimate = m.getArgAsInt32(messageIndex + 2);
+                double presenceLikelihood = m.getArgAsFloat(messageIndex + 3);
+
+                // printf("<procOSC> locationID %i, presenceEstimate %i, presenceLikelihood %f\n", locationID, presenceEstimate, presenceLikelihood);
+
+                // printf("<procOSC> [F,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
+                // printf("Here's the vector -> %i\n", &(layout_debug->locationStreams));
+                // printf("Here's the testApp -> %i\n", layout_debug);
+                // if (layout_debug->sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[lad]\n"); exit(1);}
+                streamingPresenceInfoCallback( streamingPresenceInfoCallbackReferent, (presenceInfoStreamData){
+                    locationID ,
+                    presenceEstimate ,
+                    presenceLikelihood });
+                // printf("<procOSC> [G,%i] locationStreams.size() -> %i\n", i, layout_debug->locationStreams.size());
+                messageIndex += 3;
             }
         }
     } else {

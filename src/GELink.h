@@ -24,6 +24,10 @@ public:
     // takes callback, if null then cancel streaming
     void subscribeToStreamingPresenceInfo(void* app, streamingPresenceInfoCallback_t callback);
 
+    bool registered = false;
+
+    Layout* layout_debug = NULL;
+
 private:
     void processOSCMsg(ofxOscMessage& m);
     bool sendMessage(ofxOscMessage message);
@@ -36,11 +40,11 @@ private:
 
     const bool debug = true;
 
-    // const string ge_server_host = "18.85.55.184";
-    // const int ge_server_port = 5000;
+    const string ge_server_host = "18.85.55.184";
+    const int ge_server_port = 5000;
 
-    const string ge_server_host = "127.0.0.1";
-    const int ge_server_port = 5094;
+    // const string ge_server_host = "127.0.0.1";
+    // const int ge_server_port = 5094;
 
     const int listening_port = 5087;
 };

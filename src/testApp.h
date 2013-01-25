@@ -14,6 +14,8 @@ public:
     void setupUI();
     void setupOSC();
 
+    void attemptToSetPresenceInfo(int location_id, presenceInfoStreamData new_presence_info);
+
     void update();
     void draw();
     void exit();

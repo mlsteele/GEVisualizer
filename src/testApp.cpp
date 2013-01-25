@@ -9,9 +9,13 @@ void testApp::setup(){
     mainAppDataDirectory = getMainAppDataDirectory();
     mainAppFont.loadFont("verdana.ttf", 10);
 
+    gelink.layout_debug = &layout1;
+
     setupLayouts();
     setupUI();
     setupOSC();
+
+    printf("Here's this -> %i\n", this);
 }
 
 void testApp::setupLayouts() {
@@ -25,14 +29,14 @@ void testApp::setupUI() {
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
-    UImainView.init((void*) this, ofRectangle(0, 0, 300, 300), backgroundColor, foregroundColor);
-    UImainView.showBorder = true;
+    UImainView.init((void*) this, ofRectangle(0, 0, 300, 120), backgroundColor, foregroundColor);
+    UImainView.showBorder = false;
     UImainView.borderWidth = 1;
     UImainView.borderColor = borderColor;
 
     ofUISubView UImainSubView;
     UImainSubView.init("UImainSubView",
-        ofRectangle( UImainView.getBounds().x, UImainView.getBounds().y          ,
+        ofRectangle( UImainView.getBounds().x, UImainView.getBounds().y + 768 - 120 ,
                      UImainView.getBounds().width, UImainView.getBounds().height ),
         backgroundColor, foregroundColor);
     UImainSubView.showBorder = true;
@@ -83,8 +87,6 @@ void testApp::setupUI() {
 
 void testApp::setupOSC() {
     gelink.setup();
-    gelink.connect();
-    gelink.subscribeToStreamingPresenceInfo(this, streamingPresenceInfoCallback);
 }
 
 void testApp::update(){
@@ -92,16 +94,24 @@ void testApp::update(){
     gelink.processQueue();
 }
 
-//void testApp::attemptToSetPresenceInfo(int location_id, int new_presence_info) {
-//    for (LocationStream& locationStream : layout1.locationStreams) {
-//        if (locationStream.location.ge_id == location_id) {
-//            locationStream.presenceInfo = new_presence_info;
-//            printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info);
-//            return;
-//        }
-//    }
-//    printf("failed to find matching location in layout [%i]\n", location_id);
-//}
+void testApp::attemptToSetPresenceInfo(int location_id, presenceInfoStreamData new_presence_info) {
+    // for (LocationStream& locationStream : layout1.locationStreams) {
+    // printf("hunting for location_id %i\n", location_id);
+    int lslen = layout1.locationStreams.size();
+    for(int i = 0; i < lslen; i++ ) {
+        // printf("about to test against [%i] of <%i>\n", i, lslen);
+        // printf("about to test against locationStream with pval %i\n", layout1.locationStreams[i].presenceInfo);
+        // printf("about to test against ge_id %i\n", layout1.locationStreams[i].location->ge_id);
+
+        if (layout1.locationStreams[i].location->ge_id == location_id) {
+            layout1.locationStreams[i].presenceInfo = new_presence_info.presenceEstimate;
+            printf("set presence info for [%i] to (%i)\n", location_id, new_presence_info.presenceEstimate);
+            return;
+        }
+   }
+
+   // printf("failed to find matching location in layout [%i]\n", location_id);
+}
 
 void testApp::draw(){
     ofBackground(0xFFFFFF);
@@ -115,10 +125,16 @@ void testApp::exit() {
 
 void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data) {
     testApp& mainAppHandle = *(testApp*)appPointer;
-    printf("handling presence info [%i, %i, %f]\n",
-        data.locationID         ,
-        data.presenceEstimate   ,
-        data.presenceLikelihood );
+    // printf("handling presence info [%i, %i, %f]\n",
+    //     data.locationID         ,
+    //     data.presenceEstimate   ,
+    //     data.presenceLikelihood );
+    // printf("<spic> locationStreams.size() -> %i\n", mainAppHandle.layout1.locationStreams.size());
+    // printf("Here's the vector -> %i\n", &(mainAppHandle.layout1.locationStreams));
+    // printf("Here's the testApp -> %i\n", &mainAppHandle);
+    // printf("Here's the testApp void* -> %i\n", appPointer);
+    // if (mainAppHandle.layout1.sanity_check == LAYOUT_SANE) {printf("SANE");} else {printf("INSANE[mah]\n"); exit(1);}
+    mainAppHandle.attemptToSetPresenceInfo(data.locationID, data);
 }
 
 void buttonCallback(ofUIButton* button, void* appPointer){
@@ -132,19 +148,19 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     printf("isButtonDownState() -> true\n");
 
     if (button->getButtonID() == "register") {
-
+        mainAppHandle.gelink.connect();
     }
 
     if (button->getButtonID() == "unregister") {
-
+        mainAppHandle.gelink.disconnect();
     }
 
     if (button->getButtonID() == "stream") {
-
+        mainAppHandle.gelink.subscribeToStreamingPresenceInfo(appPointer, streamingPresenceInfoCallback);
     }
 
     if (button->getButtonID() == "unstream") {
-
+        mainAppHandle.gelink.subscribeToStreamingPresenceInfo(appPointer, NULL);
     }
 }
 

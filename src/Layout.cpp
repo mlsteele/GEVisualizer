@@ -34,16 +34,18 @@ void Layout::setupLocationStreams() {
             location.position.y ,
             location.position.z );
 
-        LocationStream newLocationStream(location);
-        locationStreams.push_back( newLocationStream );
+        // LocationStream newLocationStream(location);
+        locationStreams.push_back( LocationStream(&location) );
         // locationStreams.push_back( LocationStream(location) );
         printf("created stream for location with default presenceInfo: %i\n", locationStreams.back().presenceInfo);
         printf("created stream for location[%i] @ (%f, %f, %f)\n",
-            locationStreams.back().location.ge_id ,
-            locationStreams.back().location.position.x ,
-            locationStreams.back().location.position.y ,
-            locationStreams.back().location.position.z );
-        printf("address identity check: %i\n", &locationStreams.back().location == &location);
+            locationStreams.back().location->ge_id ,
+            locationStreams.back().location->position.x ,
+            locationStreams.back().location->position.y ,
+            locationStreams.back().location->position.z );
+        printf("address identity check: %i\n", locationStreams.back().location == &location);
+
+        printf("locationStreams.size() -> %i\n", locationStreams.size());
     }
 }
 
@@ -98,8 +100,8 @@ void Layout::render() {
                 ofFill();
         }
         ofCircle(
-            locationStream.location.position.x * projection.scale.x,
-            locationStream.location.position.y * projection.scale.y,
+            locationStream.location->position.x * projection.scale.x,
+            locationStream.location->position.y * projection.scale.y,
             5 );
     }
 

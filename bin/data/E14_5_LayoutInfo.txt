@@ -6,11 +6,11 @@ BoundingRectScaleCoefficients:	1.0	1.0	1.0
 FloorLevel:	5
 NumLocationNodes:	3
 LocationNode:	1
-LocationID:	1
+LocationID:	11
 LocationPosition:	148.26	193.76	0
 LocationNode:	2
-LocationID:	2
+LocationID:	22
 LocationPosition:	256.87	210.36	0
 LocationNode:	3
-LocationID:	3
+LocationID:	9
 LocationPosition:	288.21	222.98	0
