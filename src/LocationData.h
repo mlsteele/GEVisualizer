@@ -5,7 +5,7 @@
 
 class Location {
 public:
-    int ge_id;
+    int locationID;
 
     // real world positions
     POINT3D position;

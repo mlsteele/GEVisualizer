@@ -5,16 +5,14 @@
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LocationData.h"
-#include "GELink.h"
+// #include "GELink.h"
+#include "GEVisualizer.h"
 
 class testApp : public ofBaseApp {
 public:
     void setup();
     void setupLayouts();
     void setupUI();
-    void setupOSC();
-
-    void attemptToSetPresenceInfo(int location_id, presenceInfoStreamData new_presence_info);
 
     void update();
     void draw();
@@ -36,8 +34,14 @@ public:
 
     ofUIMainView UImainView;
     Layout layout1;
-    GELink gelink;
+
+    GEVisualizer gelink;
+
+    const string ge_server_host = "18.85.55.184";
+    const int ge_server_port = 5000;
+    // const string ge_server_host = "127.0.0.1";
+    // const int ge_server_port = 5094;
+    const int listening_port = 5087;
 };
 
 void buttonCallback(ofUIButton* button, void* appPointer);
-void streamingPresenceInfoCallback(void* appPointer, presenceInfoStreamData data);

@@ -29,7 +29,7 @@ void Layout::setupProjection() {
 void Layout::setupLocationStreams() {
     for (Location& location : locations) {
         printf("creating stream for location[%i] @ (%f, %f, %f)\n",
-            location.ge_id ,
+            location.locationID ,
             location.position.x ,
             location.position.y ,
             location.position.z );
@@ -39,7 +39,7 @@ void Layout::setupLocationStreams() {
         // locationStreams.push_back( LocationStream(location) );
         printf("created stream for location with default presenceInfo: %i\n", locationStreams.back().presenceInfo);
         printf("created stream for location[%i] @ (%f, %f, %f)\n",
-            locationStreams.back().location->ge_id ,
+            locationStreams.back().location->locationID ,
             locationStreams.back().location->position.x ,
             locationStreams.back().location->position.y ,
             locationStreams.back().location->position.z );
@@ -49,7 +49,18 @@ void Layout::setupLocationStreams() {
     }
 }
 
-void Layout::render() {
+// returns data or a NULL if none is present in list
+template <typename T>
+T* extract_streamed_data(vector<T> list, int locationID) {
+    for (T& thing : list) {
+        if (thing.locationID == locationID) {
+            return &thing;
+        }
+    }
+    return NULL;
+}
+
+void Layout::render(GEVisualizer& store) {
     ofPushMatrix();
     ofTranslate(projection.offset.x * projection.scale.x, projection.offset.y * projection.scale.y);
 
@@ -84,14 +95,18 @@ void Layout::render() {
     ofEnableSmoothing();
 
     // locations
-    for (LocationStream& locationStream : locationStreams) {
-        switch(locationStream.presenceInfo) {
-            case LocationStream::PRESENCE_EMPTY:
+    for (LocationInfo& locationInfo : store.getLocationInfo()) {
+        Location* localLocation = extract_streamed_data(locations, locationInfo.locationID);
+        if (!localLocation) continue;
+        PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
+
+        switch(presenceData ? presenceData->presenceEstimate : -1) {
+            case 0:
                 ofSetHexColor(0xD83DFF);
                 ofNoFill();
                 ofSetLineWidth(2);
                 break;
-            case LocationStream::PRESENCE_PRESENT:
+            case 1:
                 ofSetHexColor(0xD83DFF);
                 ofFill();
                 break;
@@ -99,10 +114,17 @@ void Layout::render() {
                 ofSetHexColor(0xFF1B1B);
                 ofFill();
         }
+
         ofCircle(
-            locationStream.location->position.x * projection.scale.x,
-            locationStream.location->position.y * projection.scale.y,
+            localLocation->position.x * projection.scale.x,
+            localLocation->position.y * projection.scale.y,
             5 );
+
+        ofSetHexColor(0x0);
+        ofFill();
+        ofDrawBitmapString((string)locationInfo.notes,
+            localLocation->position.x * projection.scale.x - 20,
+            localLocation->position.y * projection.scale.y - 20);
     }
 
     ofPopMatrix();
@@ -223,7 +245,7 @@ bool Layout::loadInfo(string infoPath){
             printf("ERROR: Failed to read LocationID header!\n");
             return false;
         }
-        file >> newLocation.ge_id;
+        file >> newLocation.locationID;
 
         //Read the location position header
         file >> word;

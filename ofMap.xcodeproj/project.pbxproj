@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		026A305E16B21BB100B3C59C /* GEVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 026A305C16B21BB100B3C59C /* GEVisualizer.cpp */; };
 		02DB189516A8D0E9002B223B /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188B16A8D0E9002B223B /* tinyxml.cpp */; };
 		02DB189616A8D0E9002B223B /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188D16A8D0E9002B223B /* tinyxmlerror.cpp */; };
 		02DB189716A8D0E9002B223B /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188E16A8D0E9002B223B /* tinyxmlparser.cpp */; };
@@ -29,7 +30,6 @@
 		02DB190916AE1DFF002B223B /* ofUITextFieldHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB18F616AE1DFF002B223B /* ofUITextFieldHandler.cpp */; };
 		02DB190A16AE1DFF002B223B /* ofUIView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB18F816AE1DFF002B223B /* ofUIView.cpp */; };
 		02DB190B16AE1DFF002B223B /* ofUIViewContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB18FA16AE1DFF002B223B /* ofUIViewContainer.cpp */; };
-		02DB191316AE35D2002B223B /* GELink.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB191116AE35D2002B223B /* GELink.cpp */; };
 		035f125683ef112b263ff275ba2349ab /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c54dc7a5c30cb956123a88cc294b91ab /* UdpSocket.cpp */; };
 		1e1b4f76ba31512e5ac28e624d630b24 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 594d59b14e311ea295e3507ecd48bf1a /* NetworkingUtils.cpp */; };
 		2613c36cbc970db3c2ee3f8bded42045 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 702cf892ad9d91d7f384b4901b4e5113 /* IpEndpointName.cpp */; };
@@ -94,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		026A305C16B21BB100B3C59C /* GEVisualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizer.cpp; sourceTree = "<group>"; };
+		026A305D16B21BB100B3C59C /* GEVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEVisualizer.h; sourceTree = "<group>"; };
 		02DB188B16A8D0E9002B223B /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		02DB188C16A8D0E9002B223B /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		02DB188D16A8D0E9002B223B /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
@@ -138,8 +140,6 @@
 		02DB18F916AE1DFF002B223B /* ofUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIView.h; sourceTree = "<group>"; };
 		02DB18FA16AE1DFF002B223B /* ofUIViewContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIViewContainer.cpp; sourceTree = "<group>"; };
 		02DB18FB16AE1DFF002B223B /* ofUIViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIViewContainer.h; sourceTree = "<group>"; };
-		02DB191116AE35D2002B223B /* GELink.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GELink.cpp; sourceTree = "<group>"; };
-		02DB191216AE35D2002B223B /* GELink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GELink.h; sourceTree = "<group>"; };
 		04ab4b6de84bc5aba00b6a8716c6705a /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../of_v0073_osx_release/addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
 		04d4d13c8a2c92432a92a0d66267690a /* OscHostEndianness.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscHostEndianness.h; path = ../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/osc/OscHostEndianness.h; sourceTree = SOURCE_ROOT; };
 		192f62a6b3f97900aba3a53375cc1b05 /* OscPacketListener.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscPacketListener.h; path = ../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/osc/OscPacketListener.h; sourceTree = SOURCE_ROOT; };
@@ -226,8 +226,8 @@
 		02DB187A16A8D0E9002B223B /* src */ = {
 			isa = PBXGroup;
 			children = (
-				02DB191116AE35D2002B223B /* GELink.cpp */,
-				02DB191216AE35D2002B223B /* GELink.h */,
+				026A305C16B21BB100B3C59C /* GEVisualizer.cpp */,
+				026A305D16B21BB100B3C59C /* GEVisualizer.h */,
 				02DB18D016ACB1F3002B223B /* Layout.cpp */,
 				02DB18D116ACB1F3002B223B /* Layout.h */,
 				02DB18D216ACB1F3002B223B /* LocationData.h */,
@@ -591,7 +591,7 @@
 				02DB190916AE1DFF002B223B /* ofUITextFieldHandler.cpp in Sources */,
 				02DB190A16AE1DFF002B223B /* ofUIView.cpp in Sources */,
 				02DB190B16AE1DFF002B223B /* ofUIViewContainer.cpp in Sources */,
-				02DB191316AE35D2002B223B /* GELink.cpp in Sources */,
+				026A305E16B21BB100B3C59C /* GEVisualizer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

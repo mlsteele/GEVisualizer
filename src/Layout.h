@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "geometry.h"
 #include "LocationData.h"
+#include "GEVisualizer.h"
 
 // class LayoutInfo {
 // public:
@@ -25,7 +26,7 @@ public:
     bool loadLayoutFiles(string dataPath, string infoPath);
     void setupProjection();
     void setupLocationStreams();
-    void render();
+    void Layout::render(GEVisualizer& store);
 
     vector< LINE > wallLines;
     vector< LocationStream > locationStreams;
