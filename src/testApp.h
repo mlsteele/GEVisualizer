@@ -13,6 +13,8 @@ public:
     void setup();
     void setupLayouts();
     void setupUI();
+    void setupUIServer();
+    void setupUILayouts();
 
     void update();
     void draw();
@@ -33,7 +35,8 @@ public:
     string mainAppDataDirectory;
 
     ofUIMainView UImainView;
-    Layout layout1;
+    vector<Layout> layouts;
+    Layout* active_layout;
 
     GEVisualizer gelink;
 

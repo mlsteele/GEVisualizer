@@ -28,6 +28,7 @@ public:
     void setupLocationStreams();
     void Layout::render(GEVisualizer& store);
 
+    string layoutName;
     vector< LINE > wallLines;
     vector< LocationStream > locationStreams;
 

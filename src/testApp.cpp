@@ -1,4 +1,6 @@
 #include "testApp.h"
+#include <boost/algorithm/string/predicate.hpp>
+
 
 void testApp::setup(){
     ofSetWindowTitle("Map");
@@ -14,9 +16,14 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
-    layout1.loadLayoutFiles(mainAppDataDirectory, "E14_5_LayoutInfo.txt");
-    layout1.setupLocationStreams();
-    layout1.setupProjection();
+    string layout_info_files[2] = {"E14_4_LayoutInfo.txt", "E14_5_LayoutInfo.txt"};
+    for (string layout_info_file : layout_info_files) {
+        layouts.push_back(Layout());
+        layouts.back().loadLayoutFiles(mainAppDataDirectory, layout_info_file);
+        layouts.back().setupLocationStreams();
+        layouts.back().setupProjection();
+    }
+    active_layout = &layouts.back();
 }
 
 void testApp::setupUI() {
@@ -24,19 +31,28 @@ void testApp::setupUI() {
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
-    UImainView.init((void*) this, ofRectangle(0, 0, 300, 120), backgroundColor, foregroundColor);
+    UImainView.init((void*) this, ofRectangle(0, 0, ofGetWidth(), ofGetHeight()), backgroundColor, foregroundColor);
     UImainView.showBorder = false;
     UImainView.borderWidth = 1;
     UImainView.borderColor = borderColor;
 
-    ofUISubView UImainSubView;
-    UImainSubView.init("UImainSubView",
+    setupUIServer();
+    setupUILayouts();
+}
+
+void testApp::setupUIServer() {
+    ofColor backgroundColor(255, 255, 255);
+    ofColor foregroundColor(0, 0, 0);
+    ofColor borderColor(0, 0, 0);
+
+    ofUISubView UIserverSubView;
+    UIserverSubView.init("UIserverSubView",
         ofRectangle( UImainView.getBounds().x, UImainView.getBounds().y + 768 - 120 ,
                      UImainView.getBounds().width, UImainView.getBounds().height ),
         backgroundColor, foregroundColor);
-    UImainSubView.showBorder = true;
-    UImainSubView.borderWidth = 1;
-    UImainSubView.borderColor = borderColor;
+    UIserverSubView.showBorder = true;
+    UIserverSubView.borderWidth = 1;
+    UIserverSubView.borderColor = borderColor;
 
     ofUIButton buttonFactory;
     buttonFactory.setFont(mainAppFont);
@@ -56,28 +72,68 @@ void testApp::setupUI() {
     buttonFactory.init("register",
         cookieCutter, "Register",
         ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
-    UImainSubView.addButton(buttonFactory);
+    UIserverSubView.addButton(buttonFactory);
 
     // yo += yi;
     cookieCutter.translate(0, yi);
     buttonFactory.init("unregister",
         cookieCutter, "Unregister",
         ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
-    UImainSubView.addButton(buttonFactory);
+    UIserverSubView.addButton(buttonFactory);
 
     cookieCutter.translate(xi, -yi);
     buttonFactory.init("stream",
         cookieCutter, "Stream",
         ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
-    UImainSubView.addButton(buttonFactory);
+    UIserverSubView.addButton(buttonFactory);
 
     cookieCutter.translate(0, yi);
     buttonFactory.init("unstream",
         cookieCutter, "Unstream",
         ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
-    UImainSubView.addButton(buttonFactory);
+    UIserverSubView.addButton(buttonFactory);
 
-    UImainView.addSubView(UImainSubView);
+    UImainView.addSubView(UIserverSubView);
+}
+
+void testApp::setupUILayouts()  {
+    ofColor backgroundColor(255, 255, 255);
+    ofColor foregroundColor(0, 0, 0);
+    ofColor borderColor(0, 0, 0);
+
+    ofUISubView UIlayoutSubView;
+    UIlayoutSubView.init("UIlayoutSubView",
+        ofRectangle( UImainView.getBounds().x + 300, UImainView.getBounds().y + 768 - 120 ,
+                     UImainView.getBounds().width, UImainView.getBounds().height ),
+        backgroundColor, foregroundColor);
+    UIlayoutSubView.showBorder = true;
+    UIlayoutSubView.borderWidth = 1;
+    UIlayoutSubView.borderColor = borderColor;
+
+    ofUIButton buttonFactory;
+    buttonFactory.setFont(mainAppFont);
+    buttonFactory.setCallback(buttonCallback);
+
+    float xo = 12; // origin / cursor
+    float xb = 130; // size
+    float xs = 10; // spacing
+    float xi = xb + xs; // increment
+    float yo = 12;
+    float yb = 40;
+    float ys = 10;
+    float yi = yb + ys;
+
+    ofRectangle cookieCutter(xo, yo, xb, yb);
+
+    for (Layout& layout : layouts) {
+        buttonFactory.init("layout_" + layout.layoutName,
+            cookieCutter, layout.layoutName,
+            ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+        UIlayoutSubView.addButton(buttonFactory);
+        cookieCutter.translate(xi, 0);
+    }
+
+    UImainView.addSubView(UIlayoutSubView);
 }
 
 void testApp::update(){
@@ -88,7 +144,8 @@ void testApp::update(){
 void testApp::draw(){
     ofBackground(0xFFFFFF);
     UImainView.draw(0, 0);
-    layout1.render(gelink);
+
+    active_layout->render(gelink);
 }
 
 void testApp::exit() {
@@ -121,6 +178,18 @@ void buttonCallback(ofUIButton* button, void* appPointer){
 
     if (button->getButtonID() == "unstream") {
         mainAppHandle.gelink.streamUserPresenceData(false);
+    }
+
+    string layout_prefix = "layout_";
+    if (boost::starts_with(button->getButtonID(), "layout_")) {
+        printf("layout button pressed %s\n", button->getButtonID().c_str());
+        for (Layout& layout : mainAppHandle.layouts) {
+            if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
+                mainAppHandle.active_layout = &layout;
+                return;
+            }
+        }
+        printf("WARN: failed to find matching layout for button\n");
     }
 }
 

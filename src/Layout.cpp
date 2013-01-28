@@ -3,16 +3,21 @@
 #include "XMLReader/tinyxml.h"
 
 bool Layout::loadLayoutFiles(string dataPath, string infoPath) {
+    printf("loadLayoutFiles\n");
     this->dataPath = dataPath;
     this->infoPath = infoPath;
 
-    if (loadInfo(dataPath + infoPath))
-        if (loadSVG(dataPath + svgPath))
+    if (loadInfo(dataPath + infoPath)) {
+        if (loadSVG(dataPath + svgPath)) {
+            printf("loaded layout %s\n", layoutName.c_str());
             return true;
-        else
+        } else {
             printf("ERR: failed to load svg from %s\n", svgPath.c_str());
-    else
+        }
+    } else {
         printf("ERR: failed to load info from %s\n", infoPath.c_str());
+    }
+
 
     return false;
 }
@@ -37,15 +42,13 @@ void Layout::setupLocationStreams() {
         // LocationStream newLocationStream(location);
         locationStreams.push_back( LocationStream(&location) );
         // locationStreams.push_back( LocationStream(location) );
-        printf("created stream for location with default presenceInfo: %i\n", locationStreams.back().presenceInfo);
-        printf("created stream for location[%i] @ (%f, %f, %f)\n",
-            locationStreams.back().location->locationID ,
-            locationStreams.back().location->position.x ,
-            locationStreams.back().location->position.y ,
-            locationStreams.back().location->position.z );
-        printf("address identity check: %i\n", locationStreams.back().location == &location);
-
-        printf("locationStreams.size() -> %i\n", locationStreams.size());
+        // printf("created stream for location with default presenceInfo: %i\n", locationStreams.back().presenceInfo);
+        // printf("created stream for location[%i] @ (%f, %f, %f)\n",
+//            locationStreams.back().location->locationID ,
+//            locationStreams.back().location->position.x ,
+//            locationStreams.back().location->position.y ,
+//            locationStreams.back().location->position.z );
+        // printf("address identity check: %i\n", locationStreams.back().location == &location);
     }
 }
 
@@ -111,6 +114,7 @@ void Layout::render(GEVisualizer& store) {
                 ofFill();
                 break;
             default:
+                printf("presenceEstimate %i\n", presenceData->presenceEstimate);
                 ofSetHexColor(0xFF1B1B);
                 ofFill();
         }
@@ -145,11 +149,20 @@ bool Layout::loadInfo(string infoPath){
 
     //Read the file header
     file >> word;
-    if( word != "LAYOUT_INFO_FILE_V1.1" ){
+    if( word != "LAYOUT_INFO_FILE_V1.2" ){
         file.close();
         printf("ERROR: Failed to read file header!\n");
         return false;
     }
+
+    //Read the layout name
+    file >> word;
+    if( word != "LayoutName:" ){
+        file.close();
+        printf("ERROR: Failed to read SVGFilename header!\n");
+        return false;
+    }
+    file >> layoutName;
 
     //Read the SVG filename
     file >> word;

@@ -63,8 +63,6 @@ void GELink::processOSCMsg(ofxOscMessage& m) {
         printf("args[%u]\n", m.getNumArgs());
     }
 
-    // printf("<procOSC> [A] locationStreams.size() -> %i\n", layout_debug->locationStreams.size());
-
     // if (m.getAddress() == "Response" && m.getArgAsString(0) == "/Register") {
     //     printf("received response \n");
     // }
