@@ -4,6 +4,7 @@
 #include "ofxOsc.h"
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
+#include "LayoutRenderer.h"
 #include "LocationData.h"
 // #include "GELink.h"
 #include "GEVisualizer.h"
@@ -35,8 +36,8 @@ public:
     string mainAppDataDirectory;
 
     ofUIMainView UImainView;
-    vector<Layout> layouts;
-    Layout* active_layout;
+    vector<LayoutRenderer> layoutRenderers;
+    LayoutRenderer* active_layout_renderer;
 
     GEVisualizer gelink;
 

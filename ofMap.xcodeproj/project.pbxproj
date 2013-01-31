@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		026A305E16B21BB100B3C59C /* GEVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 026A305C16B21BB100B3C59C /* GEVisualizer.cpp */; };
+		027BFFAB16BB12ED002F6346 /* LayoutRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 027BFFA916BB12ED002F6346 /* LayoutRenderer.cpp */; };
 		02DB189516A8D0E9002B223B /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188B16A8D0E9002B223B /* tinyxml.cpp */; };
 		02DB189616A8D0E9002B223B /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188D16A8D0E9002B223B /* tinyxmlerror.cpp */; };
 		02DB189716A8D0E9002B223B /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02DB188E16A8D0E9002B223B /* tinyxmlparser.cpp */; };
@@ -96,6 +97,8 @@
 /* Begin PBXFileReference section */
 		026A305C16B21BB100B3C59C /* GEVisualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizer.cpp; sourceTree = "<group>"; };
 		026A305D16B21BB100B3C59C /* GEVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEVisualizer.h; sourceTree = "<group>"; };
+		027BFFA916BB12ED002F6346 /* LayoutRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutRenderer.cpp; sourceTree = "<group>"; };
+		027BFFAA16BB12ED002F6346 /* LayoutRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRenderer.h; sourceTree = "<group>"; };
 		02DB188B16A8D0E9002B223B /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		02DB188C16A8D0E9002B223B /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		02DB188D16A8D0E9002B223B /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
@@ -230,6 +233,8 @@
 				026A305D16B21BB100B3C59C /* GEVisualizer.h */,
 				02DB18D016ACB1F3002B223B /* Layout.cpp */,
 				02DB18D116ACB1F3002B223B /* Layout.h */,
+				027BFFA916BB12ED002F6346 /* LayoutRenderer.cpp */,
+				027BFFAA16BB12ED002F6346 /* LayoutRenderer.h */,
 				02DB18D216ACB1F3002B223B /* LocationData.h */,
 				02DB18D316ACB1F3002B223B /* main.cpp */,
 				02DB18D416ACB1F3002B223B /* testApp.cpp */,
@@ -592,6 +597,7 @@
 				02DB190A16AE1DFF002B223B /* ofUIView.cpp in Sources */,
 				02DB190B16AE1DFF002B223B /* ofUIViewContainer.cpp in Sources */,
 				026A305E16B21BB100B3C59C /* GEVisualizer.cpp in Sources */,
+				027BFFAB16BB12ED002F6346 /* LayoutRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

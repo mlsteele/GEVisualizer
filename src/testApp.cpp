@@ -21,12 +21,14 @@ void testApp::setupLayouts() {
         "E14_5_LayoutInfo.txt" ,
         "E14_6_LayoutInfo.txt" };
     for (string layout_info_file : layout_info_files) {
-        layouts.push_back(Layout());
-        layouts.back().loadLayoutFiles(mainAppDataDirectory, layout_info_file);
-        layouts.back().setupLocationStreams();
-        layouts.back().setupProjection();
+        Layout* newLayout = new Layout();
+        newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
+        newLayout->setupLocationStreams();
+        newLayout->setupProjection();
+        layoutRenderers.push_back(LayoutRenderer());
+        layoutRenderers.back().attachLayout(newLayout);
     }
-    active_layout = &layouts.back();
+    active_layout_renderer = &layoutRenderers.back();
 }
 
 void testApp::setupUI() {
@@ -128,7 +130,8 @@ void testApp::setupUILayouts()  {
 
     ofRectangle cookieCutter(xo, yo, xb, yb);
 
-    for (Layout& layout : layouts) {
+    for (LayoutRenderer& layoutRenderer : layoutRenderers) {
+        Layout& layout = *(layoutRenderer.layout);
         buttonFactory.init("layout_" + layout.layoutName,
             cookieCutter, layout.layoutName,
             ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
@@ -148,7 +151,7 @@ void testApp::draw(){
     ofBackground(0xFFFFFF);
     UImainView.draw(0, 0);
 
-    active_layout->render(gelink);
+    active_layout_renderer->render(gelink);
 }
 
 void testApp::exit() {
@@ -186,9 +189,10 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     string layout_prefix = "layout_";
     if (boost::starts_with(button->getButtonID(), "layout_")) {
         printf("layout button pressed %s\n", button->getButtonID().c_str());
-        for (Layout& layout : mainAppHandle.layouts) {
+        for (LayoutRenderer& layoutRenderer : mainAppHandle.layoutRenderers) {
+            Layout& layout = *layoutRenderer.layout;
             if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
-                mainAppHandle.active_layout = &layout;
+                mainAppHandle.active_layout_renderer = &layoutRenderer;
                 return;
             }
         }

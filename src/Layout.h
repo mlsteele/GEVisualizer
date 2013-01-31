@@ -23,10 +23,12 @@ typedef struct {
 
 class Layout {
 public:
+    friend class LayoutRenderer;
+
     bool loadLayoutFiles(string dataPath, string infoPath);
     void setupProjection();
     void setupLocationStreams();
-    void Layout::render(GEVisualizer& store);
+    void render(GEVisualizer& store);
 
     string layoutName;
     vector< LINE > wallLines;

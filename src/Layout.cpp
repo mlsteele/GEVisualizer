@@ -31,6 +31,7 @@ void Layout::setupProjection() {
     projection.scale.z = 1. / boundingRectScaleCoefficients.z * 1.4;
 }
 
+// TODO: remove streams
 void Layout::setupLocationStreams() {
     for (Location& location : locations) {
         printf("creating stream for location[%i] @ (%f, %f, %f)\n",
