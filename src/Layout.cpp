@@ -325,7 +325,7 @@ bool Layout::loadSVG(string svgPath) {
                     pElement->QueryDoubleAttribute("height", &svgBoundingRect.height);
 
                     //Search for the wall lines
-                    for( pElement; pElement; pElement=pElement->NextSiblingElement() )
+                    for( pElement = pGroupElement->FirstChildElement("line"); pElement; pElement=pElement->NextSiblingElement() )
                     {
                         if( strcmp(pElement->Value(),"line") == 0 ){
                             LINE newLine;
