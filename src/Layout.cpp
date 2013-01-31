@@ -22,97 +22,6 @@ bool Layout::loadLayoutFiles(string dataPath, string infoPath) {
     return false;
 }
 
-void Layout::setupProjection() {
-    projection.offset.x = -boundingRectRealWorldCoordinates.x + 15;
-    projection.offset.y = -boundingRectRealWorldCoordinates.y + 15;
-    projection.offset.z = -boundingRectRealWorldCoordinates.z;
-    projection.scale.x = 1. / boundingRectScaleCoefficients.x * 1.4;
-    projection.scale.y = 1. / boundingRectScaleCoefficients.y * 1.4;
-    projection.scale.z = 1. / boundingRectScaleCoefficients.z * 1.4;
-}
-
-// returns data or a NULL if none is present in list
-template <typename T>
-T* extract_streamed_data(vector<T> list, int locationID) {
-    for (T& thing : list) {
-        if (thing.locationID == locationID) {
-            return &thing;
-        }
-    }
-    return NULL;
-}
-
-void Layout::render(GEVisualizer& store) {
-    ofPushMatrix();
-    ofTranslate(projection.offset.x * projection.scale.x, projection.offset.y * projection.scale.y);
-
-    ofSetLineWidth(1);
-
-    // // test circles (corners)
-    // ofSetHexColor(0xFFAA16);
-    // ofFill();
-    // ofCircle(
-    //     boundingRectRealWorldCoordinates.x * projection.scale.x,
-    //     boundingRectRealWorldCoordinates.y * projection.scale.y,
-    //     10 );
-
-    // boundary
-    ofSetHexColor(0x000000);
-    ofNoFill();
-    ofRect(0, 0,
-        svgBoundingRect.width * boundingRectScaleCoefficients.x * projection.scale.x ,
-        svgBoundingRect.width * boundingRectScaleCoefficients.y * projection.scale.y );
-
-    // walls
-    ofDisableSmoothing();
-    for (LINE& wall : wallLines) {
-        ofSetHexColor(0x000000);
-        ofFill();
-        ofLine(
-            wall.x1 * projection.scale.x ,
-            wall.y1 * projection.scale.y ,
-            wall.x2 * projection.scale.x ,
-            wall.y2 * projection.scale.y );
-    }
-    ofEnableSmoothing();
-
-    // locations
-    for (LocationInfo& locationInfo : store.getLocationInfo()) {
-        Location* localLocation = extract_streamed_data(locations, locationInfo.locationID);
-        if (!localLocation) continue;
-        PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
-
-        switch(presenceData ? presenceData->presenceEstimate : -1) {
-            case 0:
-                ofSetHexColor(0xD83DFF);
-                ofNoFill();
-                ofSetLineWidth(2);
-                break;
-            case 1:
-                ofSetHexColor(0xD83DFF);
-                ofFill();
-                break;
-            default:
-                printf("presenceEstimate %i\n", presenceData->presenceEstimate);
-                ofSetHexColor(0xFF1B1B);
-                ofFill();
-        }
-
-        ofCircle(
-            localLocation->position.x * projection.scale.x,
-            localLocation->position.y * projection.scale.y,
-            5 );
-
-        ofSetHexColor(0x0);
-        ofFill();
-        ofDrawBitmapString((string)locationInfo.notes,
-            localLocation->position.x * projection.scale.x - 20,
-            localLocation->position.y * projection.scale.y - 20);
-    }
-
-    ofPopMatrix();
-}
-
 bool Layout::loadInfo(string infoPath){
     printf("loading info from %s\n", infoPath.c_str());
 
@@ -129,7 +38,7 @@ bool Layout::loadInfo(string infoPath){
 
     //Read the file header
     file >> word;
-    if( word != "LAYOUT_INFO_FILE_V1.2" ){
+    if( word != "LAYOUT_INFO_FILE_V1.3" ){
         file.close();
         printf("ERROR: Failed to read file header!\n");
         return false;
@@ -180,20 +89,15 @@ bool Layout::loadInfo(string infoPath){
 
     //Read the KeyElementID
     file >> word;
-    if( word != "BoundingRectScaleCoefficients:" ){
+    if( word != "PixelsPerMeter:" ){
         file.close();
-        printf("ERROR: Failed to read BoundingRectScale header!\n");
+        printf("ERROR: Failed to read PixelsPerMeter header!\n");
         return false;
     }
 
-    file >> boundingRectScaleCoefficients.x;
-    file >> boundingRectScaleCoefficients.y;
-    file >> boundingRectScaleCoefficients.z;
+    file >> pixelsPerMeter;
 
-    printf("boundingRectScaleCoefficients ( %f , %f , %f )\n",
-        boundingRectScaleCoefficients.x ,
-        boundingRectScaleCoefficients.y ,
-        boundingRectScaleCoefficients.z );
+    printf("pixelsPerMeter ( %.6f )\n", pixelsPerMeter );
 
     //Read the FloorLevel
     file >> word;
@@ -252,9 +156,9 @@ bool Layout::loadInfo(string infoPath){
         file >> newLocation.position.z;
 
         // transform positions
-        newLocation.position.x = newLocation.position.x * boundingRectScaleCoefficients.x + boundingRectRealWorldCoordinates.x;
-        newLocation.position.y = newLocation.position.y * boundingRectScaleCoefficients.y + boundingRectRealWorldCoordinates.y;
-        newLocation.position.z = newLocation.position.z * boundingRectScaleCoefficients.z + boundingRectRealWorldCoordinates.z;
+        newLocation.position.x = newLocation.position.x / pixelsPerMeter + boundingRectRealWorldCoordinates.x;
+        newLocation.position.y = newLocation.position.y / pixelsPerMeter + boundingRectRealWorldCoordinates.y;
+        newLocation.position.z = newLocation.position.z / pixelsPerMeter + boundingRectRealWorldCoordinates.z;
 
         locations.push_back( newLocation );
     }
@@ -336,10 +240,10 @@ bool Layout::loadSVG(string svgPath) {
                             pElement->QueryDoubleAttribute("y2", &newLine.y2);
 
                             // transform line
-                            newLine.x1 = newLine.x1 * boundingRectScaleCoefficients.x + boundingRectRealWorldCoordinates.x;
-                            newLine.y1 = newLine.y1 * boundingRectScaleCoefficients.y + boundingRectRealWorldCoordinates.y;
-                            newLine.x2 = newLine.x2 * boundingRectScaleCoefficients.x + boundingRectRealWorldCoordinates.x;
-                            newLine.y2 = newLine.y2 * boundingRectScaleCoefficients.y + boundingRectRealWorldCoordinates.y;
+                            newLine.x1 = newLine.x1 / pixelsPerMeter + boundingRectRealWorldCoordinates.x;
+                            newLine.y1 = newLine.y1 / pixelsPerMeter + boundingRectRealWorldCoordinates.y;
+                            newLine.x2 = newLine.x2 / pixelsPerMeter + boundingRectRealWorldCoordinates.x;
+                            newLine.y2 = newLine.y2 / pixelsPerMeter + boundingRectRealWorldCoordinates.y;
 
                             wallLines.push_back( newLine );
                         }

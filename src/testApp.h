@@ -35,12 +35,6 @@ public:
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
-    string layout_info_files[4] = {
-        "E14_1_LayoutInfo.txt" ,
-        "E14_4_LayoutInfo.txt" ,
-        "E14_5_LayoutInfo.txt" ,
-        "E14_6_LayoutInfo.txt" };
-
     ofUIMainView UImainView;
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderer* active_layout_renderer;

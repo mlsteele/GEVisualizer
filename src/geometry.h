@@ -5,6 +5,10 @@ typedef struct {
 } POINT3D;
 
 typedef struct {
+    double x, y;
+} POINT2D;
+
+typedef struct {
     double x, y, width, height;
 } RECT;
 

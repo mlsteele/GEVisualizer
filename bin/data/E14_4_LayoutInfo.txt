@@ -1,9 +1,9 @@
-LAYOUT_INFO_FILE_V1.2
+LAYOUT_INFO_FILE_V1.3
 LayoutName: E14_4
 SVGFilename:	E14_4.svg
 KeyElementID:	simplified
 BoundingRectRealWorldCoordinates:	1	1	0
-BoundingRectScaleCoefficients:	1.0	1.0	1.0
+PixelsPerMeter:	7.38209159262
 FloorLevel:	4
 NumLocationNodes:	4
 LocationNode:	1

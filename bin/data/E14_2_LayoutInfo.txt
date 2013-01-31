@@ -1,6 +1,6 @@
 LAYOUT_INFO_FILE_V1.3
-LayoutName: E14_1
-SVGFilename:  E14_1.svg
+LayoutName: E14_2
+SVGFilename:  E14_2.svg
 KeyElementID: Layer_2
 BoundingRectRealWorldCoordinates: 1 1 0
 PixelsPerMeter:	7.38209159262

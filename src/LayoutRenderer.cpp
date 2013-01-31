@@ -12,11 +12,20 @@ T* extract_streamed_data(vector<T> list, int locationID) {
     return NULL;
 }
 
+void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
+    Layout& l = *layout;
+
+    projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
+    projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
+    projection.scale.x = screenPixelsPerMeter;
+    projection.scale.y = screenPixelsPerMeter;
+}
+
 void LayoutRenderer::render(GEVisualizer& store) {
     ofPushMatrix();
     ofTranslate(
-        layout->projection.offset.x * layout->projection.scale.x ,
-        layout->projection.offset.y * layout->projection.scale.y );
+        projection.offset.x * projection.scale.x ,
+        projection.offset.y * projection.scale.y );
 
     ofSetLineWidth(1);
 
@@ -29,11 +38,11 @@ void LayoutRenderer::render(GEVisualizer& store) {
     //     10 );
 
     // boundary
-    ofSetHexColor(0x000000);
+    ofSetHexColor(0x0000FF);
     ofNoFill();
     ofRect(0, 0,
-        layout->svgBoundingRect.width * layout->boundingRectScaleCoefficients.x * layout->projection.scale.x ,
-        layout->svgBoundingRect.width * layout->boundingRectScaleCoefficients.y * layout->projection.scale.y );
+        layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x ,
+        layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
     // walls
     ofDisableSmoothing();
@@ -41,10 +50,10 @@ void LayoutRenderer::render(GEVisualizer& store) {
         ofSetHexColor(0x000000);
         ofFill();
         ofLine(
-            wall.x1 * layout->projection.scale.x ,
-            wall.y1 * layout->projection.scale.y ,
-            wall.x2 * layout->projection.scale.x ,
-            wall.y2 * layout->projection.scale.y );
+            wall.x1 * projection.scale.x ,
+            wall.y1 * projection.scale.y ,
+            wall.x2 * projection.scale.x ,
+            wall.y2 * projection.scale.y );
     }
     ofEnableSmoothing();
 
@@ -71,15 +80,15 @@ void LayoutRenderer::render(GEVisualizer& store) {
         }
 
         ofCircle(
-            localLocation->position.x * layout->projection.scale.x,
-            localLocation->position.y * layout->projection.scale.y,
+            localLocation->position.x * projection.scale.x,
+            localLocation->position.y * projection.scale.y,
             5 );
 
         ofSetHexColor(0x0);
         ofFill();
         ofDrawBitmapString((string)locationInfo.notes,
-            localLocation->position.x * layout->projection.scale.x - 20,
-            localLocation->position.y * layout->projection.scale.y - 20);
+            localLocation->position.x * projection.scale.x - 20,
+            localLocation->position.y * projection.scale.y - 20);
     }
 
     ofPopMatrix();

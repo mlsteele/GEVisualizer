@@ -16,12 +16,24 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
+    POINT2D screen_px_corner = {15, 15};
+    POINT2D real_corner = {0, 0};
+    double screenPixelsPerMeter = 10;
+
+    vector<string> layout_info_files;
+    layout_info_files.push_back("E14_6_LayoutInfo.txt");
+    layout_info_files.push_back("E14_5_LayoutInfo.txt");
+    layout_info_files.push_back("E14_4_LayoutInfo.txt");
+    layout_info_files.push_back("E14_3_LayoutInfo.txt");
+    layout_info_files.push_back("E14_2_LayoutInfo.txt");
+    layout_info_files.push_back("E14_1_LayoutInfo.txt");
+
     for (string layout_info_file : layout_info_files) {
         Layout* newLayout = new Layout();
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
-        newLayout->setupProjection();
         layoutRenderers.push_back(LayoutRenderer());
         layoutRenderers.back().attachLayout(newLayout);
+        layoutRenderers.back().setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
     }
     active_layout_renderer = &layoutRenderers.back();
 }
@@ -103,7 +115,7 @@ void testApp::setupUILayouts()  {
 
     ofUISubView UIlayoutSubView;
     UIlayoutSubView.init("UIlayoutSubView",
-        ofRectangle( UImainView.getBounds().x + 300, UImainView.getBounds().y + 768 - 120 ,
+        ofRectangle( UImainView.getBounds().x + 850, UImainView.getBounds().y ,
                      UImainView.getBounds().width, UImainView.getBounds().height ),
         backgroundColor, foregroundColor);
     UIlayoutSubView.showBorder = true;
@@ -131,7 +143,7 @@ void testApp::setupUILayouts()  {
             cookieCutter, layout.layoutName,
             ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
         UIlayoutSubView.addButton(buttonFactory);
-        cookieCutter.translate(xi, 0);
+        cookieCutter.translate(0, yi);
     }
 
     UImainView.addSubView(UIlayoutSubView);

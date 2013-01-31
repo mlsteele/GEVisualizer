@@ -1,9 +1,9 @@
-LAYOUT_INFO_FILE_V1.2
+LAYOUT_INFO_FILE_V1.3
 LayoutName: E14_5
 SVGFilename:	E14_5.svg
 KeyElementID:	Layer_2
-BoundingRectRealWorldCoordinates:	1	1	0
-BoundingRectScaleCoefficients:	1.0	1.0	1.0
+BoundingRectRealWorldCoordinates:	0	0	0
+PixelsPerMeter:	7.38209159262
 FloorLevel:	5
 NumLocationNodes:	3
 LocationNode:	1
@@ -15,3 +15,10 @@ LocationPosition:	256.87	210.36	0
 LocationNode:	3
 LocationID:	9
 LocationPosition:	288.21	222.98	0
+
+misc notes:
+bwidth 440px 59.32m
+bheight 333px 44.90m (from top)
+bx 365px 
+by 171.5px
+14.63m 48ft 108 px
