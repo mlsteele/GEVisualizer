@@ -16,7 +16,10 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
-    string layout_info_files[2] = {"E14_4_LayoutInfo.txt", "E14_5_LayoutInfo.txt"};
+    string layout_info_files[3] = {
+        "E14_4_LayoutInfo.txt" ,
+        "E14_5_LayoutInfo.txt" ,
+        "E14_6_LayoutInfo.txt" };
     for (string layout_info_file : layout_info_files) {
         layouts.push_back(Layout());
         layouts.back().loadLayoutFiles(mainAppDataDirectory, layout_info_file);
