@@ -27,12 +27,10 @@ public:
 
     bool loadLayoutFiles(string dataPath, string infoPath);
     void setupProjection();
-    void setupLocationStreams();
     void render(GEVisualizer& store);
 
     string layoutName;
     vector< LINE > wallLines;
-    vector< LocationStream > locationStreams;
 
 private:
     // temporary (for parsing)

@@ -23,7 +23,6 @@ void testApp::setupLayouts() {
     for (string layout_info_file : layout_info_files) {
         Layout* newLayout = new Layout();
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
-        newLayout->setupLocationStreams();
         newLayout->setupProjection();
         layoutRenderers.push_back(LayoutRenderer());
         layoutRenderers.back().attachLayout(newLayout);

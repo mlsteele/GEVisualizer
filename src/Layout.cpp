@@ -31,28 +31,6 @@ void Layout::setupProjection() {
     projection.scale.z = 1. / boundingRectScaleCoefficients.z * 1.4;
 }
 
-// TODO: remove streams
-void Layout::setupLocationStreams() {
-    for (Location& location : locations) {
-        printf("creating stream for location[%i] @ (%f, %f, %f)\n",
-            location.locationID ,
-            location.position.x ,
-            location.position.y ,
-            location.position.z );
-
-        // LocationStream newLocationStream(location);
-        locationStreams.push_back( LocationStream(&location) );
-        // locationStreams.push_back( LocationStream(location) );
-        // printf("created stream for location with default presenceInfo: %i\n", locationStreams.back().presenceInfo);
-        // printf("created stream for location[%i] @ (%f, %f, %f)\n",
-//            locationStreams.back().location->locationID ,
-//            locationStreams.back().location->position.x ,
-//            locationStreams.back().location->position.y ,
-//            locationStreams.back().location->position.z );
-        // printf("address identity check: %i\n", locationStreams.back().location == &location);
-    }
-}
-
 // returns data or a NULL if none is present in list
 template <typename T>
 T* extract_streamed_data(vector<T> list, int locationID) {
