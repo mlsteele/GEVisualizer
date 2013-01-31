@@ -80,7 +80,6 @@ bool GEVisualizer::disconnect(){
 }
 
 bool GEVisualizer::update(){
-    
     while( receiver.hasWaitingMessages() ){
         
         ofxOscMessage m;
@@ -133,6 +132,8 @@ bool GEVisualizer::update(){
                     countData[i].countLikelihood =  m.getArgAsFloat(messageIndex++);
                 }
             }
+        } else {
+            printf("WARN: ignoring OSC message %s\n", m.getAddress().c_str());
         }
         
     }
