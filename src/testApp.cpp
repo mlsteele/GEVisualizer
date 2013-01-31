@@ -16,10 +16,6 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
-    string layout_info_files[3] = {
-        "E14_4_LayoutInfo.txt" ,
-        "E14_5_LayoutInfo.txt" ,
-        "E14_6_LayoutInfo.txt" };
     for (string layout_info_file : layout_info_files) {
         Layout* newLayout = new Layout();
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
