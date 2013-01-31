@@ -135,6 +135,7 @@ void Layout::render(GEVisualizer& store) {
 }
 
 bool Layout::loadInfo(string infoPath){
+    printf("loading info from %s\n", infoPath.c_str());
 
     fstream file;
 
@@ -284,6 +285,8 @@ bool Layout::loadInfo(string infoPath){
 }
 
 bool Layout::loadSVG(string svgPath) {
+    printf("loading svg from %s\n", svgPath.c_str());
+
     TiXmlDocument doc( svgPath.c_str() );
     if (!doc.LoadFile()){
         printf("WARNING: Failed to load file!\n");
