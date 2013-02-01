@@ -27,17 +27,8 @@ void LayoutRenderer::render(GEVisualizer& store) {
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
 
-    ofSetLineWidth(1);
-
-    // // test circles (corners)
-    // ofSetHexColor(0xFFAA16);
-    // ofFill();
-    // ofCircle(
-    //     boundingRectRealWorldCoordinates.x * projection.scale.x,
-    //     boundingRectRealWorldCoordinates.y * projection.scale.y,
-    //     10 );
-
     // boundary
+    ofSetLineWidth(2);
     ofSetHexColor(0x0000FF);
     ofNoFill();
     ofRect(0, 0,
@@ -45,9 +36,10 @@ void LayoutRenderer::render(GEVisualizer& store) {
         layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
     // walls
-    ofDisableSmoothing();
+    // ofDisableSmoothing();
+    ofSetLineWidth(3);
     for (LINE& wall : layout->wallLines) {
-        ofSetHexColor(0x000000);
+        ofSetHexColor(0xB3B3B3);
         ofFill();
         ofLine(
             wall.x1 * projection.scale.x ,
@@ -55,7 +47,7 @@ void LayoutRenderer::render(GEVisualizer& store) {
             wall.x2 * projection.scale.x ,
             wall.y2 * projection.scale.y );
     }
-    ofEnableSmoothing();
+    // ofEnableSmoothing();
 
     // locations
     for (LocationInfo& locationInfo : store.getLocationInfo()) {
