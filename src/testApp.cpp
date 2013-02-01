@@ -185,7 +185,8 @@ void testApp::draw(){
     for (int i = 0; i < layoutRenderers.size(); i++) {
         float transition = i - renderers_transition_i;
         if (fabs(transition) < .97) {
-            layoutRenderers[i].render(gelink, transition);
+            LayoutRenderer::RenderMode mode = fabs(transition) < 0.2 ? LayoutRenderer::RenderStructureData : LayoutRenderer::RenderStructure;
+            layoutRenderers[i].render(mode, gelink, transition);
         }
     }
 

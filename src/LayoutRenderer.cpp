@@ -142,7 +142,7 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
-void LayoutRenderer::render(GEVisualizer& store, float transition) {
+void LayoutRenderer::render(RenderMode renderMode, GEVisualizer& dataStore, float transition) {
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix();
@@ -164,14 +164,16 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
         projection.offset.y * projection.scale.y );
     ofRotateX(20);
 
-    // texture
-    recalculateTexture(store);
-    // mouseTestRecalculateTexture();
-    ofSetHexColor(0x3D9BFF);
-    ofEnableAlphaBlending();
-    texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
-    texture.draw(0, 0, textureSize[0], textureSize[1]);
-    ofDisableAlphaBlending();
+    if (renderMode == RenderStructureData) {
+        // texture
+        recalculateTexture(dataStore);
+        // mouseTestRecalculateTexture();
+        ofSetHexColor(0x3D9BFF);
+        ofEnableAlphaBlending();
+        texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
+        texture.draw(0, 0, textureSize[0], textureSize[1]);
+        ofDisableAlphaBlending();
+    }
 
     ofEnableSmoothing();
 
@@ -234,38 +236,39 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
     }
 
     // locations locuses
-    // TODO: if MODE
-    for (LocationInfo& locationInfo : store.getLocationInfo()) {
-        Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
-        if (!localLocation) continue;
-        PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
+    if (renderMode == RenderStructureData) {
+        for (LocationInfo& locationInfo : dataStore.getLocationInfo()) {
+            Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
+            if (!localLocation) continue;
+            PresenceData* presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
 
-        if (presenceData) {
-            ofSetHexColor(0xD83DFF); // purple
-            if (presenceData->presenceEstimate > 0) {
-                ofFill();
+            if (presenceData) {
+                ofSetHexColor(0xD83DFF); // purple
+                if (presenceData->presenceEstimate > 0) {
+                    ofFill();
+                } else {
+                    ofNoFill();
+                    ofSetLineWidth(2);
+                }
+                fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
+                    localLocation->position.x * projection.scale.x - 20,
+                    localLocation->position.y * projection.scale.y + 20);
             } else {
-                ofNoFill();
-                ofSetLineWidth(2);
+                ofSetHexColor(0xFF1B1B); // red
+                ofFill();
             }
-            fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
-                localLocation->position.x * projection.scale.x - 20,
-                localLocation->position.y * projection.scale.y + 20);
-        } else {
-            ofSetHexColor(0xFF1B1B); // red
+
+            ofCircle(
+                localLocation->position.x * projection.scale.x,
+                localLocation->position.y * projection.scale.y,
+                5 );
+
+            ofSetHexColor(0x0);
             ofFill();
+            fontMain->drawString((string)locationInfo.notes,
+                localLocation->position.x * projection.scale.x - 20,
+                localLocation->position.y * projection.scale.y - 20);
         }
-
-        ofCircle(
-            localLocation->position.x * projection.scale.x,
-            localLocation->position.y * projection.scale.y,
-            5 );
-
-        ofSetHexColor(0x0);
-        ofFill();
-        fontMain->drawString((string)locationInfo.notes,
-            localLocation->position.x * projection.scale.x - 20,
-            localLocation->position.y * projection.scale.y - 20);
     }
 
     ofPopMatrix();

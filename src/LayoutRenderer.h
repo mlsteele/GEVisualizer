@@ -17,6 +17,8 @@ public:
     // TODO: free memory
     // ~LayoutRenderer() { delete[] textureData; }
 
+    enum RenderMode { RenderStructure, RenderStructureData };
+    
     void attachLayout(Layout* layout) { this->layout = layout; };
     void attachFonts(ofTrueTypeFont* fontMain, ofTrueTypeFont* fontMapNameLabel) {
         this->fontMain = fontMain;
@@ -24,7 +26,7 @@ public:
     }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
-    void render(GEVisualizer& store, float transition=0);
+    void render(RenderMode renderType, GEVisualizer& dataStore, float transition=0);
 
     Layout* layout;
 
