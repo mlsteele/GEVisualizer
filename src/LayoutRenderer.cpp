@@ -1,5 +1,13 @@
 #include "LayoutRenderer.h"
 
+
+string format_double_to_string(double n) {
+    string s;
+    std::ostringstream ss;
+    ss << n;
+    return ss.str();
+}
+
 // returns data or a NULL if none is present in list
 template <typename T>
 T* extract_streamed_data(vector<T> list, int locationID) {
@@ -34,7 +42,6 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 
     textureData = new unsigned char [w * h * 4];    
 
-    // color alpha pixels, use w and h to control red and green
     for (int i = 0; i < w; i++){
         for (int j = 0; j < h; j++){
             // RGBA
@@ -49,6 +56,58 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
 }
 
+void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
+    const unsigned int w = textureSize[0];
+    const unsigned int h = textureSize[1];
+
+    // clear
+    for (int i = 0; i < w; i++)
+        for (int j = 0; j < h; j++)
+            textureData[(j * w + i) * 4 + 3] = 0; // alpha
+
+    int weight_accumulator = 0;
+    for (LocationInfo& locationInfo : store.getLocationInfo()) {
+        Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
+        if (!localLocation) continue;
+        PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
+        if (!presenceData) continue;
+        weight_accumulator += 1;
+    }
+
+    // loop and fill against locations
+    for (LocationInfo& locationInfo : store.getLocationInfo()) {
+        Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
+        if (!localLocation) continue;
+        PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
+        if (!presenceData) continue;
+
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++){
+                double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
+                double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
+
+                // double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
+                // double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
+                double interest_x = localLocation->position.x;
+                double interest_y = localLocation->position.y;
+                // if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
+
+                const double two_sigma_squared = 2*10*10;
+                const double weight = presenceData->presenceLikelihood;
+                // const double weight = 1;
+                auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
+                auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
+
+                // RGBA
+                // textureData[(j * w + i) * 4 + 0] = 255;
+                // textureData[(j * w + i) * 4 + 1] = 255;
+                // textureData[(j * w + i) * 4 + 2] = 255;
+                textureData[(j * w + i) * 4 + 3] += distr_x * distr_y * 255 / weight_accumulator;
+            }
+        }
+    }
+}
+
 void LayoutRenderer::render(GEVisualizer& store) {
     ofPushMatrix();
     ofTranslate(
@@ -56,36 +115,10 @@ void LayoutRenderer::render(GEVisualizer& store) {
         projection.offset.y * projection.scale.y );
 
     // texture
-    // recalculate
-    {
-    const unsigned int w = textureSize[0];
-    const unsigned int h = textureSize[1];
-    // color alpha pixels, use w and h to control red and green
-    for (int i = 0; i < w; i++){
-        for (int j = 0; j < h; j++){
-            double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
-            double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
-
-            double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
-            double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
-            if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
-
-            const double two_sigma_squared = 10;
-            const double weight = 1;
-            auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
-            auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
-
-            // RGBA
-            textureData[(j * w + i) * 4 + 0] = 255;
-            textureData[(j * w + i) * 4 + 1] = 255;
-            textureData[(j * w + i) * 4 + 2] = 255;
-            textureData[(j * w + i) * 4 + 3] = distr_x * distr_y * 255;
-        }
-    }
-    texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
-    }
+    recalculateTexture(store);
     ofSetHexColor(0x3D9BFF);
     ofEnableAlphaBlending();
+    texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
     texture.draw(0, 0, textureSize[0], textureSize[1]);
     ofDisableAlphaBlending();
 
@@ -116,7 +149,7 @@ void LayoutRenderer::render(GEVisualizer& store) {
             wall.y2 * projection.scale.y );
     }
 
-    // locations
+    // locations locuses
     // TODO: if MODE
     for (LocationInfo& locationInfo : store.getLocationInfo()) {
         Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
@@ -131,6 +164,9 @@ void LayoutRenderer::render(GEVisualizer& store) {
                 ofNoFill();
                 ofSetLineWidth(2);
             }
+            mainFont->drawString(format_double_to_string(presenceData->presenceLikelihood),
+                localLocation->position.x * projection.scale.x - 20,
+                localLocation->position.y * projection.scale.y + 20);
         } else {
             ofSetHexColor(0xFF1B1B); // red
             ofFill();
@@ -143,7 +179,7 @@ void LayoutRenderer::render(GEVisualizer& store) {
 
         ofSetHexColor(0x0);
         ofFill();
-        ofDrawBitmapString((string)locationInfo.notes,
+        mainFont->drawString((string)locationInfo.notes,
             localLocation->position.x * projection.scale.x - 20,
             localLocation->position.y * projection.scale.y - 20);
     }

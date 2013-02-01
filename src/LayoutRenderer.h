@@ -26,6 +26,8 @@ public:
     Layout* layout;
 
 private:
+    void recalculateTexture(GEVisualizer& store);
+
     LayoutProjection projection;
     ofTrueTypeFont*  mainFont;
 
