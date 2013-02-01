@@ -11,14 +11,24 @@ T* extract_streamed_data(vector<T> list, int locationID) {
     return NULL;
 }
 
-void LayoutRenderer::attachResources(ofTrueTypeFont* font) {
-    mainFont = font;
 
-    unsigned int w = textureSize[0];
-    unsigned int h = textureSize[1];
+void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
+    Layout& l = *layout;
+
+    projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
+    projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
+    projection.scale.x = screenPixelsPerMeter;
+    projection.scale.y = screenPixelsPerMeter;
+
+    if (textureData) delete[] textureData;
+
+    textureSize[0] = 30;
+    textureSize[1] = 30;
+    const unsigned int w = textureSize[0];
+    const unsigned int h = textureSize[1];
     printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
 
-    textureData = new unsigned char [w * h * 4];
+    textureData = new unsigned char [w * h * 4];    
 
     // color alpha pixels, use w and h to control red and green
     for (int i = 0; i < w; i++){
@@ -33,16 +43,6 @@ void LayoutRenderer::attachResources(ofTrueTypeFont* font) {
 
     texture.allocate(textureSize[0], textureSize[1], GL_RGBA);
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
-}
-
-
-void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
-    Layout& l = *layout;
-
-    projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
-    projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
-    projection.scale.x = screenPixelsPerMeter;
-    projection.scale.y = screenPixelsPerMeter;
 }
 
 void LayoutRenderer::render(GEVisualizer& store) {

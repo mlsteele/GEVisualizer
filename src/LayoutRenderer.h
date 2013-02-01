@@ -15,7 +15,7 @@ public:
     // ~LayoutRenderer() { delete[] textureData; }
 
     void attachLayout(Layout* layout) { this->layout = layout; };
-    void attachResources(ofTrueTypeFont* font);
+    void attachFont(ofTrueTypeFont* font) { mainFont = font; }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(GEVisualizer& store);
@@ -26,7 +26,7 @@ private:
     LayoutProjection projection;
     ofTrueTypeFont*  mainFont;
 
-    unsigned int     textureSize[2] = {20, 20};
     ofTexture        texture;
-    unsigned char *  textureData;
+    unsigned int     textureSize[2] = {0,0};
+    unsigned char *  textureData = NULL;
 };
