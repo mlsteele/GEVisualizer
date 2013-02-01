@@ -183,15 +183,49 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
         layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
     // walls
-    ofSetLineWidth(3);
+    const float wallHeight = 1.0 * projection.screenPixelsPerMeter;
     for (LINE& wall : layout->wallLines) {
         ofSetHexColor(0xB3B3B3);
+        glColor4f(0, 0, 0, 0.5);
         ofFill();
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_BLEND);
+
+        glBegin(GL_QUADS);
+            glVertex3f(
+                wall.x1 * projection.scale.x ,
+                wall.y1 * projection.scale.y ,
+                0 );
+            glVertex3f(
+                wall.x2 * projection.scale.x ,
+                wall.y2 * projection.scale.y ,
+                0 );
+            glVertex3f(
+                wall.x2 * projection.scale.x ,
+                wall.y2 * projection.scale.y ,
+                wallHeight );
+            glVertex3f(
+                wall.x1 * projection.scale.x ,
+                wall.y1 * projection.scale.y ,
+                wallHeight );
+        glEnd();
+
+        ofSetLineWidth(3);
         ofLine(
             wall.x1 * projection.scale.x ,
             wall.y1 * projection.scale.y ,
             wall.x2 * projection.scale.x ,
             wall.y2 * projection.scale.y );
+
+        ofPushMatrix();
+        ofTranslate(0, 0, wallHeight);
+        ofSetLineWidth(1);
+        ofLine(
+            wall.x1 * projection.scale.x ,
+            wall.y1 * projection.scale.y ,
+            wall.x2 * projection.scale.x ,
+            wall.y2 * projection.scale.y );
+        ofPopMatrix();
     }
 
     // locations locuses
