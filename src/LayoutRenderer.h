@@ -18,7 +18,10 @@ public:
     // ~LayoutRenderer() { delete[] textureData; }
 
     void attachLayout(Layout* layout) { this->layout = layout; };
-    void attachFont(ofTrueTypeFont* font) { mainFont = font; }
+    void attachFonts(ofTrueTypeFont* fontMain, ofTrueTypeFont* fontMapNameLabel) {
+        this->fontMain = fontMain;
+        this->fontMapNameLabel = fontMapNameLabel;
+    }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(GEVisualizer& store, float transition=0);
@@ -30,7 +33,8 @@ private:
     void mouseTestRecalculateTexture();
 
     LayoutProjection projection;
-    ofTrueTypeFont*  mainFont;
+    ofTrueTypeFont*  fontMain;
+    ofTrueTypeFont*  fontMapNameLabel;
 
     ofTexture        texture;
     unsigned int     textureSize[2] = {0,0};

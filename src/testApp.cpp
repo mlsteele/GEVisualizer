@@ -8,7 +8,8 @@ void testApp::setup(){
     ofSetFrameRate(30);
 
     mainAppDataDirectory = getMainAppDataDirectory();
-    mainAppFont.loadFont("verdana.ttf", 10);
+    fontVerd10.loadFont("verdana.ttf", 10);
+    fontVerd14.loadFont("verdana.ttf", 14);
 
     setupLayouts();
     setupUI();
@@ -32,7 +33,7 @@ void testApp::setupLayouts() {
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
         layoutRenderers.push_back(LayoutRenderer());
         layoutRenderers.back().attachLayout(newLayout);
-        layoutRenderers.back().attachFont(&mainAppFont);
+        layoutRenderers.back().attachFonts(&fontVerd10, &fontVerd14);
         layoutRenderers.back().setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
     }
     renderers_active_i = 1;
@@ -64,7 +65,7 @@ void testApp::setupUI() {
 }
 
 void testApp::setupUIServer() {
-    ofColor backgroundColor(255, 255, 255);
+    ofColor backgroundColor(100, 100, 100);
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
@@ -76,10 +77,10 @@ void testApp::setupUIServer() {
     UIserverSubView.showBorder = true;
     UIserverSubView.borderWidth = 1;
     UIserverSubView.borderColor = borderColor;
-    // UIserverSubView.drawBackground = true;
+    UIserverSubView.drawBackground = true;
 
     ofUIButton buttonFactory;
-    buttonFactory.setFont(mainAppFont);
+    buttonFactory.setFont(fontVerd10);
     buttonFactory.setCallback(buttonCallback);
 
     float xo = 12; // origin / cursor
@@ -121,7 +122,7 @@ void testApp::setupUIServer() {
 }
 
 void testApp::setupUILayouts()  {
-    ofColor backgroundColor(255, 255, 255);
+    ofColor backgroundColor(100, 100, 100);
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
@@ -133,9 +134,10 @@ void testApp::setupUILayouts()  {
     UIlayoutSubView.showBorder = true;
     UIlayoutSubView.borderWidth = 1;
     UIlayoutSubView.borderColor = borderColor;
+    UIlayoutSubView.drawBackground = true;
 
     ofUIButton buttonFactory;
-    buttonFactory.setFont(mainAppFont);
+    buttonFactory.setFont(fontVerd10);
     buttonFactory.setCallback(buttonCallback);
 
     float xo = 12; // origin / cursor
@@ -177,7 +179,7 @@ void testApp::update(){
 }
 
 void testApp::draw(){
-    ofBackground(0xFFFFFF);
+    ofBackground(0xD8D8D8);
 
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {

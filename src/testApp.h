@@ -36,7 +36,8 @@ public:
     void gotMessage(ofMessage msg);
 
 
-    ofTrueTypeFont mainAppFont;
+    ofTrueTypeFont fontVerd10;
+    ofTrueTypeFont fontVerd14;
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
@@ -49,7 +50,7 @@ public:
 
     GEVisualizer gelink;
 
-    const string ge_server_host = "18.85.55.184";
+    const string ge_server_host = "18.133.7.63";
     const int ge_server_port = 5000;
     // const string ge_server_host = "127.0.0.1";
     // const int ge_server_port = 5094;

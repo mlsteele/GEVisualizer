@@ -150,10 +150,11 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
     ofTranslate(
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
+    ofTranslate(0, -50);
     // map name
-    ofSetHexColor(0x0);
+    ofSetHexColor(0xFFFFFF);
     // ofDrawBitmapString(layout->layoutName, 5, 17 );
-    mainFont->drawString(layout->layoutName, 5, 17 );
+    fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
     ofPopMatrix();
 
     ofPushMatrix();
@@ -183,10 +184,10 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
         layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
     // walls
-    const float wallHeight = 1.0 * projection.screenPixelsPerMeter;
+    const float wallHeight = 2.5 * projection.screenPixelsPerMeter;
     for (LINE& wall : layout->wallLines) {
         ofSetHexColor(0xB3B3B3);
-        glColor4f(0, 0, 0, 0.5);
+        glColor4f(0, 0, 0, 0.2);
         ofFill();
         glEnable(GL_LINE_SMOOTH);
         glEnable(GL_BLEND);
@@ -210,6 +211,8 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
                 wallHeight );
         glEnd();
 
+        // bottom line
+        glColor4f(0, 0, 0, 0.3);
         ofSetLineWidth(3);
         ofLine(
             wall.x1 * projection.scale.x ,
@@ -217,6 +220,8 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
             wall.x2 * projection.scale.x ,
             wall.y2 * projection.scale.y );
 
+        // top line
+        glColor4f(0, 0, 0, 0.2);
         ofPushMatrix();
         ofTranslate(0, 0, wallHeight);
         ofSetLineWidth(1);
@@ -243,7 +248,7 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
                 ofNoFill();
                 ofSetLineWidth(2);
             }
-            mainFont->drawString(format_double_to_string(presenceData->presenceLikelihood),
+            fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
                 localLocation->position.x * projection.scale.x - 20,
                 localLocation->position.y * projection.scale.y + 20);
         } else {
@@ -258,7 +263,7 @@ void LayoutRenderer::render(GEVisualizer& store, float transition) {
 
         ofSetHexColor(0x0);
         ofFill();
-        mainFont->drawString((string)locationInfo.notes,
+        fontMain->drawString((string)locationInfo.notes,
             localLocation->position.x * projection.scale.x - 20,
             localLocation->position.y * projection.scale.y - 20);
     }
