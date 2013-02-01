@@ -1,7 +1,7 @@
 LAYOUT_INFO_FILE_V1.3
 LayoutName: E14_4
 SVGFilename:	E14_4.svg
-KeyElementID:	simplified
+KeyElementID:	Layer_2
 BoundingRectRealWorldCoordinates:	1	1	0
 PixelsPerMeter:	7.38209159262
 FloorLevel:	4

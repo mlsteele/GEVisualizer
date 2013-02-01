@@ -31,13 +31,15 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+
     ofTrueTypeFont mainAppFont;
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
     ofUIMainView UImainView;
     vector<LayoutRenderer> layoutRenderers;
-    LayoutRenderer* active_layout_renderer;
+    int renderers_active_i;
+    float renderers_transition_i;
 
     GEVisualizer gelink;
 

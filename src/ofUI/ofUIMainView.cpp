@@ -11,6 +11,7 @@ ofUIMainView::ofUIMainView()
 	foregroundColor.b = 0;
 	foregroundColor.a = 255;
     showBorder = true;
+    showBackground = true;
     borderWidth = 1;
     borderColor.r = 255;
 	borderColor.g = 255;
@@ -52,9 +53,11 @@ bool ofUIMainView::draw(float parentX,float parentY){
     originY = parentY;
     
     //Draw the view
-    ofFill();
-    ofSetColor(backgroundColor);
-    ofRect(originX + bounds.x,originY + bounds.y,bounds.width,bounds.height);
+    if (showBackground) {        
+        ofFill();
+        ofSetColor(backgroundColor);
+        ofRect(originX + bounds.x,originY + bounds.y,bounds.width,bounds.height);
+    }
     
     if( showBorder ){
         ofPtr<ofGLRenderer> render = ofGetGLRenderer();

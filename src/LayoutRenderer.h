@@ -21,12 +21,13 @@ public:
     void attachFont(ofTrueTypeFont* font) { mainFont = font; }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
-    void render(GEVisualizer& store);
+    void render(GEVisualizer& store, float transition=0);
 
     Layout* layout;
 
 private:
     void recalculateTexture(GEVisualizer& store);
+    void mouseTestRecalculateTexture();
 
     LayoutProjection projection;
     ofTrueTypeFont*  mainFont;

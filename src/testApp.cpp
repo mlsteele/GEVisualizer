@@ -16,18 +16,17 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
-    // POINT2D screen_px_corner = {15, 15};
-    POINT2D screen_px_corner = {120, 120};
+    POINT2D screen_px_corner = {135, 100};
     POINT2D real_corner = {0, 0};
     double screenPixelsPerMeter = 10;
 
     vector<string> layout_info_files;
     layout_info_files.push_back("E14_6_LayoutInfo.txt");
     layout_info_files.push_back("E14_5_LayoutInfo.txt");
-    // layout_info_files.push_back("E14_4_LayoutInfo.txt");
-    // layout_info_files.push_back("E14_3_LayoutInfo.txt");
-    // layout_info_files.push_back("E14_2_LayoutInfo.txt");
-    // layout_info_files.push_back("E14_1_LayoutInfo.txt");
+    layout_info_files.push_back("E14_4_LayoutInfo.txt");
+    layout_info_files.push_back("E14_3_LayoutInfo.txt");
+    layout_info_files.push_back("E14_2_LayoutInfo.txt");
+    layout_info_files.push_back("E14_1_LayoutInfo.txt");
 
     for (string layout_info_file : layout_info_files) {
         Layout* newLayout = new Layout();
@@ -37,7 +36,8 @@ void testApp::setupLayouts() {
         layoutRenderers.back().attachFont(&mainAppFont);
         layoutRenderers.back().setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
     }
-    active_layout_renderer = &layoutRenderers[1];
+    renderers_active_i = 1;
+    renderers_transition_i = renderers_active_i;
 }
 
 void testApp::setupUI() {
@@ -49,6 +49,7 @@ void testApp::setupUI() {
     UImainView.showBorder = false;
     UImainView.borderWidth = 1;
     UImainView.borderColor = borderColor;
+    UImainView.showBackground = false;
 
     setupUIServer();
     setupUILayouts();
@@ -67,6 +68,7 @@ void testApp::setupUIServer() {
     UIserverSubView.showBorder = true;
     UIserverSubView.borderWidth = 1;
     UIserverSubView.borderColor = borderColor;
+    // UIserverSubView.drawBackground = true;
 
     ofUIButton buttonFactory;
     buttonFactory.setFont(mainAppFont);
@@ -154,13 +156,31 @@ void testApp::setupUILayouts()  {
 void testApp::update(){
     UImainView.update();
     gelink.update();
+
+    // transition to approach selection
+    static const float transition_speed_1 = 0.06;
+    static const float transition_speed_2 = 0.12;
+    const float transition_diff_mag = fabs(renderers_transition_i - renderers_active_i);
+    if (transition_diff_mag < transition_speed_1) {
+        renderers_transition_i = renderers_active_i;
+    } else {
+        const float transition_speed = transition_diff_mag < 1 ? transition_speed_1 : transition_speed_2;
+        renderers_transition_i += (renderers_active_i - renderers_transition_i) > 0 ? transition_speed : -transition_speed;
+    }
 }
 
 void testApp::draw(){
     ofBackground(0xFFFFFF);
-    UImainView.draw(0, 0);
 
-    active_layout_renderer->render(gelink);
+    // render layouts
+    for (int i = 0; i < layoutRenderers.size(); i++) {
+        float transition = i - renderers_transition_i;
+        if (fabs(transition) < .97) {
+            layoutRenderers[i].render(gelink, transition);
+        }
+    }
+
+    UImainView.draw(0, 0);
 }
 
 void testApp::exit() {
@@ -198,10 +218,10 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     string layout_prefix = "layout_";
     if (boost::starts_with(button->getButtonID(), "layout_")) {
         printf("layout button pressed %s\n", button->getButtonID().c_str());
-        for (LayoutRenderer& layoutRenderer : mainAppHandle.layoutRenderers) {
-            Layout& layout = *layoutRenderer.layout;
+        for (int i = 0; i < mainAppHandle.layoutRenderers.size(); i++) {            
+            Layout& layout = *mainAppHandle.layoutRenderers[i].layout;
             if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
-                mainAppHandle.active_layout_renderer = &layoutRenderer;
+                mainAppHandle.renderers_active_i = i;
                 return;
             }
         }

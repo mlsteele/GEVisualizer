@@ -108,14 +108,64 @@ void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     }
 }
 
-void LayoutRenderer::render(GEVisualizer& store) {
+void LayoutRenderer::mouseTestRecalculateTexture() {
+    const unsigned int w = textureSize[0];
+    const unsigned int h = textureSize[1];
+
+    // loop and fill against locations
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++){
+            double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
+            double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
+
+            double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
+            double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
+            // double interest_x = localLocation->position.x;
+            // double interest_y = localLocation->position.y;
+            // if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
+
+            const double two_sigma_squared = 2*10*10;
+            const double weight = 1;
+            // const double weight = 1;
+            auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
+            auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
+
+            // RGBA
+            // textureData[(j * w + i) * 4 + 0] = 255;
+            // textureData[(j * w + i) * 4 + 1] = 255;
+            // textureData[(j * w + i) * 4 + 2] = 255;
+            textureData[(j * w + i) * 4 + 3] = distr_x * distr_y * 255;
+        }
+    }
+}
+
+// store is the data store for ge information
+// transition is 0 for normal view, positive for offset up, negative for offset down
+// transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
+void LayoutRenderer::render(GEVisualizer& store, float transition) {
+    float smoothed_transition = pow(transition, 3);
+
     ofPushMatrix();
+    ofTranslate(0, smoothed_transition * layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y * 1.7);
     ofTranslate(
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
+    // map name
+    ofSetHexColor(0x0);
+    // ofDrawBitmapString(layout->layoutName, 5, 17 );
+    mainFont->drawString(layout->layoutName, 5, 17 );
+    ofPopMatrix();
+
+    ofPushMatrix();
+    ofTranslate(0, smoothed_transition * layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y * 1.7);
+    ofTranslate(
+        projection.offset.x * projection.scale.x ,
+        projection.offset.y * projection.scale.y );
+    ofRotateX(20);
 
     // texture
     recalculateTexture(store);
+    // mouseTestRecalculateTexture();
     ofSetHexColor(0x3D9BFF);
     ofEnableAlphaBlending();
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
@@ -123,11 +173,6 @@ void LayoutRenderer::render(GEVisualizer& store) {
     ofDisableAlphaBlending();
 
     ofEnableSmoothing();
-
-    // map name
-    ofSetHexColor(0x0);
-    // ofDrawBitmapString(layout->layoutName, 5, 17 );
-    mainFont->drawString(layout->layoutName, 5, 17 );
 
     // boundary
     ofSetLineWidth(2);

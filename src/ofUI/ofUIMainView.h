@@ -52,6 +52,7 @@ public:
     bool setButtonText(string buttonID,string text);
     
     bool showBorder;
+    bool showBackground;
     unsigned int borderWidth;
     ofColor borderColor;
     vector < ofUIViewContainer > childViews;
