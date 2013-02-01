@@ -7,6 +7,9 @@
 typedef struct {
     POINT2D offset = {0, 0};
     POINT2D scale = {1, 1};
+    POINT2D screen_px_corner = {0,0};
+    POINT2D real_corner = {0,0};
+    double screenPixelsPerMeter = 1;
 } LayoutProjection;
 
 class LayoutRenderer {

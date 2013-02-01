@@ -15,6 +15,10 @@ T* extract_streamed_data(vector<T> list, int locationID) {
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
 
+    projection.screen_px_corner     = screen_px_corner;
+    projection.real_corner          = real_corner;
+    projection.screenPixelsPerMeter = screenPixelsPerMeter;
+
     projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
     projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
     projection.scale.x = screenPixelsPerMeter;
@@ -22,8 +26,8 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 
     if (textureData) delete[] textureData;
 
-    textureSize[0] = 30;
-    textureSize[1] = 30;
+    textureSize[0] = layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x;
+    textureSize[1] = layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y;
     const unsigned int w = textureSize[0];
     const unsigned int h = textureSize[1];
     printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
@@ -35,9 +39,9 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
         for (int j = 0; j < h; j++){
             // RGBA
             textureData[(j * w + i) * 4 + 0] = 255;
-            textureData[(j * w + i) * 4 + 1] = 120;
-            textureData[(j * w + i) * 4 + 2] = 30;
-            textureData[(j * w + i) * 4 + 3] = i * 20;
+            textureData[(j * w + i) * 4 + 1] = 255;
+            textureData[(j * w + i) * 4 + 2] = 255;
+            textureData[(j * w + i) * 4 + 3] = 0;
         }
     }
 
@@ -46,17 +50,44 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 }
 
 void LayoutRenderer::render(GEVisualizer& store) {
-    // texture
-    ofSetHexColor(0xFFFFFF);
-    ofEnableAlphaBlending();
-    texture.draw(250, 200, textureSize[0], textureSize[1]);
-    ofDisableAlphaBlending();
-
-
     ofPushMatrix();
     ofTranslate(
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
+
+    // texture
+    // recalculate
+    {
+    const unsigned int w = textureSize[0];
+    const unsigned int h = textureSize[1];
+    // color alpha pixels, use w and h to control red and green
+    for (int i = 0; i < w; i++){
+        for (int j = 0; j < h; j++){
+            double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
+            double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
+
+            double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
+            double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
+            if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
+
+            const double two_sigma_squared = 10;
+            const double weight = 1;
+            auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
+            auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
+
+            // RGBA
+            textureData[(j * w + i) * 4 + 0] = 255;
+            textureData[(j * w + i) * 4 + 1] = 255;
+            textureData[(j * w + i) * 4 + 2] = 255;
+            textureData[(j * w + i) * 4 + 3] = distr_x * distr_y * 255;
+        }
+    }
+    texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
+    }
+    ofSetHexColor(0x3D9BFF);
+    ofEnableAlphaBlending();
+    texture.draw(0, 0, textureSize[0], textureSize[1]);
+    ofDisableAlphaBlending();
 
     ofEnableSmoothing();
 

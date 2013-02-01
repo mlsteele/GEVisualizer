@@ -16,7 +16,8 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
-    POINT2D screen_px_corner = {15, 15};
+    // POINT2D screen_px_corner = {15, 15};
+    POINT2D screen_px_corner = {120, 120};
     POINT2D real_corner = {0, 0};
     double screenPixelsPerMeter = 10;
 
