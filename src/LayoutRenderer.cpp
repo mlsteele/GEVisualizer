@@ -1,6 +1,5 @@
 #include "LayoutRenderer.h"
 
-
 // returns data or a NULL if none is present in list
 template <typename T>
 T* extract_streamed_data(vector<T> list, int locationID) {
@@ -12,6 +11,54 @@ T* extract_streamed_data(vector<T> list, int locationID) {
     return NULL;
 }
 
+void LayoutRenderer::attachResources(ofTrueTypeFont* font) {
+    mainFont = font;
+
+    // unsigned int w = textureSize[0];
+    // unsigned int h = textureSize[1];
+    // printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
+
+    // textureData = new unsigned char [w * h * 4];
+    // // for (int i = 0; i < w; i++){
+    // //     for (int j = 0; j < h; j++){
+    // //         textureData[(j * w + i) * 4 + 0] = 255; // r
+    // //         textureData[(j * w + i) * 4 + 1] = 133; // g
+    // //         textureData[(j * w + i) * 4 + 2] = 200; // b
+    // //         // textureData[(j * w + i) * 4 + 3] = i; // alpha
+    // //         textureData[(j * w + i) * 4 + 3] = 255; // alpha
+    // //     }
+    // // }
+
+    // for (int i = 0; i < w * h; i++) {
+    //     // textureData[i] = 255 * ofRandomuf();
+    //     textureData[i] = 255;
+    //     // printf("textureData[%i] -> %i\n", i, textureData[i]);
+    // }
+
+    // texture.allocate(w, h, GL_RGBA);
+    // texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
+
+    w = 20;
+    h = 20;
+
+    texColorAlpha.allocate(w,h,GL_RGBA);
+    colorAlphaPixels    = new unsigned char [w*h*4];
+
+    // color alpha pixels, use w and h to control red and green
+    for (int i = 0; i < w; i++){
+        for (int j = 0; j < h; j++){
+            // RGBA
+            colorAlphaPixels[(j * w + i) * 4 + 0] = 255;
+            colorAlphaPixels[(j * w + i) * 4 + 1] = 120;
+            colorAlphaPixels[(j * w + i) * 4 + 2] = 30;
+            colorAlphaPixels[(j * w + i) * 4 + 3] = i * 20;
+        }
+    }
+
+    texColorAlpha.loadData(colorAlphaPixels, w,h, GL_RGBA);
+}
+
+
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
 
@@ -22,6 +69,13 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 }
 
 void LayoutRenderer::render(GEVisualizer& store) {
+    // texture
+    ofSetHexColor(0xFFFFFF);
+    ofEnableAlphaBlending();
+    texColorAlpha.draw(250, 200, w, h);
+    ofDisableAlphaBlending();
+
+
     ofPushMatrix();
     ofTranslate(
         projection.offset.x * projection.scale.x ,

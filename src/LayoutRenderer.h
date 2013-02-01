@@ -12,7 +12,7 @@ typedef struct {
 class LayoutRenderer {
 public:
     void attachLayout(Layout* layout) { this->layout = layout; };
-    void attachMainFont(ofTrueTypeFont* font) { mainFont = font; }
+    void attachResources(ofTrueTypeFont* font);
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(GEVisualizer& store);
@@ -21,5 +21,12 @@ public:
 
 private:
     LayoutProjection projection;
-    ofTrueTypeFont* mainFont;
+    ofTrueTypeFont*  mainFont;
+
+    // unsigned int     textureSize[2] = {30, 30};
+    // ofTexture        texture;
+
+    unsigned char *  colorAlphaPixels;
+    ofTexture        texColorAlpha;
+    int              w, h;
 };
