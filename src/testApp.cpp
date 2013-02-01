@@ -159,12 +159,11 @@ void testApp::update(){
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
-    static const float transition_speed_2 = 0.12;
     const float transition_diff_mag = fabs(renderers_transition_i - renderers_active_i);
     if (transition_diff_mag < transition_speed_1) {
         renderers_transition_i = renderers_active_i;
     } else {
-        const float transition_speed = transition_diff_mag < 1 ? transition_speed_1 : transition_speed_2;
+        const float transition_speed = fmax(transition_diff_mag / 10, transition_speed_1);
         renderers_transition_i += (renderers_active_i - renderers_transition_i) > 0 ? transition_speed : -transition_speed;
     }
 }
