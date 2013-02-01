@@ -33,9 +33,10 @@ void testApp::setupLayouts() {
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
         layoutRenderers.push_back(LayoutRenderer());
         layoutRenderers.back().attachLayout(newLayout);
+        layoutRenderers.back().attachMainFont(&mainAppFont);
         layoutRenderers.back().setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
     }
-    active_layout_renderer = &layoutRenderers.back();
+    active_layout_renderer = &layoutRenderers[1];
 }
 
 void testApp::setupUI() {

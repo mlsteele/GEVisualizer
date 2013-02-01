@@ -11,10 +11,8 @@ typedef struct {
 
 class LayoutRenderer {
 public:
-    void attachLayout(Layout* layout) {
-        printf("assigning layout\n");
-        this->layout = layout;
-    };
+    void attachLayout(Layout* layout) { this->layout = layout; };
+    void attachMainFont(ofTrueTypeFont* font) { mainFont = font; }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(GEVisualizer& store);
@@ -23,4 +21,5 @@ public:
 
 private:
     LayoutProjection projection;
+    ofTrueTypeFont* mainFont;
 };

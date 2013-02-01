@@ -27,6 +27,13 @@ void LayoutRenderer::render(GEVisualizer& store) {
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
 
+    ofEnableSmoothing();
+
+    // map name
+    ofSetHexColor(0x0);
+    // ofDrawBitmapString(layout->layoutName, 5, 17 );
+    mainFont->drawString(layout->layoutName, 5, 17 );
+
     // boundary
     ofSetLineWidth(2);
     ofSetHexColor(0x0000FF);
@@ -36,7 +43,6 @@ void LayoutRenderer::render(GEVisualizer& store) {
         layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
     // walls
-    // ofDisableSmoothing();
     ofSetLineWidth(3);
     for (LINE& wall : layout->wallLines) {
         ofSetHexColor(0xB3B3B3);
@@ -47,28 +53,25 @@ void LayoutRenderer::render(GEVisualizer& store) {
             wall.x2 * projection.scale.x ,
             wall.y2 * projection.scale.y );
     }
-    // ofEnableSmoothing();
 
     // locations
+    // TODO: if MODE
     for (LocationInfo& locationInfo : store.getLocationInfo()) {
         Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
         if (!localLocation) continue;
         PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
 
-        switch(presenceData ? presenceData->presenceEstimate : -1) {
-            case 0:
-                ofSetHexColor(0xD83DFF);
+        if (presenceData) {
+            ofSetHexColor(0xD83DFF); // purple
+            if (presenceData->presenceEstimate > 0) {
+                ofFill();
+            } else {
                 ofNoFill();
                 ofSetLineWidth(2);
-                break;
-            case 1:
-                ofSetHexColor(0xD83DFF);
-                ofFill();
-                break;
-            default:
-                printf("presenceEstimate %i\n", presenceData->presenceEstimate);
-                ofSetHexColor(0xFF1B1B);
-                ofFill();
+            }
+        } else {
+            ofSetHexColor(0xFF1B1B); // red
+            ofFill();
         }
 
         ofCircle(
