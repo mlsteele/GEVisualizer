@@ -1,53 +1,6 @@
 #include "testApp.h"
 #include <boost/algorithm/string/predicate.hpp>
 
-// using std::cout;
-
-void guiEvent(ofxUIEventArgs &e) {
-    string name = e.widget->getName();
-    int kind = e.widget->getKind();
-
-    if(kind == OFX_UI_WIDGET_BUTTON) {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_TOGGLE) {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_IMAGEBUTTON) {
-        ofxUIImageButton *button = (ofxUIImageButton *) e.widget;
-        cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_IMAGETOGGLE) {
-        ofxUIImageToggle *toggle = (ofxUIImageToggle *) e.widget;
-        cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_LABELBUTTON) {
-        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
-        cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_LABELTOGGLE) {
-        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
-        cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(name == "B1") {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        cout << "value: " << button->getValue() << endl;
-    
-    } else if(name == "B2") {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        cout << "value: " << button->getValue() << endl;
-    
-    } else if(name == "T1") {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        cout << "value: " << toggle->getValue() << endl;
-    
-    } else if(name == "T2") {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        cout << "value: " << toggle->getValue() << endl;
-    }
-}
 void testApp::setup(){
     ofSetWindowTitle("Map");
     ofSeedRandom();
@@ -87,12 +40,12 @@ void testApp::setupLayouts() {
 }
 
 void testApp::setupUI() {
-    gui = new ofxUICanvas(0, 0, ofGetWidth(), ofGetHeight());
+    // gui = new ofxUICanvas(0, 0, ofGetWidth(), ofGetHeight());
 
-    gui->addWidgetDown(new ofxUILabel("BUTTONS", OFX_UI_FONT_MEDIUM));
-    gui->addWidgetDown(new ofxUIButton(200, 200, false, "B1"));
+    // gui->addWidgetDown(new ofxUILabel("BUTTONS", OFX_UI_FONT_MEDIUM));
+    // gui->addWidgetDown(new ofxUIButton(200, 200, false, "B1"));
 
-    ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
+    // ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
 
     ////////
 
@@ -239,7 +192,7 @@ void testApp::draw(){
 
 void testApp::exit() {
     gelink.disconnect();
-    delete gui;
+    // delete gui;
 }
 
 void buttonCallback(ofUIButton* button, void* appPointer){
@@ -283,6 +236,54 @@ void buttonCallback(ofUIButton* button, void* appPointer){
         printf("WARN: failed to find matching layout for button\n");
     }
 }
+
+/*
+void guiEvent(ofxUIEventArgs &e) {
+    string name = e.widget->getName();
+    int kind = e.widget->getKind();
+
+    if(kind == OFX_UI_WIDGET_BUTTON) {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        std::cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_TOGGLE) {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        std::cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_IMAGEBUTTON) {
+        ofxUIImageButton *button = (ofxUIImageButton *) e.widget;
+        std::cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_IMAGETOGGLE) {
+        ofxUIImageToggle *toggle = (ofxUIImageToggle *) e.widget;
+        std::cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_LABELBUTTON) {
+        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
+        std::cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_LABELTOGGLE) {
+        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+        std::cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(name == "B1") {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        std::cout << "value: " << button->getValue() << endl;
+    
+    } else if(name == "B2") {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        std::cout << "value: " << button->getValue() << endl;
+    
+    } else if(name == "T1") {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        std::cout << "value: " << toggle->getValue() << endl;
+    
+    } else if(name == "T2") {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        std::cout << "value: " << toggle->getValue() << endl;
+    }
+}
+*/
 
 void testApp::keyPressed(int key){
     UImainView.keyPressedEvent(key);

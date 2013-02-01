@@ -2,8 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
-#define OFX_UI_NO_XML
-#include "ofxUI.h"
+// #define OFX_UI_NO_XML
+// #include "ofxUI.h"
 
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
@@ -14,8 +14,6 @@
 
 class testApp : public ofBaseApp {
 public:
-    void guiEvent(ofxUIEventArgs &e);
-
     void setup();
     void setupLayouts();
     void setupUI();
@@ -26,6 +24,7 @@ public:
     void draw();
     void exit();
 
+    // void guiEvent(ofxUIEventArgs &e);
     void keyPressed  (int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y );
@@ -41,7 +40,7 @@ public:
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
-    ofxUICanvas* gui;
+    // ofxUICanvas* gui;
 
     ofUIMainView UImainView;
     vector<LayoutRenderer> layoutRenderers;
