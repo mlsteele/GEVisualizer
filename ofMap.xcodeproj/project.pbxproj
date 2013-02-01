@@ -95,6 +95,47 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		024F8F1616BC6C460082D051 /* ofxUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUI.h; sourceTree = "<group>"; };
+		024F8F1716BC6C460082D051 /* ofxUI2DPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUI2DPad.h; sourceTree = "<group>"; };
+		024F8F1816BC6C460082D051 /* ofxUIBaseDraws.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIBaseDraws.h; sourceTree = "<group>"; };
+		024F8F1916BC6C460082D051 /* ofxUIBiLabelSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIBiLabelSlider.h; sourceTree = "<group>"; };
+		024F8F1A16BC6C460082D051 /* ofxUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIButton.h; sourceTree = "<group>"; };
+		024F8F1B16BC6C460082D051 /* ofxUICanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUICanvas.h; sourceTree = "<group>"; };
+		024F8F1C16BC6C460082D051 /* ofxUICircleSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUICircleSlider.h; sourceTree = "<group>"; };
+		024F8F1D16BC6C460082D051 /* ofxUICustomImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUICustomImageButton.h; sourceTree = "<group>"; };
+		024F8F1E16BC6C460082D051 /* ofxUIDropDownList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIDropDownList.h; sourceTree = "<group>"; };
+		024F8F1F16BC6C460082D051 /* ofxUIEventArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIEventArgs.h; sourceTree = "<group>"; };
+		024F8F2016BC6C460082D051 /* ofxUIFPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIFPS.h; sourceTree = "<group>"; };
+		024F8F2116BC6C460082D051 /* ofxUIFPSSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIFPSSlider.h; sourceTree = "<group>"; };
+		024F8F2216BC6C460082D051 /* ofxUIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIImage.h; sourceTree = "<group>"; };
+		024F8F2316BC6C460082D051 /* ofxUIImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIImageButton.h; sourceTree = "<group>"; };
+		024F8F2416BC6C460082D051 /* ofxUIImageSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIImageSampler.h; sourceTree = "<group>"; };
+		024F8F2516BC6C460082D051 /* ofxUIImageSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIImageSlider.h; sourceTree = "<group>"; };
+		024F8F2616BC6C460082D051 /* ofxUIImageToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIImageToggle.h; sourceTree = "<group>"; };
+		024F8F2716BC6C460082D051 /* ofxUILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUILabel.h; sourceTree = "<group>"; };
+		024F8F2816BC6C460082D051 /* ofxUILabelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUILabelButton.h; sourceTree = "<group>"; };
+		024F8F2916BC6C460082D051 /* ofxUILabelToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUILabelToggle.h; sourceTree = "<group>"; };
+		024F8F2A16BC6C460082D051 /* ofxUIMinimalSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIMinimalSlider.h; sourceTree = "<group>"; };
+		024F8F2B16BC6C460082D051 /* ofxUIMovingGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIMovingGraph.h; sourceTree = "<group>"; };
+		024F8F2C16BC6C460082D051 /* ofxUIMultiImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIMultiImageButton.h; sourceTree = "<group>"; };
+		024F8F2D16BC6C460082D051 /* ofxUIMultiImageSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIMultiImageSlider.h; sourceTree = "<group>"; };
+		024F8F2E16BC6C460082D051 /* ofxUIMultiImageToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIMultiImageToggle.h; sourceTree = "<group>"; };
+		024F8F2F16BC6C460082D051 /* ofxUINumberDialer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUINumberDialer.h; sourceTree = "<group>"; };
+		024F8F3016BC6C460082D051 /* ofxUIRadio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIRadio.h; sourceTree = "<group>"; };
+		024F8F3116BC6C460082D051 /* ofxUIRangeSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIRangeSlider.h; sourceTree = "<group>"; };
+		024F8F3216BC6C460082D051 /* ofxUIRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIRectangle.h; sourceTree = "<group>"; };
+		024F8F3316BC6C460082D051 /* ofxUIRotarySlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIRotarySlider.h; sourceTree = "<group>"; };
+		024F8F3416BC6C460082D051 /* ofxUIScrollableCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIScrollableCanvas.h; sourceTree = "<group>"; };
+		024F8F3516BC6C460082D051 /* ofxUISlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUISlider.h; sourceTree = "<group>"; };
+		024F8F3616BC6C460082D051 /* ofxUISpacer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUISpacer.h; sourceTree = "<group>"; };
+		024F8F3716BC6C460082D051 /* ofxUISpectrum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUISpectrum.h; sourceTree = "<group>"; };
+		024F8F3816BC6C460082D051 /* ofxUITextArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUITextArea.h; sourceTree = "<group>"; };
+		024F8F3916BC6C460082D051 /* ofxUITextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUITextInput.h; sourceTree = "<group>"; };
+		024F8F3A16BC6C460082D051 /* ofxUIToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIToggle.h; sourceTree = "<group>"; };
+		024F8F3B16BC6C460082D051 /* ofxUIToggleMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIToggleMatrix.h; sourceTree = "<group>"; };
+		024F8F3C16BC6C460082D051 /* ofxUIWaveform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIWaveform.h; sourceTree = "<group>"; };
+		024F8F3D16BC6C460082D051 /* ofxUIWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIWidget.h; sourceTree = "<group>"; };
+		024F8F3E16BC6C460082D051 /* ofxUIWidgetWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIWidgetWithLabel.h; sourceTree = "<group>"; };
 		026A305C16B21BB100B3C59C /* GEVisualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizer.cpp; sourceTree = "<group>"; };
 		026A305D16B21BB100B3C59C /* GEVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEVisualizer.h; sourceTree = "<group>"; };
 		027BFFA916BB12ED002F6346 /* LayoutRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutRenderer.cpp; sourceTree = "<group>"; };
@@ -226,6 +267,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		024F8F1516BC6C460082D051 /* ofxUI */ = {
+			isa = PBXGroup;
+			children = (
+				024F8F1616BC6C460082D051 /* ofxUI.h */,
+				024F8F1716BC6C460082D051 /* ofxUI2DPad.h */,
+				024F8F1816BC6C460082D051 /* ofxUIBaseDraws.h */,
+				024F8F1916BC6C460082D051 /* ofxUIBiLabelSlider.h */,
+				024F8F1A16BC6C460082D051 /* ofxUIButton.h */,
+				024F8F1B16BC6C460082D051 /* ofxUICanvas.h */,
+				024F8F1C16BC6C460082D051 /* ofxUICircleSlider.h */,
+				024F8F1D16BC6C460082D051 /* ofxUICustomImageButton.h */,
+				024F8F1E16BC6C460082D051 /* ofxUIDropDownList.h */,
+				024F8F1F16BC6C460082D051 /* ofxUIEventArgs.h */,
+				024F8F2016BC6C460082D051 /* ofxUIFPS.h */,
+				024F8F2116BC6C460082D051 /* ofxUIFPSSlider.h */,
+				024F8F2216BC6C460082D051 /* ofxUIImage.h */,
+				024F8F2316BC6C460082D051 /* ofxUIImageButton.h */,
+				024F8F2416BC6C460082D051 /* ofxUIImageSampler.h */,
+				024F8F2516BC6C460082D051 /* ofxUIImageSlider.h */,
+				024F8F2616BC6C460082D051 /* ofxUIImageToggle.h */,
+				024F8F2716BC6C460082D051 /* ofxUILabel.h */,
+				024F8F2816BC6C460082D051 /* ofxUILabelButton.h */,
+				024F8F2916BC6C460082D051 /* ofxUILabelToggle.h */,
+				024F8F2A16BC6C460082D051 /* ofxUIMinimalSlider.h */,
+				024F8F2B16BC6C460082D051 /* ofxUIMovingGraph.h */,
+				024F8F2C16BC6C460082D051 /* ofxUIMultiImageButton.h */,
+				024F8F2D16BC6C460082D051 /* ofxUIMultiImageSlider.h */,
+				024F8F2E16BC6C460082D051 /* ofxUIMultiImageToggle.h */,
+				024F8F2F16BC6C460082D051 /* ofxUINumberDialer.h */,
+				024F8F3016BC6C460082D051 /* ofxUIRadio.h */,
+				024F8F3116BC6C460082D051 /* ofxUIRangeSlider.h */,
+				024F8F3216BC6C460082D051 /* ofxUIRectangle.h */,
+				024F8F3316BC6C460082D051 /* ofxUIRotarySlider.h */,
+				024F8F3416BC6C460082D051 /* ofxUIScrollableCanvas.h */,
+				024F8F3516BC6C460082D051 /* ofxUISlider.h */,
+				024F8F3616BC6C460082D051 /* ofxUISpacer.h */,
+				024F8F3716BC6C460082D051 /* ofxUISpectrum.h */,
+				024F8F3816BC6C460082D051 /* ofxUITextArea.h */,
+				024F8F3916BC6C460082D051 /* ofxUITextInput.h */,
+				024F8F3A16BC6C460082D051 /* ofxUIToggle.h */,
+				024F8F3B16BC6C460082D051 /* ofxUIToggleMatrix.h */,
+				024F8F3C16BC6C460082D051 /* ofxUIWaveform.h */,
+				024F8F3D16BC6C460082D051 /* ofxUIWidget.h */,
+				024F8F3E16BC6C460082D051 /* ofxUIWidgetWithLabel.h */,
+			);
+			name = ofxUI;
+			path = ../../of_v0073_osx_release/addons/ofxUI/src;
+			sourceTree = "<group>";
+		};
 		02DB187A16A8D0E9002B223B /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,6 +434,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				024F8F1516BC6C460082D051 /* ofxUI */,
 				e6053ab7fec63d5f83825b880ce53c41 /* ofxOsc */,
 			);
 			name = addons;
@@ -710,6 +801,20 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					../../of_v0073_osx_release/addons/ofxOsc/libs,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip/posix,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip/win32,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/osc,
+					../../of_v0073_osx_release/addons/ofxOsc/src,
+					../../of_v0073_osx_release/addons/ofxUI/src,
+					../../of_v0073_osx_release/addons/ofxUI/libs,
+					/opt/local/include,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -796,6 +901,20 @@
 				GCC_MODEL_TUNING = NONE;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					../../of_v0073_osx_release/addons/ofxOsc/libs,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip/posix,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/ip/win32,
+					../../of_v0073_osx_release/addons/ofxOsc/libs/oscpack/src/osc,
+					../../of_v0073_osx_release/addons/ofxOsc/src,
+					../../of_v0073_osx_release/addons/ofxUI/src,
+					../../of_v0073_osx_release/addons/ofxUI/libs,
+					/opt/local/include,
+				);
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (

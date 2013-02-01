@@ -1,7 +1,53 @@
 #include "testApp.h"
 #include <boost/algorithm/string/predicate.hpp>
 
+// using std::cout;
 
+void guiEvent(ofxUIEventArgs &e) {
+    string name = e.widget->getName();
+    int kind = e.widget->getKind();
+
+    if(kind == OFX_UI_WIDGET_BUTTON) {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_TOGGLE) {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_IMAGEBUTTON) {
+        ofxUIImageButton *button = (ofxUIImageButton *) e.widget;
+        cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_IMAGETOGGLE) {
+        ofxUIImageToggle *toggle = (ofxUIImageToggle *) e.widget;
+        cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_LABELBUTTON) {
+        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
+        cout << name << "\t value: " << button->getValue() << endl;
+    
+    } else if(kind == OFX_UI_WIDGET_LABELTOGGLE) {
+        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+        cout << name << "\t value: " << toggle->getValue() << endl;
+    
+    } else if(name == "B1") {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        cout << "value: " << button->getValue() << endl;
+    
+    } else if(name == "B2") {
+        ofxUIButton *button = (ofxUIButton *) e.widget;
+        cout << "value: " << button->getValue() << endl;
+    
+    } else if(name == "T1") {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        cout << "value: " << toggle->getValue() << endl;
+    
+    } else if(name == "T2") {
+        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
+        cout << "value: " << toggle->getValue() << endl;
+    }
+}
 void testApp::setup(){
     ofSetWindowTitle("Map");
     ofSeedRandom();
@@ -41,6 +87,15 @@ void testApp::setupLayouts() {
 }
 
 void testApp::setupUI() {
+    gui = new ofxUICanvas(0, 0, ofGetWidth(), ofGetHeight());
+
+    gui->addWidgetDown(new ofxUILabel("BUTTONS", OFX_UI_FONT_MEDIUM));
+    gui->addWidgetDown(new ofxUIButton(200, 200, false, "B1"));
+
+    ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
+
+    ////////
+
     ofColor backgroundColor(255, 255, 255);
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
@@ -184,6 +239,7 @@ void testApp::draw(){
 
 void testApp::exit() {
     gelink.disconnect();
+    delete gui;
 }
 
 void buttonCallback(ofUIButton* button, void* appPointer){
@@ -217,7 +273,7 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     string layout_prefix = "layout_";
     if (boost::starts_with(button->getButtonID(), "layout_")) {
         printf("layout button pressed %s\n", button->getButtonID().c_str());
-        for (int i = 0; i < mainAppHandle.layoutRenderers.size(); i++) {            
+        for (int i = 0; i < mainAppHandle.layoutRenderers.size(); i++) {
             Layout& layout = *mainAppHandle.layoutRenderers[i].layout;
             if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
                 mainAppHandle.renderers_active_i = i;

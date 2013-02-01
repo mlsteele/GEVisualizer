@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
+#define OFX_UI_NO_XML
+#include "ofxUI.h"
+
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LayoutRenderer.h"
@@ -11,6 +14,8 @@
 
 class testApp : public ofBaseApp {
 public:
+    void guiEvent(ofxUIEventArgs &e);
+
     void setup();
     void setupLayouts();
     void setupUI();
@@ -35,6 +40,8 @@ public:
     ofTrueTypeFont mainAppFont;
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
+
+    ofxUICanvas* gui;
 
     ofUIMainView UImainView;
     vector<LayoutRenderer> layoutRenderers;
