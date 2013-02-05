@@ -16,9 +16,9 @@ void testApp::setup(){
 
     mainRenderMode.structure = true;
     mainRenderMode.locations = true;
-    mainRenderMode.texture = true;
-    mainRenderMode.presence = true;
-    mainRenderMode.userLocation = false;
+    mainRenderMode.texture = false;
+    mainRenderMode.presence = false;
+    mainRenderMode.userLocation = true;
 }
 
 void testApp::setupLayouts() {
@@ -210,7 +210,7 @@ void testApp::exit() {
 }
 
 void buttonCallback(ofUIButton* button, void* appPointer){
-    testApp& mainAppHandle = *(testApp*)appPointer;
+    testApp& app = *(testApp*)appPointer;
 
     // printf("buttonCallbackFunction()\n");
 
@@ -221,29 +221,30 @@ void buttonCallback(ofUIButton* button, void* appPointer){
     printf("button pressed (%s)\n", button->getButtonID().c_str());
 
     if (button->getButtonID() == "register") {
-        mainAppHandle.gelink.connect(mainAppHandle.ge_server_host, mainAppHandle.ge_server_port, mainAppHandle.listening_port);
+        app.gelink.connect(app.ge_server_host, app.ge_server_port, app.listening_port);
     }
 
     if (button->getButtonID() == "unregister") {
-        mainAppHandle.gelink.disconnect();
+        app.gelink.disconnect();
     }
 
     if (button->getButtonID() == "stream") {
-        mainAppHandle.gelink.sendLocationInfo();
-        mainAppHandle.gelink.streamUserPresenceData(true);
+        app.gelink.sendLocationInfo();
+        // app.gelink.streamUserPresenceData(true);
+        app.gelink.streamUserLocationData(true);
     }
 
     if (button->getButtonID() == "unstream") {
-        mainAppHandle.gelink.streamUserPresenceData(false);
+        app.gelink.streamUserPresenceData(false);
     }
 
     string layout_prefix = "layout_";
     if (boost::starts_with(button->getButtonID(), "layout_")) {
         printf("layout button pressed %s\n", button->getButtonID().c_str());
-        for (int i = 0; i < mainAppHandle.layoutRenderers.size(); i++) {
-            Layout& layout = *mainAppHandle.layoutRenderers[i].layout;
+        for (int i = 0; i < app.layoutRenderers.size(); i++) {
+            Layout& layout = *app.layoutRenderers[i].layout;
             if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
-                mainAppHandle.renderers_active_i = i;
+                app.renderers_active_i = i;
                 return;
             }
         }

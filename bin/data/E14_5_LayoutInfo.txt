@@ -11,10 +11,10 @@ LocationID:	11
 LocationPosition:	148.26	193.76	0
 LocationNode:	2
 LocationID:	22
-LocationPosition:	256.87	210.36	0
+LocationPosition: 288.21  222.98  0
 LocationNode:	3
 LocationID:	9
-LocationPosition:	288.21	222.98	0
+LocationPosition: 256.87  210.36  0
 
 misc notes:
 bwidth 440px 59.32m

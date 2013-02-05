@@ -144,6 +144,7 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
+    const float rotateX = 20;
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix();
@@ -163,7 +164,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     ofTranslate(
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
-    ofRotateX(20);
+    ofRotateX(rotateX);
 
     // texture
     ofEnableAlphaBlending(); // required for wall transparency
@@ -244,7 +245,12 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             PresenceData* presenceData = NULL;
             if (renderMode.presence) {
                  presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
-             }
+            }
+
+            UserLocationData* userLocationData = NULL;
+            if (renderMode.userLocation) {
+                userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
+            }
 
             if (presenceData) {
                 ofSetHexColor(0xD83DFF); // purple
@@ -267,9 +273,25 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 localLocation->position.y * projection.scale.y,
                 5 );
 
+            // location estimates
+            // TODO: fix rotation
+            // TODO: fix smoothing
+            // TODO: make prettier
+            if (userLocationData) {
+                for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                    ofFill();
+                    ofSetHexColor(0xE78317);
+                    ofCircle(
+                        (localLocation->position.x + estimate.x / 1000.) * projection.scale.x ,
+                        (localLocation->position.y + estimate.y / 1000.) * projection.scale.y ,
+                        3 );
+                }
+            }
+
             ofSetHexColor(0x0);
             ofFill();
-            fontMain->drawString((string)locationInfo.notes,
+            fontMain->drawString(
+                "(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
                 localLocation->position.x * projection.scale.x - 20,
                 localLocation->position.y * projection.scale.y - 20);
         }

@@ -3,6 +3,9 @@
 #include "ofMain.h"
 #include "Layout.h"
 #include "GEVisualizer.h"
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
+using boost::lexical_cast;
 
 typedef struct {
     POINT2D offset = {0, 0};
