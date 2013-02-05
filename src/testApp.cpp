@@ -13,6 +13,12 @@ void testApp::setup(){
 
     setupLayouts();
     setupUI();
+
+    mainRenderMode.structure = true;
+    mainRenderMode.locations = true;
+    mainRenderMode.texture = true;
+    mainRenderMode.presence = true;
+    mainRenderMode.userLocation = false;
 }
 
 void testApp::setupLayouts() {
@@ -185,8 +191,13 @@ void testApp::draw(){
     for (int i = 0; i < layoutRenderers.size(); i++) {
         float transition = i - renderers_transition_i;
         if (fabs(transition) < .97) {
-            LayoutRenderer::RenderMode mode = fabs(transition) < 0.2 ? LayoutRenderer::RenderStructureData : LayoutRenderer::RenderStructure;
-            layoutRenderers[i].render(mode, gelink, transition);
+            LayoutRenderMode activeRenderMode = mainRenderMode;
+            const bool really_nearby = fabs(transition) < 0.2;
+            activeRenderMode.locations    &= really_nearby;
+            activeRenderMode.texture      &= really_nearby;
+            activeRenderMode.presence     &= really_nearby;
+            activeRenderMode.userLocation &= really_nearby;
+            layoutRenderers[i].render(activeRenderMode, gelink, transition);
         }
     }
 

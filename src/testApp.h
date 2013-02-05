@@ -45,6 +45,7 @@ public:
 
     ofUIMainView UImainView;
     vector<LayoutRenderer> layoutRenderers;
+    LayoutRenderMode mainRenderMode;
     int renderers_active_i;
     float renderers_transition_i;
 

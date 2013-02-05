@@ -56,6 +56,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
 }
 
+// TODO: make this more efficient (less loops)
 void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     const unsigned int w = textureSize[0];
     const unsigned int h = textureSize[1];
@@ -142,7 +143,7 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
-void LayoutRenderer::render(RenderMode renderMode, GEVisualizer& dataStore, float transition) {
+void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix();
@@ -164,16 +165,15 @@ void LayoutRenderer::render(RenderMode renderMode, GEVisualizer& dataStore, floa
         projection.offset.y * projection.scale.y );
     ofRotateX(20);
 
-    if (renderMode == RenderStructureData) {
-        // texture
+    // texture
+    ofEnableAlphaBlending(); // required for wall transparency
+    if (renderMode.texture) {
         recalculateTexture(dataStore);
-        // mouseTestRecalculateTexture();
         ofSetHexColor(0x3D9BFF);
-        ofEnableAlphaBlending();
         texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
         texture.draw(0, 0, textureSize[0], textureSize[1]);
-        ofDisableAlphaBlending();
     }
+    ofDisableAlphaBlending();
 
     ofEnableSmoothing();
 
@@ -236,11 +236,15 @@ void LayoutRenderer::render(RenderMode renderMode, GEVisualizer& dataStore, floa
     }
 
     // locations locuses
-    if (renderMode == RenderStructureData) {
+    if (renderMode.locations) {
         for (LocationInfo& locationInfo : dataStore.getLocationInfo()) {
             Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
             if (!localLocation) continue;
-            PresenceData* presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
+
+            PresenceData* presenceData = NULL;
+            if (renderMode.presence) {
+                 presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
+             }
 
             if (presenceData) {
                 ofSetHexColor(0xD83DFF); // purple

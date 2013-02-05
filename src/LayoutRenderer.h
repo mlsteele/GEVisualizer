@@ -12,12 +12,26 @@ typedef struct {
     double screenPixelsPerMeter = 1;
 } LayoutProjection;
 
+typedef struct {
+    bool structure = true;
+    bool locations = true;
+    bool texture = false;
+    bool presence = false;
+    bool userLocation = false;
+} LayoutRenderMode;
+
+
 class LayoutRenderer {
 public:
     // TODO: free memory
     // ~LayoutRenderer() { delete[] textureData; }
 
-    enum RenderMode { RenderStructure, RenderStructureData };
+
+
+    enum RenderMode {
+        RenderStructure,
+        RenderStructureData
+    };
     
     void attachLayout(Layout* layout) { this->layout = layout; };
     void attachFonts(ofTrueTypeFont* fontMain, ofTrueTypeFont* fontMapNameLabel) {
@@ -26,7 +40,7 @@ public:
     }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
-    void render(RenderMode renderType, GEVisualizer& dataStore, float transition=0);
+    void render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition=0);
 
     Layout* layout;
 

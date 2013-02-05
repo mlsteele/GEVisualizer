@@ -8,6 +8,7 @@ GEVisualizer::GEVisualizer(){
     streamingUserLocationData = false;
     streamingUserTrackingData = false;
     streamingUserIdentityData = false;
+    streamingKeyUserEstimatedLocationData = false;
     serverIPAddress = "";
     serverPort = 5000;
     listenerPort = 5000;
@@ -44,6 +45,13 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     streamingUserLocationData = false;
     streamingUserTrackingData = false;
     streamingUserIdentityData = false;
+    streamingKeyUserEstimatedLocationData = false;
+    locationInfo.clear();
+    presenceData.clear();
+    countData.clear();
+    locationData.clear();
+    userLocationProbabilityData.clear();
+    keyUserEstimatedLocationData.clear();
     
     ofxOscMessage message;
     message.setAddress("/Register");
@@ -74,12 +82,19 @@ bool GEVisualizer::disconnect(){
     streamingUserLocationData = false;
     streamingUserTrackingData = false;
     streamingUserIdentityData = false;
+    streamingKeyUserEstimatedLocationData = false;
+    locationInfo.clear();
     presenceData.clear();
+    countData.clear();
+    locationData.clear();
+    userLocationProbabilityData.clear();
+    keyUserEstimatedLocationData.clear();
     
     return true;
 }
 
 bool GEVisualizer::update(){
+    
     while( receiver.hasWaitingMessages() ){
         
         ofxOscMessage m;
@@ -132,8 +147,75 @@ bool GEVisualizer::update(){
                     countData[i].countLikelihood =  m.getArgAsFloat(messageIndex++);
                 }
             }
-        } else {
-            printf("WARN: ignoring OSC message %s\n", m.getAddress().c_str());
+        }else if( m.getAddress() == "/UserLocationData" ){
+            locationData.clear();
+            
+            int messageIndex = 0;
+            int numLocations = m.getArgAsInt32(messageIndex++);
+            
+            if( numLocations > 0 ){
+                locationData.resize(numLocations);
+                
+                for(unsigned int i=0; i<numLocations; i++){
+                    locationData[i].locationID = m.getArgAsInt32(messageIndex++);
+                    int numUsersAtLocation = m.getArgAsInt32(messageIndex++);
+                    if( numUsersAtLocation > 0 ){
+                        locationData[i].userLocationEstimates.resize(numUsersAtLocation);
+                        for(unsigned int j=0; j<numUsersAtLocation; j++){
+                            locationData[i].userLocationEstimates[j].userID = m.getArgAsInt32(messageIndex++);
+                            locationData[i].userLocationEstimates[j].x = m.getArgAsFloat(messageIndex++);
+                            locationData[i].userLocationEstimates[j].y = m.getArgAsFloat(messageIndex++);
+                            locationData[i].userLocationEstimates[j].z = m.getArgAsFloat(messageIndex++);
+                            locationData[i].userLocationEstimates[j].estimationLikelihood = m.getArgAsFloat(messageIndex++);
+                        }
+                    }
+                }
+            }
+            
+            
+        }else if( m.getAddress() == "/UserLocationProbabilityData" ){
+            userLocationProbabilityData.clear();
+            
+            int numFunctions = m.getArgAsInt32(0);
+            printf("Got /UserLocationProbabilityData message! NumFunctions: %i \n",numFunctions);
+            if( numFunctions > 0 ){
+                userLocationProbabilityData.resize( numFunctions );
+                int messageIndex = 1;
+                int N = 0;
+                double weight;
+                vector< double > mu;
+                vector< double > sigma;
+                
+                for(int i=0; i<numFunctions; i++){
+                    N = m.getArgAsInt32(messageIndex++);
+                    weight = m.getArgAsFloat(messageIndex++);
+                    mu.resize(N);
+                    sigma.resize(N);
+                    for(int j=0; j<N; j++){
+                        mu[j] = m.getArgAsFloat(messageIndex++);
+                    }
+                    for(int j=0; j<N; j++){
+                        sigma[j] = m.getArgAsFloat(messageIndex++);
+                    }
+                    
+                    printf("mu: %f %f %f\n",mu[0],mu[1],mu[2]);
+                    
+                    userLocationProbabilityData[i].init(mu, sigma, weight);
+                }
+            }
+        }else if( m.getAddress() == "/KeyUsersEstimatedLocationData" ){
+            keyUserEstimatedLocationData.clear();
+            int numKeyUsers = m.getArgAsInt32(0);
+            if( numKeyUsers > 0 ){
+                keyUserEstimatedLocationData.resize( numKeyUsers );
+                int messageIndex = 1;
+                for(int i=0; i<numKeyUsers; i++){
+                    keyUserEstimatedLocationData[i].userID = m.getArgAsInt32(messageIndex++);
+                    keyUserEstimatedLocationData[i].lastObservedLocationID =  m.getArgAsInt32(messageIndex++);
+                    keyUserEstimatedLocationData[i].observationLikelihood =  m.getArgAsFloat(messageIndex++);
+                    keyUserEstimatedLocationData[i].timeStampAsString = m.getArgAsString(messageIndex++);
+                }
+            }
         }
         
     }
@@ -200,6 +282,7 @@ bool GEVisualizer::streamUserLocationData(bool state){
     message.setAddress("/StreamUserLocationData");
     message.addIntArg( (int)listenerPort );
     message.addIntArg( (state ? 1 : 0) );
+    message.addIntArg( 1 ); //Send global coordinates
     sendMessage( message );
     return true;
 }
@@ -236,6 +319,36 @@ bool GEVisualizer::streamUserIdentityData(bool state){
     return true;
 }
 
+bool GEVisualizer::streamUserLocationProbabilityData(bool state){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send streamUserLocationProbabilityData(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/StreamUserLocationProbabilityData");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
+    sendMessage( message );
+    return true;
+}
+
+bool GEVisualizer::streamKeyUserEstimatedLocationData(bool state){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send streamKeyUserEstimatedLocationData(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/StreamKeyUsersEstimatedLocationData");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
+    sendMessage( message );
+    return true;
+}
+
 vector< LocationInfo > GEVisualizer::getLocationInfo(){
     return locationInfo;
 }
@@ -248,30 +361,42 @@ vector< PresenceData > GEVisualizer::getPresenceData(){
     return presenceData;
 }
 
+vector< UserLocationData > GEVisualizer::getUserLocationData(){
+    return locationData;
+}
+
+vector< GaussianDistribution > GEVisualizer::getUserLocationProbabilityData(){
+    return userLocationProbabilityData;
+}
+
+vector< KeyUserLocationEstimate > GEVisualizer::getKeyUserEstimatedLocationData(){
+    return keyUserEstimatedLocationData;
+}
+
 bool GEVisualizer::sendMessage( ofxOscMessage message ){
     
     const int OUTPUT_BUFFER_SIZE = 16384;
-	char buffer[OUTPUT_BUFFER_SIZE];
+    char buffer[OUTPUT_BUFFER_SIZE];
     osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
     
     p << osc::BeginMessage( message.getAddress().c_str() );
-	for ( int i=0; i< message.getNumArgs(); ++i )
-	{
-		if ( message.getArgType(i) == OFXOSC_TYPE_INT32 )
-			p << message.getArgAsInt32( i );
-		else if ( message.getArgType(i) == OFXOSC_TYPE_INT64 )
-			p << (osc::int64)message.getArgAsInt64( i );
-		else if ( message.getArgType( i ) == OFXOSC_TYPE_FLOAT )
-			p << message.getArgAsFloat( i );
-		else if ( message.getArgType( i ) == OFXOSC_TYPE_STRING )
-			p << message.getArgAsString( i ).c_str();
-		else
-		{
-			ofLogError() << "bad argument type" + ofToString(message.getArgType( i ));
-			assert( false );
-		}
-	}
-	p << osc::EndMessage;
+    for ( int i=0; i< message.getNumArgs(); ++i )
+    {
+        if ( message.getArgType(i) == OFXOSC_TYPE_INT32 )
+            p << message.getArgAsInt32( i );
+        else if ( message.getArgType(i) == OFXOSC_TYPE_INT64 )
+            p << (osc::int64)message.getArgAsInt64( i );
+        else if ( message.getArgType( i ) == OFXOSC_TYPE_FLOAT )
+            p << message.getArgAsFloat( i );
+        else if ( message.getArgType( i ) == OFXOSC_TYPE_STRING )
+            p << message.getArgAsString( i ).c_str();
+        else
+        {
+            ofLogError() << "bad argument type" + ofToString(message.getArgType( i ));
+            assert( false );
+        }
+    }
+    p << osc::EndMessage;
     
     UdpTransmitSocket *socket = sender.getSocket();
     socket->Send( p.Data(), p.Size() );
