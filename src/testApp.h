@@ -4,6 +4,7 @@
 #include "ofxOsc.h"
 // #define OFX_UI_NO_XML
 // #include "ofxUI.h"
+#include <boost/regex.hpp>
 
 #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
@@ -23,6 +24,9 @@ public:
     void update();
     void draw();
     void exit();
+
+    void buttonCallback(ofUIButton& button);
+    void setButtonVisibilities();    
 
     // void guiEvent(ofxUIEventArgs &e);
     void keyPressed  (int key);
@@ -44,6 +48,9 @@ public:
     // ofxUICanvas* gui;
 
     ofUIMainView UImainView;
+    ofUISubView UIserverSubView;
+    ofUISubView UIlayoutSubView;
+
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderMode mainRenderMode;
     int renderers_active_i;

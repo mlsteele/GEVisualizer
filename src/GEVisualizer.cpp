@@ -25,7 +25,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
             printf("-[GEVisualizer] Already connected, disconnecting first...\n");
         }
         
-        disconnect();
+        disconnet();
         
         if( verbose ){
             printf("-[GEVisualizer] Disconnected\n");
@@ -42,6 +42,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     connected = true;
     streamingUserPresenceData = false;
     streamingUserCountData = false;
+    streamingUserProximityData = false;
     streamingUserLocationData = false;
     streamingUserTrackingData = false;
     streamingUserIdentityData = false;
@@ -49,6 +50,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     locationInfo.clear();
     presenceData.clear();
     countData.clear();
+    proximityData.clear();
     locationData.clear();
     userLocationProbabilityData.clear();
     keyUserEstimatedLocationData.clear();
@@ -62,7 +64,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     return true;
 }
 
-bool GEVisualizer::disconnect(){
+bool GEVisualizer::disconnet(){
     
     if( !connected ){
         if( verbose ){
@@ -79,6 +81,7 @@ bool GEVisualizer::disconnect(){
     connected = false;
     streamingUserPresenceData = false;
     streamingUserCountData = false;
+    streamingUserProximityData = false;
     streamingUserLocationData = false;
     streamingUserTrackingData = false;
     streamingUserIdentityData = false;
@@ -86,6 +89,7 @@ bool GEVisualizer::disconnect(){
     locationInfo.clear();
     presenceData.clear();
     countData.clear();
+    proximityData.clear();
     locationData.clear();
     userLocationProbabilityData.clear();
     keyUserEstimatedLocationData.clear();
@@ -147,6 +151,28 @@ bool GEVisualizer::update(){
                     countData[i].countLikelihood =  m.getArgAsFloat(messageIndex++);
                 }
             }
+        }else if( m.getAddress() == "/UserProximityData" ){
+            proximityData.clear();
+            int messageIndex = 0;
+            int numLocations = m.getArgAsInt32(messageIndex++);
+            int numProximityZones = m.getArgAsInt32(messageIndex++);
+            if( numLocations > 0 ){
+                proximityData.resize( numLocations );
+                for(int i=0; i<numLocations; i++){
+                    proximityData[i].locationID = m.getArgAsInt32(messageIndex++);
+                    proximityData[i].numProximityZones = numProximityZones;
+                    proximityData[i].closestActiveZoneID = m.getArgAsInt32(messageIndex++);
+                    proximityData[i].totalNumberUsersVisible = m.getArgAsInt32(messageIndex++);
+                    proximityData[i].closestUserX = m.getArgAsFloat(messageIndex++);
+                    proximityData[i].closestUserY = m.getArgAsFloat(messageIndex++);
+                    proximityData[i].closestUserZ = m.getArgAsFloat(messageIndex++);
+                    
+                    proximityData[i].proximityZonesUserCounts.resize( numProximityZones );
+                    for(int j=0; j<numProximityZones; j++){
+                        proximityData[i].proximityZonesUserCounts[j] =  m.getArgAsFloat(messageIndex++);
+                    }
+                }
+            }
         }else if( m.getAddress() == "/UserLocationData" ){
             locationData.clear();
             
@@ -167,6 +193,7 @@ bool GEVisualizer::update(){
                             locationData[i].userLocationEstimates[j].y = m.getArgAsFloat(messageIndex++);
                             locationData[i].userLocationEstimates[j].z = m.getArgAsFloat(messageIndex++);
                             locationData[i].userLocationEstimates[j].estimationLikelihood = m.getArgAsFloat(messageIndex++);
+                            //printf("Got User Location Data: %f %f %f\n",locationData[i].userLocationEstimates[j].x,locationData[i].userLocationEstimates[j].y,locationData[i].userLocationEstimates[j].z);
                         }
                     }
                 }
@@ -270,6 +297,23 @@ bool GEVisualizer::streamUserCountData(bool state){
     return true;
 }
 
+bool GEVisualizer::streamUserProximityData(bool state){
+    
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send streamUserProximityData(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/StreamUserProximityData");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
+    sendMessage( message );
+    return true;
+    
+}
+
 bool GEVisualizer::streamUserLocationData(bool state){
     
     if( !connected ){
@@ -349,16 +393,51 @@ bool GEVisualizer::streamKeyUserEstimatedLocationData(bool state){
     return true;
 }
 
+bool GEVisualizer::recordRGBImages(bool state){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send recordRGBImages(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/RecordRGBImages");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
+    sendMessage( message );
+    return true;
+
+}
+
+bool GEVisualizer::autoLabelRGBImages(bool state){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send autoLabelRGBImages(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/AutoLabelRGBImages");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
+    sendMessage( message );
+    return true;
+}
+
 vector< LocationInfo > GEVisualizer::getLocationInfo(){
     return locationInfo;
+}
+
+vector< PresenceData > GEVisualizer::getPresenceData(){
+    return presenceData;
 }
 
 vector< CountData > GEVisualizer::getCountData(){
     return countData;
 }
 
-vector< PresenceData > GEVisualizer::getPresenceData(){
-    return presenceData;
+vector< ProximityEstimate > GEVisualizer::getProximityData(){
+    return proximityData;
 }
 
 vector< UserLocationData > GEVisualizer::getUserLocationData(){
@@ -376,27 +455,27 @@ vector< KeyUserLocationEstimate > GEVisualizer::getKeyUserEstimatedLocationData(
 bool GEVisualizer::sendMessage( ofxOscMessage message ){
     
     const int OUTPUT_BUFFER_SIZE = 16384;
-    char buffer[OUTPUT_BUFFER_SIZE];
+	char buffer[OUTPUT_BUFFER_SIZE];
     osc::OutboundPacketStream p( buffer, OUTPUT_BUFFER_SIZE );
     
     p << osc::BeginMessage( message.getAddress().c_str() );
-    for ( int i=0; i< message.getNumArgs(); ++i )
-    {
-        if ( message.getArgType(i) == OFXOSC_TYPE_INT32 )
-            p << message.getArgAsInt32( i );
-        else if ( message.getArgType(i) == OFXOSC_TYPE_INT64 )
-            p << (osc::int64)message.getArgAsInt64( i );
-        else if ( message.getArgType( i ) == OFXOSC_TYPE_FLOAT )
-            p << message.getArgAsFloat( i );
-        else if ( message.getArgType( i ) == OFXOSC_TYPE_STRING )
-            p << message.getArgAsString( i ).c_str();
-        else
-        {
-            ofLogError() << "bad argument type" + ofToString(message.getArgType( i ));
-            assert( false );
-        }
-    }
-    p << osc::EndMessage;
+	for ( int i=0; i< message.getNumArgs(); ++i )
+	{
+		if ( message.getArgType(i) == OFXOSC_TYPE_INT32 )
+			p << message.getArgAsInt32( i );
+		else if ( message.getArgType(i) == OFXOSC_TYPE_INT64 )
+			p << (osc::int64)message.getArgAsInt64( i );
+		else if ( message.getArgType( i ) == OFXOSC_TYPE_FLOAT )
+			p << message.getArgAsFloat( i );
+		else if ( message.getArgType( i ) == OFXOSC_TYPE_STRING )
+			p << message.getArgAsString( i ).c_str();
+		else
+		{
+			ofLogError() << "bad argument type" + ofToString(message.getArgType( i ));
+			assert( false );
+		}
+	}
+	p << osc::EndMessage;
     
     UdpTransmitSocket *socket = sender.getSocket();
     socket->Send( p.Data(), p.Size() );

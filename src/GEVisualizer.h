@@ -48,6 +48,32 @@ struct CountData{
 };
 typedef struct CountData CountData;
 
+struct ProximityEstimate{
+    ProximityEstimate(){
+        locationID = 0;
+        numProximityZones = 0;
+        closestActiveZoneID = 0;
+        totalNumberUsersVisible = 0;
+        closestUserX = 0;
+        closestUserY = 0;
+        closestUserZ = 0;
+    }
+    
+    double getClosestUserDistanceFromLocation(){
+        return sqrt( (closestUserX*closestUserX)+(closestUserY*closestUserY)+(closestUserZ*closestUserZ) );
+    }
+    unsigned int locationID;
+    unsigned int numProximityZones;
+    unsigned int closestActiveZoneID;
+    unsigned int totalNumberUsersVisible;
+    double closestUserX;
+    double closestUserY;
+    double closestUserZ;
+    vector< unsigned int > proximityZonesUserCounts;
+    
+};
+typedef struct ProximityEstimate ProximityEstimate;
+
 struct UserLocationEstimate{
     UserLocationEstimate(){
         userID = 0;
@@ -94,24 +120,31 @@ public:
     ~GEVisualizer();
     
     bool connect(string serverIPAddress,unsigned int serverPort,unsigned int listenerPort);
-    bool disconnect();
+    bool disconnet();
     bool update();
     
     bool sendLocationInfo();
     bool streamUserPresenceData(bool state);
     bool streamUserCountData(bool state);
+    bool streamUserProximityData(bool state);
     bool streamUserLocationData(bool state);
     bool streamUserTrackingData(bool state);
     bool streamUserIdentityData(bool state);
     bool streamUserLocationProbabilityData(bool state);
     bool streamKeyUserEstimatedLocationData(bool state);
     
+    bool recordRGBImages(bool state);
+    bool autoLabelRGBImages(bool state);
+    
     vector< LocationInfo > getLocationInfo();
     vector< PresenceData > getPresenceData();
     vector< CountData > getCountData();
+    vector< ProximityEstimate > getProximityData();
     vector< UserLocationData > getUserLocationData();
     vector< GaussianDistribution > getUserLocationProbabilityData();
     vector< KeyUserLocationEstimate > getKeyUserEstimatedLocationData();
+
+    bool getIsConnected() {return connected;}
     
 protected:
     bool sendMessage( ofxOscMessage message );
@@ -123,6 +156,7 @@ protected:
     bool verbose;
     bool streamingUserPresenceData;
     bool streamingUserCountData;
+    bool streamingUserProximityData;
     bool streamingUserLocationData;
     bool streamingUserTrackingData;
     bool streamingUserIdentityData;
@@ -135,6 +169,7 @@ protected:
     vector< LocationInfo > locationInfo;
     vector< PresenceData > presenceData;
     vector< CountData > countData;
+    vector< ProximityEstimate > proximityData;
     vector< UserLocationData > locationData;
     vector< GaussianDistribution > userLocationProbabilityData;
     vector< KeyUserLocationEstimate > keyUserEstimatedLocationData;

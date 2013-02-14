@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 
 void testApp::setup(){
     ofSetWindowTitle("Map");
@@ -17,7 +18,7 @@ void testApp::setup(){
     mainRenderMode.structure = true;
     mainRenderMode.locations = true;
     mainRenderMode.texture = false;
-    mainRenderMode.presence = false;
+    mainRenderMode.presence = true;
     mainRenderMode.userLocation = true;
 }
 
@@ -75,7 +76,6 @@ void testApp::setupUIServer() {
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
-    ofUISubView UIserverSubView;
     UIserverSubView.init("UIserverSubView",
         ofRectangle( UImainView.getBounds().x, UImainView.getBounds().y + 768 - 120 ,
                      UImainView.getBounds().width, UImainView.getBounds().height ),
@@ -87,7 +87,7 @@ void testApp::setupUIServer() {
 
     ofUIButton buttonFactory;
     buttonFactory.setFont(fontVerd10);
-    buttonFactory.setCallback(buttonCallback);
+    buttonFactory.setCallback(::buttonCallback);
 
     float xo = 12; // origin / cursor
     float xb = 130; // size
@@ -99,30 +99,85 @@ void testApp::setupUIServer() {
     float yi = yb + ys;
 
     ofRectangle cookieCutter(xo, yo, xb, yb);
+    // buttonID, ofRectangle bounds, text, backgroundColor, foregroundColor, selectedColor);
 
     buttonFactory.init("register",
         cookieCutter, "Register",
-        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
     UIserverSubView.addButton(buttonFactory);
 
     // yo += yi;
     cookieCutter.translate(0, yi);
     buttonFactory.init("unregister",
         cookieCutter, "Unregister",
-        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
     UIserverSubView.addButton(buttonFactory);
+
 
     cookieCutter.translate(xi, -yi);
     buttonFactory.init("stream",
         cookieCutter, "Stream",
-        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
     UIserverSubView.addButton(buttonFactory);
 
     cookieCutter.translate(0, yi);
     buttonFactory.init("unstream",
         cookieCutter, "Unstream",
-        ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
     UIserverSubView.addButton(buttonFactory);
+
+
+    cookieCutter.translate(xi, -yi);
+    buttonFactory.init("rendermode_locations_on",
+        cookieCutter, "Show Locations",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("rendermode_locations_off",
+        cookieCutter, "Hide Locations",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+
+    cookieCutter.translate(xi, -yi);
+    buttonFactory.init("rendermode_texture_on",
+        cookieCutter, "Show Texture",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("rendermode_texture_off",
+        cookieCutter, "Hide Textures",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+
+    cookieCutter.translate(xi, -yi);
+    buttonFactory.init("rendermode_presence_on",
+        cookieCutter, "Show Presence",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("rendermode_presence_off",
+        cookieCutter, "Hide Presence",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+
+    cookieCutter.translate(xi, -yi);
+    buttonFactory.init("rendermode_userlocation_on",
+        cookieCutter, "Show User Locations",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
+    cookieCutter.translate(0, yi);
+    buttonFactory.init("rendermode_userlocation_off",
+        cookieCutter, "Hide User Locations",
+        ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
+    UIserverSubView.addButton(buttonFactory);
+
 
     UImainView.addSubView(UIserverSubView);
 }
@@ -132,7 +187,6 @@ void testApp::setupUILayouts()  {
     ofColor foregroundColor(0, 0, 0);
     ofColor borderColor(0, 0, 0);
 
-    ofUISubView UIlayoutSubView;
     UIlayoutSubView.init("UIlayoutSubView",
         ofRectangle( UImainView.getBounds().x + 850, UImainView.getBounds().y ,
                      UImainView.getBounds().width, UImainView.getBounds().height ),
@@ -144,7 +198,7 @@ void testApp::setupUILayouts()  {
 
     ofUIButton buttonFactory;
     buttonFactory.setFont(fontVerd10);
-    buttonFactory.setCallback(buttonCallback);
+    buttonFactory.setCallback(::buttonCallback);
 
     float xo = 12; // origin / cursor
     float xb = 130; // size
@@ -161,7 +215,7 @@ void testApp::setupUILayouts()  {
         Layout& layout = *(layoutRenderer.layout);
         buttonFactory.init("layout_" + layout.layoutName,
             cookieCutter, layout.layoutName,
-            ofColor(255, 255, 255), ofColor(0, 0, 0), ofColor(100, 100, 100));
+            ofColor(210, 210, 210), ofColor(0, 0, 0), ofColor(50, 50, 50));
         UIlayoutSubView.addButton(buttonFactory);
         cookieCutter.translate(0, yi);
     }
@@ -205,100 +259,86 @@ void testApp::draw(){
 }
 
 void testApp::exit() {
-    gelink.disconnect();
+    gelink.disconnet();
     // delete gui;
 }
 
-void buttonCallback(ofUIButton* button, void* appPointer){
+void buttonCallback(ofUIButton* button_pointer, void* appPointer) {
     testApp& app = *(testApp*)appPointer;
+    app.buttonCallback(*button_pointer);
+}
 
-    // printf("buttonCallbackFunction()\n");
-
+void testApp::buttonCallback(ofUIButton& button) {
     // Only respond to a button down press
-    if( !button->isButtonDownState() ) return;
+    if( !button.isButtonDownState() ) return;
     // printf("isButtonDownState() -> true\n");
 
-    printf("button pressed (%s)\n", button->getButtonID().c_str());
+    printf("button pressed (%s)\n", button.getButtonID().c_str());
 
-    if (button->getButtonID() == "register") {
-        app.gelink.connect(app.ge_server_host, app.ge_server_port, app.listening_port);
+    if (button.getButtonID() == "register") {
+        gelink.connect(ge_server_host, ge_server_port, listening_port);
     }
 
-    if (button->getButtonID() == "unregister") {
-        app.gelink.disconnect();
+    if (button.getButtonID() == "unregister") {
+        gelink.disconnet();
     }
 
-    if (button->getButtonID() == "stream") {
-        app.gelink.sendLocationInfo();
-        // app.gelink.streamUserPresenceData(true);
-        app.gelink.streamUserLocationData(true);
+    if (button.getButtonID() == "stream") {
+        gelink.sendLocationInfo();
+        gelink.streamUserPresenceData(true);
+        gelink.streamUserLocationData(true);
     }
 
-    if (button->getButtonID() == "unstream") {
-        app.gelink.streamUserPresenceData(false);
+    if (button.getButtonID() == "unstream") {
+        gelink.streamUserPresenceData(false);
+        gelink.streamUserLocationData(false);
     }
 
     string layout_prefix = "layout_";
-    if (boost::starts_with(button->getButtonID(), "layout_")) {
-        printf("layout button pressed %s\n", button->getButtonID().c_str());
-        for (int i = 0; i < app.layoutRenderers.size(); i++) {
-            Layout& layout = *app.layoutRenderers[i].layout;
-            if (boost::ends_with(button->getButtonID(), layout.layoutName)) {
-                app.renderers_active_i = i;
+    if (boost::starts_with(button.getButtonID(), "layout_")) {
+        printf("layout button pressed %s\n", button.getButtonID().c_str());
+        for (int i = 0; i < layoutRenderers.size(); i++) {
+            Layout& layout = *layoutRenderers[i].layout;
+            if (boost::ends_with(button.getButtonID(), layout.layoutName)) {
+                renderers_active_i = i;
                 return;
             }
         }
         printf("WARN: failed to find matching layout for button\n");
     }
+
+    string rendermode_prefix = "rendermode_";
+    if (boost::starts_with(button.getButtonID(), "layout_")) {
+        string id = button.getButtonID();
+        printf("rendermode button pressed %s\n", button.getButtonID().c_str());
+        bool state = boost::ends_with(button.getButtonID(), "_on");
+        string mode = string(id.begin() + rendermode_prefix.length(), id.end() - (state ? 3 : 4));
+        printf("button mode %s\n", mode.c_str());
+    }
+    // "locations_on"
+    // "locations_off"
+    // "texture_on"
+    // "texture_off"
+    // "presence_on"
+    // "presence_off"
+    // "userlocation_on"
+    // "userlocation_off"
+
+    setButtonVisibilities();
 }
 
-/*
-void guiEvent(ofxUIEventArgs &e) {
-    string name = e.widget->getName();
-    int kind = e.widget->getKind();
-
-    if(kind == OFX_UI_WIDGET_BUTTON) {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        std::cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_TOGGLE) {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        std::cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_IMAGEBUTTON) {
-        ofxUIImageButton *button = (ofxUIImageButton *) e.widget;
-        std::cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_IMAGETOGGLE) {
-        ofxUIImageToggle *toggle = (ofxUIImageToggle *) e.widget;
-        std::cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_LABELBUTTON) {
-        ofxUILabelButton *button = (ofxUILabelButton *) e.widget;
-        std::cout << name << "\t value: " << button->getValue() << endl;
-    
-    } else if(kind == OFX_UI_WIDGET_LABELTOGGLE) {
-        ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
-        std::cout << name << "\t value: " << toggle->getValue() << endl;
-    
-    } else if(name == "B1") {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        std::cout << "value: " << button->getValue() << endl;
-    
-    } else if(name == "B2") {
-        ofxUIButton *button = (ofxUIButton *) e.widget;
-        std::cout << "value: " << button->getValue() << endl;
-    
-    } else if(name == "T1") {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        std::cout << "value: " << toggle->getValue() << endl;
-    
-    } else if(name == "T2") {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        std::cout << "value: " << toggle->getValue() << endl;
+void testApp::setButtonVisibilities() {
+    printf("setting button visibilities\n");
+    for(ofUIButton& button : UIserverSubView.buttons) {
+        if (!gelink.getIsConnected() && (button.getButtonID() != "register" || button.getButtonID() != "unregister")){
+            printf("false %s\n", button.getButtonID().c_str());
+            button.setIsButtonVisible(false);
+        } else {
+            button.setIsButtonVisible(true);
+            printf("true %s\n", button.getButtonID().c_str());
+        }
     }
 }
-*/
 
 void testApp::keyPressed(int key){
     UImainView.keyPressedEvent(key);

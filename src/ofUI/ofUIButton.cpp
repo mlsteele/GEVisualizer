@@ -109,19 +109,18 @@ void ofUIButton::draw(float parentX,float parentY)
             ofNoFill();
             ofRect(originX + bounds.x, originY + bounds.y, bounds.width, bounds.height);
             
-        }
-
-        if( font.isLoaded() ){
-            float textX = originX + bounds.x;
-            float textY = originY + bounds.y;
-            ofRectangle rect = font.getStringBoundingBox(buttonText, 0,0);
-            //If the text is smaller than the box then we try and center it within the box
-            if( rect.width < bounds.width )
-                textX = (textX+(bounds.width/2)) - (rect.width/2);
-            if( rect.height < bounds.height )
-                textY = (textY+(bounds.height/2)) + (rect.height/2);
-            
-            font.drawString(buttonText, textX, textY);
+            if( font.isLoaded() ){
+                float textX = originX + bounds.x;
+                float textY = originY + bounds.y;
+                ofRectangle rect = font.getStringBoundingBox(buttonText, 0,0);
+                //If the text is smaller than the box then we try and center it within the box
+                if( rect.width < bounds.width )
+                    textX = (textX+(bounds.width/2)) - (rect.width/2);
+                if( rect.height < bounds.height )
+                    textY = (textY+(bounds.height/2)) + (rect.height/2);
+                
+                font.drawString(buttonText, textX, textY);
+            }
         }
 	}
 }
