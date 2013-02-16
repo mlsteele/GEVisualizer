@@ -26,7 +26,7 @@ public:
     void exit();
 
     void buttonCallback(ofUIButton& button);
-    void setButtonVisibilities();    
+    void syncButtonVisibility(ofUIButton& button);
 
     // void guiEvent(ofxUIEventArgs &e);
     void keyPressed  (int key);

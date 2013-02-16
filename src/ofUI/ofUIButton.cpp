@@ -43,6 +43,9 @@ void ofUIButton::init(string buttonID,ofRectangle bounds,string text,ofColor bac
 
 void ofUIButton::draw(float parentX,float parentY)
 {
+    if (!visible) {
+        printf("%s (%s) is invisible.", buttonID.c_str(), text.c_str());
+    }
 	if( visible ){
 		std::string buttonText = text;
         

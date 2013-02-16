@@ -269,8 +269,10 @@ void buttonCallback(ofUIButton* button_pointer, void* appPointer) {
 }
 
 void testApp::buttonCallback(ofUIButton& button) {
-    // Only respond to a button down press
-    if( !button.isButtonDownState() ) return;
+    syncButtonVisibility(button);
+
+    // Only respond to a visible button press
+    if( !button.isButtonDownState() || !button.isVisible() ) return;
     // printf("isButtonDownState() -> true\n");
 
     printf("button pressed (%s)\n", button.getButtonID().c_str());
@@ -295,7 +297,7 @@ void testApp::buttonCallback(ofUIButton& button) {
     }
 
     string layout_prefix = "layout_";
-    if (boost::starts_with(button.getButtonID(), "layout_")) {
+    if (boost::starts_with(button.getButtonID(), layout_prefix)) {
         printf("layout button pressed %s\n", button.getButtonID().c_str());
         for (int i = 0; i < layoutRenderers.size(); i++) {
             Layout& layout = *layoutRenderers[i].layout;
@@ -308,35 +310,40 @@ void testApp::buttonCallback(ofUIButton& button) {
     }
 
     string rendermode_prefix = "rendermode_";
-    if (boost::starts_with(button.getButtonID(), "layout_")) {
+    if (boost::starts_with(button.getButtonID(), rendermode_prefix)) {
         string id = button.getButtonID();
         printf("rendermode button pressed %s\n", button.getButtonID().c_str());
         bool state = boost::ends_with(button.getButtonID(), "_on");
         string mode = string(id.begin() + rendermode_prefix.length(), id.end() - (state ? 3 : 4));
-        printf("button mode %s\n", mode.c_str());
-    }
-    // "locations_on"
-    // "locations_off"
-    // "texture_on"
-    // "texture_off"
-    // "presence_on"
-    // "presence_off"
-    // "userlocation_on"
-    // "userlocation_off"
+        printf("button mode %s <- %i\n", mode.c_str(), state);
 
-    setButtonVisibilities();
+        if (mode == "locations") {
+            mainRenderMode.locations = state;
+        }
+        else if (mode == "texture") {
+            mainRenderMode.texture = state;
+        }
+        else if (mode == "presence") {
+            mainRenderMode.presence = state;
+        }
+        else if (mode == "userlocation") {
+            mainRenderMode.userLocation = state;
+        }
+
+        // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
+        // button.setVisible(!button.isVisible());
+        // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
+    }
 }
 
-void testApp::setButtonVisibilities() {
-    printf("setting button visibilities\n");
-    for(ofUIButton& button : UIserverSubView.buttons) {
-        if (!gelink.getIsConnected() && (button.getButtonID() != "register" || button.getButtonID() != "unregister")){
-            printf("false %s\n", button.getButtonID().c_str());
-            button.setIsButtonVisible(false);
-        } else {
-            button.setIsButtonVisible(true);
-            printf("true %s\n", button.getButtonID().c_str());
-        }
+void testApp::syncButtonVisibility(ofUIButton& button) {
+    printf("%i\n", button.getButtonID() == "register");
+    if (!gelink.getIsConnected() && !(button.getButtonID() == "register" || button.getButtonID() == "unregister")){
+        printf("visibility false %s\n", button.getButtonID().c_str());
+        button.setVisible(false);
+    } else {
+        printf("visibility true %s\n", button.getButtonID().c_str());
+        button.setVisible(true);
     }
 }
 

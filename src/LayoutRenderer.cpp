@@ -281,9 +281,11 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);
+                    float ex = estimate.x;
+                    float ey = estimate.y;
                     ofCircle(
-                        (localLocation->position.x + estimate.x / 1000.) * projection.scale.x ,
-                        (localLocation->position.y + estimate.y / 1000.) * projection.scale.y ,
+                        (localLocation->position.x + ex / 1000.) * projection.scale.x ,
+                        (localLocation->position.y + ey / 1000.) * projection.scale.y ,
                         3 );
                 }
             }
