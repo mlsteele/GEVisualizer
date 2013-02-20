@@ -277,11 +277,11 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO: fix rotation
             // TODO: fix smoothing
             // TODO: make prettier
-            if (userLocationData) {
+            if (userLocationData != NULL) {
                 for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);
-                    float ex = estimate.x;
+                    float ex = estimate.x; // TODO: sometimes this EXEC_BAD_ACESS's
                     float ey = estimate.y;
                     ofCircle(
                         (localLocation->position.x + ex / 1000.) * projection.scale.x ,

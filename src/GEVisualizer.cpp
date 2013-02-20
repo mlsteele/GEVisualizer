@@ -127,6 +127,9 @@ bool GEVisualizer::update(){
                     locationInfo[i].notes =  m.getArgAsString(messageIndex++);
                 }
             }
+            for (LocationInfo& locationInfo : this->locationInfo) {
+                printf("got location info for ID (%i)\n", locationInfo.locationID);
+            }
         }else if( m.getAddress() == "/UserPresenceData" ){
             presenceData.clear();
             int numLocations = m.getArgAsInt32(0);

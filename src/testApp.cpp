@@ -23,6 +23,11 @@ void testApp::setup(){
 }
 
 void testApp::setupLayouts() {
+    bool reload = layoutRenderers.size() != 0;
+    // clear old layouts
+    // TODO: clean up memory!
+    if (reload) layoutRenderers.clear();
+
     POINT2D screen_px_corner = {135, 100};
     POINT2D real_corner = {0, 0};
     double screenPixelsPerMeter = 10;
@@ -43,8 +48,11 @@ void testApp::setupLayouts() {
         layoutRenderers.back().attachFonts(&fontVerd10, &fontVerd14);
         layoutRenderers.back().setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
     }
-    renderers_active_i = 1;
-    renderers_transition_i = renderers_active_i;
+
+    if (!reload) {
+        renderers_active_i = 1;
+        renderers_transition_i = renderers_active_i;
+    }
 }
 
 void testApp::setupUI() {
@@ -269,7 +277,7 @@ void buttonCallback(ofUIButton* button_pointer, void* appPointer) {
 }
 
 void testApp::buttonCallback(ofUIButton& button) {
-    syncButtonVisibility(button);
+    // syncButtonVisibility(button);
 
     // Only respond to a visible button press
     if( !button.isButtonDownState() || !button.isVisible() ) return;
@@ -352,6 +360,9 @@ void testApp::keyPressed(int key){
 
     switch( key ){
         case 'q':
+            break;
+        case 'r':
+            setupLayouts();
             break;
         default:
             printf("Key Pressed: %i\n", key);
