@@ -5,6 +5,10 @@ typedef struct {
 } POINT3D;
 
 typedef struct {
+    double theta, psi, theotherthing;
+} ROTATION3D;
+
+typedef struct {
     double x, y;
 } POINT2D;
 

@@ -9,6 +9,7 @@ public:
 
     // real world positions
     POINT3D position;
+    ROTATION3D rotation;
 };
 
 class LocationStream {

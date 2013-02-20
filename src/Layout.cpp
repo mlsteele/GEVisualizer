@@ -155,6 +155,18 @@ bool Layout::loadInfo(string infoPath){
         file >> newLocation.position.y;
         file >> newLocation.position.z;
 
+        //Read the location rotation header
+        file >> word;
+        if( word != "LocationRotation:" ){
+            file.close();
+            printf("ERROR: Failed to read LocationRotation header!\n");
+            return false;
+        }
+        file >> newLocation.rotation.theta;
+        file >> newLocation.rotation.psi;
+        file >> newLocation.rotation.theotherthing;
+
+
         // transform positions
         newLocation.position.x = newLocation.position.x / pixelsPerMeter + boundingRectRealWorldCoordinates.x;
         newLocation.position.y = newLocation.position.y / pixelsPerMeter + boundingRectRealWorldCoordinates.y;
