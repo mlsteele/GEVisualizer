@@ -148,22 +148,16 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix();
+    // transition
     ofTranslate(0, smoothed_transition * layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y * 1.7);
+
+    // x,y projection offset
     ofTranslate(
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
-    ofTranslate(0, -50);
-    // map name
-    ofSetHexColor(0xFFFFFF);
-    // ofDrawBitmapString(layout->layoutName, 5, 17 );
-    fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
-    ofPopMatrix();
 
     ofPushMatrix();
-    ofTranslate(0, smoothed_transition * layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y * 1.7);
-    ofTranslate(
-        projection.offset.x * projection.scale.x ,
-        projection.offset.y * projection.scale.y );
+    // skew rotation
     ofRotateX(rotateX);
 
     // texture
@@ -298,6 +292,17 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 localLocation->position.y * projection.scale.y - 20);
         }
     }
+
+    ofPopMatrix(); // exit skew rotation
+
+    // map name
+    ofPushMatrix();
+        ofTranslate(0, -50);
+        // map name
+        ofSetHexColor(0xFFFFFF);
+        // ofDrawBitmapString(layout->layoutName, 5, 17 );
+        fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
+    ofPopMatrix();
 
     ofPopMatrix();
 }
