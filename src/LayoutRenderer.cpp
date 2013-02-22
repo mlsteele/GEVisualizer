@@ -147,7 +147,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     const float rotateX = 20;
     float smoothed_transition = pow(transition, 3);
 
-    ofPushMatrix();
+    ofPushMatrix(); // translation
+
     // transition
     ofTranslate(0, smoothed_transition * layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y * 1.7);
 
@@ -156,7 +157,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
         projection.offset.x * projection.scale.x ,
         projection.offset.y * projection.scale.y );
 
-    ofPushMatrix();
+    ofPushMatrix(); // skew
     // skew rotation
     ofRotateX(rotateX);
 
@@ -172,62 +173,64 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     ofEnableSmoothing();
 
-    // boundary
-    ofSetLineWidth(2);
-    ofSetHexColor(0x0000FF);
-    ofNoFill();
-    ofRect(0, 0,
-        layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x ,
-        layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
+    // map boundary
+    if (renderMode.structure) {
+        ofSetLineWidth(2);
+        ofSetHexColor(0x0000FF);
+        ofNoFill();
+        ofRect(0, 0,
+            layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x ,
+            layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
 
-    // walls
-    const float wallHeight = 2.5 * projection.screenPixelsPerMeter;
-    for (LINE& wall : layout->wallLines) {
-        ofSetHexColor(0xB3B3B3);
-        glColor4f(0, 0, 0, 0.2);
-        ofFill();
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_BLEND);
+        // walls
+        const float wallHeight = 2.5 * projection.screenPixelsPerMeter;
+        for (LINE& wall : layout->wallLines) {
+            ofSetHexColor(0xB3B3B3);
+            glColor4f(0, 0, 0, 0.2);
+            ofFill();
+            glEnable(GL_LINE_SMOOTH);
+            glEnable(GL_BLEND);
 
-        glBegin(GL_QUADS);
-            glVertex3f(
+            glBegin(GL_QUADS);
+                glVertex3f(
+                    wall.x1 * projection.scale.x ,
+                    wall.y1 * projection.scale.y ,
+                    0 );
+                glVertex3f(
+                    wall.x2 * projection.scale.x ,
+                    wall.y2 * projection.scale.y ,
+                    0 );
+                glVertex3f(
+                    wall.x2 * projection.scale.x ,
+                    wall.y2 * projection.scale.y ,
+                    wallHeight );
+                glVertex3f(
+                    wall.x1 * projection.scale.x ,
+                    wall.y1 * projection.scale.y ,
+                    wallHeight );
+            glEnd();
+
+            // bottom line
+            glColor4f(0, 0, 0, 0.3);
+            ofSetLineWidth(3);
+            ofLine(
                 wall.x1 * projection.scale.x ,
                 wall.y1 * projection.scale.y ,
-                0 );
-            glVertex3f(
                 wall.x2 * projection.scale.x ,
-                wall.y2 * projection.scale.y ,
-                0 );
-            glVertex3f(
-                wall.x2 * projection.scale.x ,
-                wall.y2 * projection.scale.y ,
-                wallHeight );
-            glVertex3f(
+                wall.y2 * projection.scale.y );
+
+            // top line
+            glColor4f(0, 0, 0, 0.2);
+            ofPushMatrix();
+            ofTranslate(0, 0, wallHeight);
+            ofSetLineWidth(1);
+            ofLine(
                 wall.x1 * projection.scale.x ,
                 wall.y1 * projection.scale.y ,
-                wallHeight );
-        glEnd();
-
-        // bottom line
-        glColor4f(0, 0, 0, 0.3);
-        ofSetLineWidth(3);
-        ofLine(
-            wall.x1 * projection.scale.x ,
-            wall.y1 * projection.scale.y ,
-            wall.x2 * projection.scale.x ,
-            wall.y2 * projection.scale.y );
-
-        // top line
-        glColor4f(0, 0, 0, 0.2);
-        ofPushMatrix();
-        ofTranslate(0, 0, wallHeight);
-        ofSetLineWidth(1);
-        ofLine(
-            wall.x1 * projection.scale.x ,
-            wall.y1 * projection.scale.y ,
-            wall.x2 * projection.scale.x ,
-            wall.y2 * projection.scale.y );
-        ofPopMatrix();
+                wall.x2 * projection.scale.x ,
+                wall.y2 * projection.scale.y );
+            ofPopMatrix();
+        }
     }
 
     // locations locuses
@@ -246,6 +249,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
             }
 
+            // draw presence indication
             if (presenceData) {
                 ofSetHexColor(0xD83DFF); // purple
                 if (presenceData->presenceEstimate > 0) {
@@ -254,9 +258,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     ofNoFill();
                     ofSetLineWidth(2);
                 }
-                fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
-                    localLocation->position.x * projection.scale.x,
-                    localLocation->position.y * projection.scale.y + 20);
+                // draw text in non-skew loop
             } else {
                 ofSetHexColor(0xFF1B1B); // red
                 ofFill();
@@ -267,7 +269,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 localLocation->position.y * projection.scale.y,
                 5 );
 
-            // location estimates
+            // draw user location estimates
             // TODO: fix rotation
             // TODO: fix smoothing
             // TODO: make prettier
@@ -284,6 +286,35 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 }
             }
 
+            // draw name in non-skew loop
+        }
+    }
+
+    ofPopMatrix(); // skew
+
+    // loop for text (not skewed)
+    if (renderMode.locations) {
+        for (LocationInfo& locationInfo : dataStore.getLocationInfo()) {
+            Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
+            if (!localLocation) continue;
+
+            PresenceData* presenceData = NULL;
+            if (renderMode.presence) {
+                 presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
+            }
+
+            UserLocationData* userLocationData = NULL;
+            if (renderMode.userLocation) {
+                userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
+            }
+
+            if (presenceData) {
+                ofSetHexColor(0xD83DFF); // purple
+                fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
+                    localLocation->position.x * projection.scale.x,
+                    localLocation->position.y * projection.scale.y + 20);
+            }
+
             ofSetHexColor(0x0);
             ofFill();
             fontMain->drawString(
@@ -292,8 +323,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 localLocation->position.y * projection.scale.y - 20);
         }
     }
-
-    ofPopMatrix(); // exit skew rotation
 
     // map name
     ofPushMatrix();
@@ -304,5 +333,5 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
         fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
     ofPopMatrix();
 
-    ofPopMatrix();
+    ofPopMatrix(); // translation
 }

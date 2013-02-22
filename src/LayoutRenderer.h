@@ -16,7 +16,7 @@ typedef struct {
 } LayoutProjection;
 
 typedef struct {
-    bool structure = true;
+    bool structure = true; // NOTE: this has never been tested when false
     bool locations = true;
     bool texture = false;
     bool presence = false;
