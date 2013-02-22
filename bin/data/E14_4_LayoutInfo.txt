@@ -5,20 +5,4 @@ KeyElementID:	Layer_2
 BoundingRectRealWorldCoordinates:	1	1	0
 PixelsPerMeter:	7.38209159262
 FloorLevel:	4
-NumLocationNodes:	4
-LocationNode:	1
-LocationID:	11
-LocationPosition:	148.26	193.76	0
-LocationRotation: 0 0 0
-LocationNode:	2
-LocationID:	22
-LocationPosition:	256.87	210.36	0
-LocationRotation: 0 0 0
-LocationNode:	3
-LocationID:	9
-LocationPosition:	288.21	222.98	0
-LocationRotation: 0 0 0
-LocationNode: 4
-LocationID: 14
-LocationPosition: 388.21  222.98  0
-LocationRotation: 0 0 0
+NumLocationNodes:	0
