@@ -30,7 +30,7 @@ void testApp::setupLayouts() {
 
     POINT2D screen_px_corner = {135, 100};
     POINT2D real_corner = {0, 0};
-    double screenPixelsPerMeter = 10;
+    double screenPixelsPerMeter = 9.5;
 
     vector<string> layout_info_files;
     layout_info_files.push_back("E14_6_LayoutInfo.txt");

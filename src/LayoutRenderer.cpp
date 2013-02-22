@@ -261,7 +261,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     ofSetLineWidth(2);
                 }
                 fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
-                    localLocation->position.x * projection.scale.x - 20,
+                    localLocation->position.x * projection.scale.x,
                     localLocation->position.y * projection.scale.y + 20);
             } else {
                 ofSetHexColor(0xFF1B1B); // red
