@@ -10,7 +10,7 @@ string format_double_to_string(double n) {
 
 // returns data or a NULL if none is present in list
 template <typename T>
-T* extract_streamed_data(vector<T> list, int locationID) {
+T* extract_streamed_data(vector<T> list, unsigned int locationID) {
     for (T& thing : list) {
         if (thing.locationID == locationID) {
             return &thing;
@@ -307,10 +307,13 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // offset from point
             loc3dpos.x -= 20;
             loc3dpos.y -= 20;
-            POINT3D winCoords = getWinCoords(loc3dpos);
+            // POINT3D winCoords = getWinCoords(loc3dpos);
+            // printf("winCoords (%f, %f)\n", winCoords.x, winCoords.y);
             ofPushMatrix(); // drawing label
                 glLoadIdentity();
-                fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes, winCoords.x, winCoords.y);
+                // fontMain->drawString("hello", winCoords.x, winCoords.y);
+                fontMain->drawString("hello", 20, 20);
+                // fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes, winCoords.x, winCoords.y);
             ofPopMatrix();
 
 
@@ -318,8 +321,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO: fix rotation
             // TODO: fix smoothing
             // TODO: make prettier
-            if (userLocationData != NULL) {
-                printf("userLocationData @0x%x\n", userLocationData);
+            if (userLocationData != NULL) { 
+                // printf("userLocationData @0x%x\n", userLocationData);
                 printf("userLocationData->locationID %i \n", userLocationData->locationID);
                 printf("userLocationData->userLocationEstimates @0x%x \n", &(userLocationData->userLocationEstimates));
                 printf("userlocsize %i\n", userLocationData->userLocationEstimates.size());

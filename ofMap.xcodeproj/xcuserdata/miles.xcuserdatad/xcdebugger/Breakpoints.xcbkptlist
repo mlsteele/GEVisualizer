@@ -2,4 +2,136 @@
 <Bucket
    type = "1"
    version = "1.0">
+   <FileBreakpoints>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870603.024449"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "274"
+         endingLineNumber = "274"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870605.275066"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "276"
+         endingLineNumber = "276"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870611.696121"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "279"
+         endingLineNumber = "279"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870619.10631"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870621.860226"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "310"
+         endingLineNumber = "310"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870625.513304"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "321"
+         endingLineNumber = "321"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870690.175718"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "311"
+         endingLineNumber = "311"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870697.158475"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "313"
+         endingLineNumber = "313"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383870700.309072"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "314"
+         endingLineNumber = "314"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "src/LayoutRenderer.cpp"
+         timestampString = "383871549.85595"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "267"
+         endingLineNumber = "267"
+         landmarkName = "LayoutRenderer::render(LayoutRenderMode&amp; renderMode, GEVisualizer&amp; dataStore, float transition)"
+         landmarkType = "5">
+      </FileBreakpoint>
+   </FileBreakpoints>
 </Bucket>
