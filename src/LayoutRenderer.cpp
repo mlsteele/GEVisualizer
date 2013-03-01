@@ -140,11 +140,36 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
     }
 }
 
+POINT3D getWinCoords(POINT3D& pTransformed) {
+    GLdouble x = pTransformed.x;
+    GLdouble y = pTransformed.y;
+    GLdouble z = pTransformed.z;
+    GLdouble winX, winY, winZ;
+
+    GLdouble modelview[16];
+    GLdouble projection[16];
+    GLint viewport[4];
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    gluProject(x, y, z,
+        modelview, projection, viewport,
+        &winX, &winY, &winZ);
+
+    POINT3D pWindow;
+    pWindow.x = winX;
+    pWindow.y = winY;
+    pWindow.z = winZ;
+    return pWindow;
+}
+
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
-    const float rotateX = 20;
+    // const float rotateX = 20;
+    const float rotateX = ofGetElapsedTimef()*10;
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix(); // translation
@@ -247,6 +272,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             UserLocationData* userLocationData = NULL;
             if (renderMode.userLocation) {
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
+                if (userLocationData != NULL)
+                    printf("userLocationData collected id %i\n", userLocationData->locationID);
             }
 
             // draw presence indication
@@ -264,20 +291,45 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 ofFill();
             }
 
+            // draw location circle
             ofCircle(
                 localLocation->position.x * projection.scale.x,
                 localLocation->position.y * projection.scale.y,
                 5 );
+
+
+            // draw location label
+            ofSetHexColor(0x0);
+            ofFill();
+            POINT3D loc3dpos;
+            loc3dpos.x = localLocation->position.x * projection.scale.x;
+            loc3dpos.y = localLocation->position.y * projection.scale.y;
+            // offset from point
+            loc3dpos.x -= 20;
+            loc3dpos.y -= 20;
+            POINT3D winCoords = getWinCoords(loc3dpos);
+            ofPushMatrix(); // drawing label
+                glLoadIdentity();
+                fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes, winCoords.x, winCoords.y);
+            ofPopMatrix();
+
 
             // draw user location estimates
             // TODO: fix rotation
             // TODO: fix smoothing
             // TODO: make prettier
             if (userLocationData != NULL) {
-                for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                printf("userLocationData @0x%x\n", userLocationData);
+                printf("userLocationData->locationID %i \n", userLocationData->locationID);
+                printf("userLocationData->userLocationEstimates @0x%x \n", &(userLocationData->userLocationEstimates));
+                printf("userlocsize %i\n", userLocationData->userLocationEstimates.size());
+                // for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                for (int i = 0; i < userLocationData->userLocationEstimates.size(); i++) {
+                    UserLocationEstimate& estimate = userLocationData->userLocationEstimates[i];
+                    printf("estimate @0x%x\n", &estimate);
                     ofFill();
                     ofSetHexColor(0xE78317);
-                    float ex = estimate.x; // TODO: sometimes this EXEC_BAD_ACESS's
+                        float ex = estimate.x; // TODO: sometimes this EXEC_BAD_ACCESS's
                     float ey = estimate.y;
                     ofCircle(
                         (localLocation->position.x + ex / 1000.) * projection.scale.x ,
@@ -291,38 +343,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     }
 
     ofPopMatrix(); // skew
-
-    // loop for text (not skewed)
-    if (renderMode.locations) {
-        for (LocationInfo& locationInfo : dataStore.getLocationInfo()) {
-            Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
-            if (!localLocation) continue;
-
-            PresenceData* presenceData = NULL;
-            if (renderMode.presence) {
-                 presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
-            }
-
-            UserLocationData* userLocationData = NULL;
-            if (renderMode.userLocation) {
-                userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
-            }
-
-            if (presenceData) {
-                ofSetHexColor(0xD83DFF); // purple
-                fontMain->drawString(format_double_to_string(presenceData->presenceLikelihood),
-                    localLocation->position.x * projection.scale.x,
-                    localLocation->position.y * projection.scale.y + 20);
-            }
-
-            ofSetHexColor(0x0);
-            ofFill();
-            fontMain->drawString(
-                "(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
-                localLocation->position.x * projection.scale.x - 20,
-                localLocation->position.y * projection.scale.y - 20);
-        }
-    }
 
     // map name
     ofPushMatrix();

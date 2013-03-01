@@ -104,7 +104,7 @@ bool GEVisualizer::update(){
         ofxOscMessage m;
         receiver.getNextMessage( &m );
         
-        //printf("Got new message! Address: %s\n",m.getAddress().c_str());
+        printf("received new message: %s\n",m.getAddress().c_str());
         
         if( m.getAddress() == "/Response" ){
             string responseString = m.getArgAsString(0);
@@ -189,6 +189,7 @@ bool GEVisualizer::update(){
                     locationData[i].locationID = m.getArgAsInt32(messageIndex++);
                     int numUsersAtLocation = m.getArgAsInt32(messageIndex++);
                     if( numUsersAtLocation > 0 ){
+                        printf("resizing locar %i\n", numUsersAtLocation);
                         locationData[i].userLocationEstimates.resize(numUsersAtLocation);
                         for(unsigned int j=0; j<numUsersAtLocation; j++){
                             locationData[i].userLocationEstimates[j].userID = m.getArgAsInt32(messageIndex++);
