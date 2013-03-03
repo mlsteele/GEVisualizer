@@ -136,13 +136,13 @@ public:
     bool recordRGBImages(bool state);
     bool autoLabelRGBImages(bool state);
     
-    vector< LocationInfo > getLocationInfo();
-    vector< PresenceData > getPresenceData();
-    vector< CountData > getCountData();
-    vector< ProximityEstimate > getProximityData();
-    vector< UserLocationData > getUserLocationData();
-    vector< GaussianDistribution > getUserLocationProbabilityData();
-    vector< KeyUserLocationEstimate > getKeyUserEstimatedLocationData();
+    vector< LocationInfo >& getLocationInfo();
+    vector< PresenceData >& getPresenceData();
+    vector< CountData >& getCountData();
+    vector< ProximityEstimate >& getProximityData();
+    vector< UserLocationData >& getUserLocationData();
+    vector< GaussianDistribution >& getUserLocationProbabilityData();
+    vector< KeyUserLocationEstimate >& getKeyUserEstimatedLocationData();
 
     bool getIsConnected() {return connected;}
     

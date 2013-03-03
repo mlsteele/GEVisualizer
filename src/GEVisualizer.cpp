@@ -428,31 +428,31 @@ bool GEVisualizer::autoLabelRGBImages(bool state){
     return true;
 }
 
-vector< LocationInfo > GEVisualizer::getLocationInfo(){
+vector< LocationInfo >& GEVisualizer::getLocationInfo(){
     return locationInfo;
 }
 
-vector< PresenceData > GEVisualizer::getPresenceData(){
+vector< PresenceData >& GEVisualizer::getPresenceData(){
     return presenceData;
 }
 
-vector< CountData > GEVisualizer::getCountData(){
+vector< CountData >& GEVisualizer::getCountData(){
     return countData;
 }
 
-vector< ProximityEstimate > GEVisualizer::getProximityData(){
+vector< ProximityEstimate >& GEVisualizer::getProximityData(){
     return proximityData;
 }
 
-vector< UserLocationData > GEVisualizer::getUserLocationData(){
+vector< UserLocationData >& GEVisualizer::getUserLocationData(){
     return locationData;
 }
 
-vector< GaussianDistribution > GEVisualizer::getUserLocationProbabilityData(){
+vector< GaussianDistribution >& GEVisualizer::getUserLocationProbabilityData(){
     return userLocationProbabilityData;
 }
 
-vector< KeyUserLocationEstimate > GEVisualizer::getKeyUserEstimatedLocationData(){
+vector< KeyUserLocationEstimate >& GEVisualizer::getKeyUserEstimatedLocationData(){
     return keyUserEstimatedLocationData;
 }
 

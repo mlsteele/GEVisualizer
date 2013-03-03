@@ -10,7 +10,7 @@ string format_double_to_string(double n) {
 
 // returns data or a NULL if none is present in list
 template <typename T>
-T* extract_streamed_data(vector<T> list, unsigned int locationID) {
+T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
     for (T& thing : list) {
         if (thing.locationID == locationID) {
             return &thing;
@@ -40,7 +40,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     const unsigned int h = textureSize[1];
     printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
 
-    textureData = new unsigned char [w * h * 4];    
+    textureData = new unsigned char [w * h * 4];
 
     for (int i = 0; i < w; i++){
         for (int j = 0; j < h; j++){
@@ -48,7 +48,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
             textureData[(j * w + i) * 4 + 0] = 255;
             textureData[(j * w + i) * 4 + 1] = 255;
             textureData[(j * w + i) * 4 + 2] = 255;
-            textureData[(j * w + i) * 4 + 3] = 0;
+            textureData[(j * w + i) * 4 + 3] = 255;
         }
     }
 
@@ -326,13 +326,13 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 printf("userLocationData->locationID %i \n", userLocationData->locationID);
                 printf("userLocationData->userLocationEstimates @0x%x \n", &(userLocationData->userLocationEstimates));
                 printf("userlocsize %i\n", userLocationData->userLocationEstimates.size());
-                // for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
-                for (int i = 0; i < userLocationData->userLocationEstimates.size(); i++) {
-                    UserLocationEstimate& estimate = userLocationData->userLocationEstimates[i];
+                for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                // for (int i = 0; i < userLocationData->userLocationEstimates.size(); i++) {
+                    // UserLocationEstimate& estimate = userLocationData->userLocationEstimates[i];
                     printf("estimate @0x%x\n", &estimate);
                     ofFill();
                     ofSetHexColor(0xE78317);
-                        float ex = estimate.x; // TODO: sometimes this EXEC_BAD_ACCESS's
+                    float ex = estimate.x;
                     float ey = estimate.y;
                     ofCircle(
                         (localLocation->position.x + ex / 1000.) * projection.scale.x ,
