@@ -168,8 +168,11 @@ POINT3D getWinCoords(POINT3D& pTransformed) {
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
-    // const float rotateX = 20;
-    const float rotateX = ofGetElapsedTimef()*10;
+    GLfloat rootModelView[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, rootModelView);
+
+    const float rotateX = 20;
+    // const float rotateX = ofGetElapsedTimef()*10;
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix(); // translation
@@ -272,8 +275,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             UserLocationData* userLocationData = NULL;
             if (renderMode.userLocation) {
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
-                if (userLocationData != NULL)
-                    printf("userLocationData collected id %i\n", userLocationData->locationID);
             }
 
             // draw presence indication
@@ -299,21 +300,18 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
 
             // draw location label
-            ofSetHexColor(0x0);
+            ofSetHexColor(0x000000);
             ofFill();
             POINT3D loc3dpos;
             loc3dpos.x = localLocation->position.x * projection.scale.x;
             loc3dpos.y = localLocation->position.y * projection.scale.y;
             // offset from point
-            loc3dpos.x -= 20;
-            loc3dpos.y -= 20;
-            // POINT3D winCoords = getWinCoords(loc3dpos);
-            // printf("winCoords (%f, %f)\n", winCoords.x, winCoords.y);
+            POINT3D winCoords = getWinCoords(loc3dpos);
             ofPushMatrix(); // drawing label
-                glLoadIdentity();
-                // fontMain->drawString("hello", winCoords.x, winCoords.y);
-                fontMain->drawString("hello", 20, 20);
-                // fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes, winCoords.x, winCoords.y);
+                glLoadMatrixf(rootModelView);
+                fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
+                    winCoords.x - 20,
+                    ofGetHeight() - winCoords.y - 20);
             ofPopMatrix();
 
 
@@ -322,14 +320,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO: fix smoothing
             // TODO: make prettier
             if (userLocationData != NULL) { 
-                // printf("userLocationData @0x%x\n", userLocationData);
-                printf("userLocationData->locationID %i \n", userLocationData->locationID);
-                printf("userLocationData->userLocationEstimates @0x%x \n", &(userLocationData->userLocationEstimates));
-                printf("userlocsize %i\n", userLocationData->userLocationEstimates.size());
                 for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
-                // for (int i = 0; i < userLocationData->userLocationEstimates.size(); i++) {
-                    // UserLocationEstimate& estimate = userLocationData->userLocationEstimates[i];
-                    printf("estimate @0x%x\n", &estimate);
                     ofFill();
                     ofSetHexColor(0xE78317);
                     float ex = estimate.x;

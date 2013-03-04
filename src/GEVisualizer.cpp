@@ -189,7 +189,6 @@ bool GEVisualizer::update(){
                     locationData[i].locationID = m.getArgAsInt32(messageIndex++);
                     int numUsersAtLocation = m.getArgAsInt32(messageIndex++);
                     if( numUsersAtLocation > 0 ){
-                        printf("resizing locar %i\n", numUsersAtLocation);
                         locationData[i].userLocationEstimates.resize(numUsersAtLocation);
                         for(unsigned int j=0; j<numUsersAtLocation; j++){
                             locationData[i].userLocationEstimates[j].userID = m.getArgAsInt32(messageIndex++);
