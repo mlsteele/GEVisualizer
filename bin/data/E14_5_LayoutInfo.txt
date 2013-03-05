@@ -13,15 +13,15 @@ LocationRotation: 0 0 0
 LocationNode:	2
 LocationID:	22
 LocationPosition: 288.21  222.98  0
-LocationRotation: 0 0 0
+LocationRotation: -180 0 0
 LocationNode:	3
 LocationID:	9
 LocationPosition: 256.87  210.36  0
-LocationRotation: 0 0 0
+LocationRotation: 90 0 0
 LocationNode: 4
 LocationID: 10
 LocationPosition: 230.87  269.36  0
-LocationRotation: 0 0 0
+LocationRotation: -90 0 0
 
 misc notes:
 bwidth 440px 59.32m

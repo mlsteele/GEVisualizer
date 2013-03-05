@@ -26,10 +26,7 @@ typedef struct {
 
 class LayoutRenderer {
 public:
-    // TODO: free memory
-    // ~LayoutRenderer() { delete[] textureData; }
-
-
+    // ~LayoutRenderer();
 
     enum RenderMode {
         RenderStructure,

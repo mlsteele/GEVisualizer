@@ -19,6 +19,48 @@ T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
     return NULL;
 }
 
+POINT3D getWinCoords(POINT3D& pTransformed) {
+    GLdouble x = pTransformed.x;
+    GLdouble y = pTransformed.y;
+    GLdouble z = pTransformed.z;
+    GLdouble winX, winY, winZ;
+
+    GLdouble modelview[16];
+    GLdouble projection[16];
+    GLint viewport[4];
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    gluProject(x, y, z,
+        modelview, projection, viewport,
+        &winX, &winY, &winZ);
+
+    POINT3D pWindow;
+    pWindow.x = winX;
+    // hack/tweaked for OpenFrameworks modelview
+    pWindow.y = ofGetHeight() - winY;
+    pWindow.z = winZ;
+    return pWindow;
+}
+
+// WARN: method contains unmatched ofPushMatrix()
+void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
+    POINT3D winCoords = getWinCoords(p3d);
+    ofPushMatrix();
+    glLoadMatrixf(rootModelView);
+    ofTranslate(winCoords.x, winCoords.y);
+}
+
+// LayoutRenderer::~LayoutRenderer() {
+//     printf("destroying LayoutRenderer...\n");
+//     if(textureData) {
+//         printf("deleting texture data\n");
+//         delete[] textureData;
+//     }
+// }
+
+
 
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
@@ -140,30 +182,6 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
     }
 }
 
-POINT3D getWinCoords(POINT3D& pTransformed) {
-    GLdouble x = pTransformed.x;
-    GLdouble y = pTransformed.y;
-    GLdouble z = pTransformed.z;
-    GLdouble winX, winY, winZ;
-
-    GLdouble modelview[16];
-    GLdouble projection[16];
-    GLint viewport[4];
-    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
-    glGetDoublev(GL_PROJECTION_MATRIX, projection);
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    gluProject(x, y, z,
-        modelview, projection, viewport,
-        &winX, &winY, &winZ);
-
-    POINT3D pWindow;
-    pWindow.x = winX;
-    pWindow.y = winY;
-    pWindow.z = winZ;
-    return pWindow;
-}
-
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
@@ -277,6 +295,13 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
             }
 
+            POINT3D loc3dpos;
+            loc3dpos.x = localLocation->position.x * projection.scale.x;
+            loc3dpos.y = localLocation->position.y * projection.scale.y;
+            POINT3D locWinPos = getWinCoords(loc3dpos);
+            POINT3D mousePos = (POINT3D){ofGetMouseX(), ofGetMouseY(), 0};
+            float mouseDist = sqrt(pow(mousePos.x - locWinPos.x, 2) + pow(mousePos.y - locWinPos.y, 2));
+
             // draw presence indication
             if (presenceData) {
                 ofSetHexColor(0xD83DFF); // purple
@@ -293,42 +318,54 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             }
 
             // draw location circle
-            ofCircle(
-                localLocation->position.x * projection.scale.x,
-                localLocation->position.y * projection.scale.y,
-                5 );
-
+            ofCircle(loc3dpos.x, loc3dpos.y, 5);
 
             // draw location label
-            ofSetHexColor(0x000000);
-            ofFill();
-            POINT3D loc3dpos;
-            loc3dpos.x = localLocation->position.x * projection.scale.x;
-            loc3dpos.y = localLocation->position.y * projection.scale.y;
-            // offset from point
-            POINT3D winCoords = getWinCoords(loc3dpos);
-            ofPushMatrix(); // drawing label
-                glLoadMatrixf(rootModelView);
-                fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
-                    winCoords.x - 20,
-                    ofGetHeight() - winCoords.y - 20);
-            ofPopMatrix();
+            if (mouseDist < 40) {
+                pushUnprojectedMatrix(rootModelView, loc3dpos);
+                    ofSetHexColor(0x000000);
+                    ofFill();
+                    fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
+                        -20, -20 );
+                    ofSetHexColor(0x202020);
+                    // fontMain->drawString("theta: " + lexical_cast<string>(localLocation->rotation.theta / M_PI * 180.),
+                    //     -20, -12 );
+                ofPopMatrix();
+            }
 
 
             // draw user location estimates
-            // TODO: fix rotation
             // TODO: fix smoothing
             // TODO: make prettier
             if (userLocationData != NULL) { 
                 for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);
-                    float ex = estimate.x;
-                    float ey = estimate.y;
-                    ofCircle(
-                        (localLocation->position.x + ex / 1000.) * projection.scale.x ,
-                        (localLocation->position.y + ey / 1000.) * projection.scale.y ,
-                        3 );
+                    float theta = localLocation->rotation.theta;
+                    // note these are switched to match screen to world
+                    float ex = estimate.y;
+                    float ey = estimate.x;
+
+                    // rotate & scale
+                    float tex = ex * cos(theta) + ey * sin(theta);
+                    float tey = -ex * sin(theta) + ey * cos(theta);
+                    tex *= projection.scale.x / 1000.;
+                    tey *= projection.scale.x / 1000.;
+
+                    ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 4);
+
+                    // render label
+                    if (mouseDist < 40) {
+                        pushUnprojectedMatrix(rootModelView, loc3dpos);
+                        ofSetHexColor(0x774510);
+                        string x_str = lexical_cast<string>(ex);
+                        string y_str = lexical_cast<string>(ey);
+                        string uid_str = lexical_cast<string>(estimate.userID);
+
+                        fontMain->drawString("(" + x_str + ", " + y_str + ")", tex, tey + 10 );
+                        fontMain->drawString("uid: " + uid_str, tex, tey + 20 );
+                        ofPopMatrix();
+                    }
                 }
             }
 
@@ -342,8 +379,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     ofPushMatrix();
         ofTranslate(0, -50);
         // map name
-        ofSetHexColor(0xFFFFFF);
         // ofDrawBitmapString(layout->layoutName, 5, 17 );
+        ofSetHexColor(0x000000);
         fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
     ofPopMatrix();
 

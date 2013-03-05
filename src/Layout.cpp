@@ -163,8 +163,11 @@ bool Layout::loadInfo(string infoPath){
             return false;
         }
         file >> newLocation.rotation.theta;
+        newLocation.rotation.theta *= M_PI / 180.;
         file >> newLocation.rotation.psi;
+        newLocation.rotation.psi *= M_PI / 180.;
         file >> newLocation.rotation.theotherthing;
+        newLocation.rotation.theotherthing *= 180. / M_PI;
 
 
         // transform positions

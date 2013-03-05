@@ -104,7 +104,7 @@ bool GEVisualizer::update(){
         ofxOscMessage m;
         receiver.getNextMessage( &m );
         
-        printf("received new message: %s\n",m.getAddress().c_str());
+        // printf("received new message: %s\n",m.getAddress().c_str());
         
         if( m.getAddress() == "/Response" ){
             string responseString = m.getArgAsString(0);
@@ -112,7 +112,7 @@ bool GEVisualizer::update(){
             printf("Got /Response. ResponseString: %s State: %i\n",responseString.c_str(),status);
             
         }else if( m.getAddress() == "/LocationInfo" ){
-            printf("Got Location Info\n");
+            // printf("Got Location Info\n");
             locationInfo.clear();
             int numLocations = m.getArgAsInt32(0);
             if( numLocations > 0 ){
