@@ -337,7 +337,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // draw user location estimates
             // TODO: fix smoothing
             // TODO: make prettier
-            if (userLocationData != NULL) { 
+            if (userLocationData != NULL) {
                 for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);

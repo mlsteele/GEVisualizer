@@ -12,22 +12,6 @@
 		024F8FB516BC7B0E0082D051 /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8316BC7B0E0082D051 /* Layout.cpp */; };
 		024F8FB616BC7B0E0082D051 /* LayoutRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8516BC7B0E0082D051 /* LayoutRenderer.cpp */; };
 		024F8FB716BC7B0E0082D051 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8816BC7B0E0082D051 /* main.cpp */; };
-		024F8FB816BC7B0E0082D051 /* ofUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8A16BC7B0E0082D051 /* ofUIButton.cpp */; };
-		024F8FB916BC7B0E0082D051 /* ofUIButtonHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8C16BC7B0E0082D051 /* ofUIButtonHandler.cpp */; };
-		024F8FBA16BC7B0E0082D051 /* ofUIDropDownMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8E16BC7B0E0082D051 /* ofUIDropDownMenu.cpp */; };
-		024F8FBB16BC7B0E0082D051 /* ofUIFrameView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9016BC7B0E0082D051 /* ofUIFrameView.cpp */; };
-		024F8FBC16BC7B0E0082D051 /* ofUIImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9216BC7B0E0082D051 /* ofUIImageButton.cpp */; };
-		024F8FBD16BC7B0E0082D051 /* ofUIMainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9416BC7B0E0082D051 /* ofUIMainView.cpp */; };
-		024F8FBE16BC7B0E0082D051 /* ofUIRadioButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9716BC7B0E0082D051 /* ofUIRadioButton.cpp */; };
-		024F8FBF16BC7B0E0082D051 /* ofUIScrollView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9916BC7B0E0082D051 /* ofUIScrollView.cpp */; };
-		024F8FC016BC7B0E0082D051 /* ofUISlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9B16BC7B0E0082D051 /* ofUISlider.cpp */; };
-		024F8FC116BC7B0E0082D051 /* ofUIStaticText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9D16BC7B0E0082D051 /* ofUIStaticText.cpp */; };
-		024F8FC216BC7B0E0082D051 /* ofUISubView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F9F16BC7B0E0082D051 /* ofUISubView.cpp */; };
-		024F8FC316BC7B0E0082D051 /* ofUITabView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FA116BC7B0E0082D051 /* ofUITabView.cpp */; };
-		024F8FC416BC7B0E0082D051 /* ofUITextField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FA316BC7B0E0082D051 /* ofUITextField.cpp */; };
-		024F8FC516BC7B0E0082D051 /* ofUITextFieldHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FA516BC7B0E0082D051 /* ofUITextFieldHandler.cpp */; };
-		024F8FC616BC7B0E0082D051 /* ofUIView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FA716BC7B0E0082D051 /* ofUIView.cpp */; };
-		024F8FC716BC7B0E0082D051 /* ofUIViewContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FA916BC7B0E0082D051 /* ofUIViewContainer.cpp */; };
 		024F8FC816BC7B0E0082D051 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FAB16BC7B0E0082D051 /* testApp.cpp */; };
 		024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FAF16BC7B0E0082D051 /* tinyxml.cpp */; };
 		024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FB116BC7B0E0082D051 /* tinyxmlerror.cpp */; };
@@ -113,39 +97,6 @@
 		024F8F8616BC7B0E0082D051 /* LayoutRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRenderer.h; sourceTree = "<group>"; };
 		024F8F8716BC7B0E0082D051 /* LocationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationData.h; sourceTree = "<group>"; };
 		024F8F8816BC7B0E0082D051 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		024F8F8A16BC7B0E0082D051 /* ofUIButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIButton.cpp; sourceTree = "<group>"; };
-		024F8F8B16BC7B0E0082D051 /* ofUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIButton.h; sourceTree = "<group>"; };
-		024F8F8C16BC7B0E0082D051 /* ofUIButtonHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIButtonHandler.cpp; sourceTree = "<group>"; };
-		024F8F8D16BC7B0E0082D051 /* ofUIButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIButtonHandler.h; sourceTree = "<group>"; };
-		024F8F8E16BC7B0E0082D051 /* ofUIDropDownMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIDropDownMenu.cpp; sourceTree = "<group>"; };
-		024F8F8F16BC7B0E0082D051 /* ofUIDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIDropDownMenu.h; sourceTree = "<group>"; };
-		024F8F9016BC7B0E0082D051 /* ofUIFrameView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIFrameView.cpp; sourceTree = "<group>"; };
-		024F8F9116BC7B0E0082D051 /* ofUIFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIFrameView.h; sourceTree = "<group>"; };
-		024F8F9216BC7B0E0082D051 /* ofUIImageButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIImageButton.cpp; sourceTree = "<group>"; };
-		024F8F9316BC7B0E0082D051 /* ofUIImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIImageButton.h; sourceTree = "<group>"; };
-		024F8F9416BC7B0E0082D051 /* ofUIMainView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIMainView.cpp; sourceTree = "<group>"; };
-		024F8F9516BC7B0E0082D051 /* ofUIMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIMainView.h; sourceTree = "<group>"; };
-		024F8F9616BC7B0E0082D051 /* ofUIObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIObject.h; sourceTree = "<group>"; };
-		024F8F9716BC7B0E0082D051 /* ofUIRadioButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIRadioButton.cpp; sourceTree = "<group>"; };
-		024F8F9816BC7B0E0082D051 /* ofUIRadioButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIRadioButton.h; sourceTree = "<group>"; };
-		024F8F9916BC7B0E0082D051 /* ofUIScrollView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIScrollView.cpp; sourceTree = "<group>"; };
-		024F8F9A16BC7B0E0082D051 /* ofUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIScrollView.h; sourceTree = "<group>"; };
-		024F8F9B16BC7B0E0082D051 /* ofUISlider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUISlider.cpp; sourceTree = "<group>"; };
-		024F8F9C16BC7B0E0082D051 /* ofUISlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUISlider.h; sourceTree = "<group>"; };
-		024F8F9D16BC7B0E0082D051 /* ofUIStaticText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIStaticText.cpp; sourceTree = "<group>"; };
-		024F8F9E16BC7B0E0082D051 /* ofUIStaticText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIStaticText.h; sourceTree = "<group>"; };
-		024F8F9F16BC7B0E0082D051 /* ofUISubView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUISubView.cpp; sourceTree = "<group>"; };
-		024F8FA016BC7B0E0082D051 /* ofUISubView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUISubView.h; sourceTree = "<group>"; };
-		024F8FA116BC7B0E0082D051 /* ofUITabView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUITabView.cpp; sourceTree = "<group>"; };
-		024F8FA216BC7B0E0082D051 /* ofUITabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUITabView.h; sourceTree = "<group>"; };
-		024F8FA316BC7B0E0082D051 /* ofUITextField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUITextField.cpp; sourceTree = "<group>"; };
-		024F8FA416BC7B0E0082D051 /* ofUITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUITextField.h; sourceTree = "<group>"; };
-		024F8FA516BC7B0E0082D051 /* ofUITextFieldHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUITextFieldHandler.cpp; sourceTree = "<group>"; };
-		024F8FA616BC7B0E0082D051 /* ofUITextFieldHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUITextFieldHandler.h; sourceTree = "<group>"; };
-		024F8FA716BC7B0E0082D051 /* ofUIView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIView.cpp; sourceTree = "<group>"; };
-		024F8FA816BC7B0E0082D051 /* ofUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIView.h; sourceTree = "<group>"; };
-		024F8FA916BC7B0E0082D051 /* ofUIViewContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofUIViewContainer.cpp; sourceTree = "<group>"; };
-		024F8FAA16BC7B0E0082D051 /* ofUIViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofUIViewContainer.h; sourceTree = "<group>"; };
 		024F8FAB16BC7B0E0082D051 /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
 		024F8FAC16BC7B0E0082D051 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testApp.h; sourceTree = "<group>"; };
 		024F8FAD16BC7B0E0082D051 /* TimeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEvent.h; sourceTree = "<group>"; };
@@ -310,50 +261,9 @@
 				024F8FAB16BC7B0E0082D051 /* testApp.cpp */,
 				024F8FAC16BC7B0E0082D051 /* testApp.h */,
 				024F8FAD16BC7B0E0082D051 /* TimeEvent.h */,
-				024F8F8916BC7B0E0082D051 /* ofUI */,
 				024F8FAE16BC7B0E0082D051 /* XMLReader */,
 			);
 			path = src;
-			sourceTree = "<group>";
-		};
-		024F8F8916BC7B0E0082D051 /* ofUI */ = {
-			isa = PBXGroup;
-			children = (
-				024F8F8A16BC7B0E0082D051 /* ofUIButton.cpp */,
-				024F8F8B16BC7B0E0082D051 /* ofUIButton.h */,
-				024F8F8C16BC7B0E0082D051 /* ofUIButtonHandler.cpp */,
-				024F8F8D16BC7B0E0082D051 /* ofUIButtonHandler.h */,
-				024F8F8E16BC7B0E0082D051 /* ofUIDropDownMenu.cpp */,
-				024F8F8F16BC7B0E0082D051 /* ofUIDropDownMenu.h */,
-				024F8F9016BC7B0E0082D051 /* ofUIFrameView.cpp */,
-				024F8F9116BC7B0E0082D051 /* ofUIFrameView.h */,
-				024F8F9216BC7B0E0082D051 /* ofUIImageButton.cpp */,
-				024F8F9316BC7B0E0082D051 /* ofUIImageButton.h */,
-				024F8F9416BC7B0E0082D051 /* ofUIMainView.cpp */,
-				024F8F9516BC7B0E0082D051 /* ofUIMainView.h */,
-				024F8F9616BC7B0E0082D051 /* ofUIObject.h */,
-				024F8F9716BC7B0E0082D051 /* ofUIRadioButton.cpp */,
-				024F8F9816BC7B0E0082D051 /* ofUIRadioButton.h */,
-				024F8F9916BC7B0E0082D051 /* ofUIScrollView.cpp */,
-				024F8F9A16BC7B0E0082D051 /* ofUIScrollView.h */,
-				024F8F9B16BC7B0E0082D051 /* ofUISlider.cpp */,
-				024F8F9C16BC7B0E0082D051 /* ofUISlider.h */,
-				024F8F9D16BC7B0E0082D051 /* ofUIStaticText.cpp */,
-				024F8F9E16BC7B0E0082D051 /* ofUIStaticText.h */,
-				024F8F9F16BC7B0E0082D051 /* ofUISubView.cpp */,
-				024F8FA016BC7B0E0082D051 /* ofUISubView.h */,
-				024F8FA116BC7B0E0082D051 /* ofUITabView.cpp */,
-				024F8FA216BC7B0E0082D051 /* ofUITabView.h */,
-				024F8FA316BC7B0E0082D051 /* ofUITextField.cpp */,
-				024F8FA416BC7B0E0082D051 /* ofUITextField.h */,
-				024F8FA516BC7B0E0082D051 /* ofUITextFieldHandler.cpp */,
-				024F8FA616BC7B0E0082D051 /* ofUITextFieldHandler.h */,
-				024F8FA716BC7B0E0082D051 /* ofUIView.cpp */,
-				024F8FA816BC7B0E0082D051 /* ofUIView.h */,
-				024F8FA916BC7B0E0082D051 /* ofUIViewContainer.cpp */,
-				024F8FAA16BC7B0E0082D051 /* ofUIViewContainer.h */,
-			);
-			path = ofUI;
 			sourceTree = "<group>";
 		};
 		024F8FAE16BC7B0E0082D051 /* XMLReader */ = {
@@ -788,22 +698,6 @@
 				024F8FB516BC7B0E0082D051 /* Layout.cpp in Sources */,
 				024F8FB616BC7B0E0082D051 /* LayoutRenderer.cpp in Sources */,
 				024F8FB716BC7B0E0082D051 /* main.cpp in Sources */,
-				024F8FB816BC7B0E0082D051 /* ofUIButton.cpp in Sources */,
-				024F8FB916BC7B0E0082D051 /* ofUIButtonHandler.cpp in Sources */,
-				024F8FBA16BC7B0E0082D051 /* ofUIDropDownMenu.cpp in Sources */,
-				024F8FBB16BC7B0E0082D051 /* ofUIFrameView.cpp in Sources */,
-				024F8FBC16BC7B0E0082D051 /* ofUIImageButton.cpp in Sources */,
-				024F8FBD16BC7B0E0082D051 /* ofUIMainView.cpp in Sources */,
-				024F8FBE16BC7B0E0082D051 /* ofUIRadioButton.cpp in Sources */,
-				024F8FBF16BC7B0E0082D051 /* ofUIScrollView.cpp in Sources */,
-				024F8FC016BC7B0E0082D051 /* ofUISlider.cpp in Sources */,
-				024F8FC116BC7B0E0082D051 /* ofUIStaticText.cpp in Sources */,
-				024F8FC216BC7B0E0082D051 /* ofUISubView.cpp in Sources */,
-				024F8FC316BC7B0E0082D051 /* ofUITabView.cpp in Sources */,
-				024F8FC416BC7B0E0082D051 /* ofUITextField.cpp in Sources */,
-				024F8FC516BC7B0E0082D051 /* ofUITextFieldHandler.cpp in Sources */,
-				024F8FC616BC7B0E0082D051 /* ofUIView.cpp in Sources */,
-				024F8FC716BC7B0E0082D051 /* ofUIViewContainer.cpp in Sources */,
 				024F8FC816BC7B0E0082D051 /* testApp.cpp in Sources */,
 				024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */,
 				024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */,

@@ -2,11 +2,11 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
-// #define OFX_UI_NO_XML
-// #include "ofxUI.h"
+#define OFX_UI_NO_XML
+#include "ofxUI.h"
 #include <boost/regex.hpp>
 
-#include "ofUi/ofUIMainView.h"
+// #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LayoutRenderer.h"
 #include "LocationData.h"
@@ -25,8 +25,8 @@ public:
     void draw();
     void exit();
 
-    void buttonCallback(ofUIButton& button);
-    void syncButtonVisibility(ofUIButton& button);
+    // void buttonCallback(ofUIButton& button);
+    // void syncButtonVisibility(ofUIButton& button);
 
     // void guiEvent(ofxUIEventArgs &e);
     void keyPressed  (int key);
@@ -39,17 +39,20 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    void guiEvent(ofxUIEventArgs &e);
+    void guiEventLayouts(ofxUIEventArgs &e);
+    void guiEventServer(ofxUIEventArgs &e);
 
     ofTrueTypeFont fontVerd10;
     ofTrueTypeFont fontVerd14;
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
-    // ofxUICanvas* gui;
+    ofxUICanvas *gui;
 
-    ofUIMainView UImainView;
-    ofUISubView UIserverSubView;
-    ofUISubView UIlayoutSubView;
+    // ofUIMainView UImainView;
+    // ofUISubView UIserverSubView;
+    // ofUISubView UIlayoutSubView;
 
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderMode mainRenderMode;
@@ -65,4 +68,4 @@ public:
     const int listening_port = 5087;
 };
 
-void buttonCallback(ofUIButton* button, void* appPointer);
+// void buttonCallback(ofUIButton* button, void* appPointer);
