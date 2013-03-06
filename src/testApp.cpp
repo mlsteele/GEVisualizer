@@ -70,6 +70,7 @@ void testApp::setupUIServer() {
     gui->addWidget(serverGui);
     ofAddListener(serverGui->newGUIEvent, this, &testApp::guiEventServer);
 
+    // TODO make radio
     vector<string> toggleable_attributes;
     toggleable_attributes.push_back("Locations");
     toggleable_attributes.push_back("Texture");
@@ -103,7 +104,8 @@ void testApp::setupUILayouts() {
     gui->addWidget(layoutGui);
     ofAddListener(layoutGui->newGUIEvent, this, &testApp::guiEventLayouts);
 
-    layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/2, (float) 0, (float) 10, (float) 0, (string) "rotary"));
+    layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
+    layoutGui->addWidgetDown(new ofxUISlider("Zoom", 1, 5, 1, w, 25));
     layoutGui->addWidgetDown(new ofxUILabelButton("dry", (bool) false, 200, 40, 0, 0, OFX_UI_FONT_MEDIUM));
 
     vector<string> layoutNames;
@@ -177,6 +179,20 @@ void testApp::guiEventLayouts(ofxUIEventArgs &e ) {
             }
         }
         printf("WARN: failed to find matching layout for button\n");
+    }
+
+    if (e.widget->getName() == "Z Spin") {
+        float val = (*(ofxUIRotarySlider*) e.widget).getScaledValue();
+        for (LayoutRenderer& renderer : layoutRenderers) {
+            renderer.projection.zRotation = val;
+        }
+    }
+
+    if (e.widget->getName() == "Zoom") {
+        float val = (*(ofxUISlider*) e.widget).getScaledValue();
+        for (LayoutRenderer& renderer : layoutRenderers) {
+            renderer.projection.zoomFactor = val;
+        }
     }
 }
 
@@ -320,15 +336,15 @@ void testApp::keyPressed(int key){
     }
 }
 
-void testApp::keyReleased(int key) { /*UImainView.keyPressedEvent(key);*/ }
+void testApp::keyReleased(int key) {}
 
-void testApp::mouseMoved(int x, int y ) { /*UImainView.mouseMovedEvent(x,y);*/ }
+void testApp::mouseMoved(int x, int y ) {}
 
-void testApp::mouseDragged(int x, int y, int button) { /*UImainView.mouseDraggedEvent(x,y);*/ }
+void testApp::mouseDragged(int x, int y, int button) {}
 
-void testApp::mousePressed(int x, int y, int button) { /*UImainView.mousePressedEvent(x,y);*/ }
+void testApp::mousePressed(int x, int y, int button) {}
 
-void testApp::mouseReleased(int x, int y, int button) { /*UImainView.mouseReleasedEvent(x,y);*/ }
+void testApp::mouseReleased(int x, int y, int button) {}
 
 void testApp::windowResized(int w, int h) {}
 

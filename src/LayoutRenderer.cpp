@@ -189,8 +189,9 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     GLfloat rootModelView[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, rootModelView);
 
-    const float rotateX = 20;
-    // const float rotateX = ofGetElapsedTimef()*10;
+    const float w = layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x;
+    const float y = layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y;
+    // const float projection.xRotation = ofGetElapsedTimef()*10;
     float smoothed_transition = pow(transition, 3);
 
     ofPushMatrix(); // translation
@@ -205,7 +206,15 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     ofPushMatrix(); // skew
     // skew rotation
-    ofRotateX(rotateX);
+    ofRotateX(projection.xRotation);
+
+    // scale
+    ofScale(projection.zoomFactor, projection.zoomFactor, projection.zoomFactor);
+
+    // rotate around center
+    ofTranslate(w/2, y/2);
+    ofRotateZ(projection.zRotation);
+    ofTranslate(-w/2, -y/2);
 
     // texture
     ofEnableAlphaBlending(); // required for wall transparency
@@ -224,9 +233,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
         ofSetLineWidth(2);
         ofSetHexColor(0x0000FF);
         ofNoFill();
-        ofRect(0, 0,
-            layout->svgBoundingRect.width  / layout->pixelsPerMeter * projection.scale.x ,
-            layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y );
+        ofRect(0, 0, w, y);
 
         // walls
         const float wallHeight = 2.5 * projection.screenPixelsPerMeter;
@@ -319,6 +326,14 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
             // draw location circle
             ofCircle(loc3dpos.x, loc3dpos.y, 5);
+
+            ofNoFill();
+            ofSetHexColor(0x5DCAE6);
+            glEnable(GL_BLEND);
+            for (float z = 0; z < 100; z += 10) {
+                glColor4f(0, 204/255., 255/255., (100 - z) / 200);
+                ofCircle(loc3dpos.x, loc3dpos.y, z, 2);
+            }
 
             // draw location label
             if (mouseDist < 40) {

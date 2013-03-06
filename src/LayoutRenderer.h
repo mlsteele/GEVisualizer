@@ -13,6 +13,11 @@ typedef struct {
     POINT2D screen_px_corner = {0,0};
     POINT2D real_corner = {0,0};
     double screenPixelsPerMeter = 1;
+
+    float xRotation = 20;
+    float zRotation = 0;
+    float zoomFactor = 1;
+    POINT2D pan = {0, 0};
 } LayoutProjection;
 
 typedef struct {
@@ -43,14 +48,15 @@ public:
     void render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition=0);
 
     Layout* layout;
+    LayoutProjection projection;
 
 private:
     void recalculateTexture(GEVisualizer& store);
     void mouseTestRecalculateTexture();
 
-    LayoutProjection projection;
     ofTrueTypeFont*  fontMain;
     ofTrueTypeFont*  fontMapNameLabel;
+
 
     ofTexture        texture;
     unsigned int     textureSize[2] = {0,0};

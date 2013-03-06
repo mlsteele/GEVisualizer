@@ -67,5 +67,3 @@ public:
     // const int ge_server_port = 5094;
     const int listening_port = 5087;
 };
-
-// void buttonCallback(ofUIButton* button, void* appPointer);
