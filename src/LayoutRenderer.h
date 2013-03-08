@@ -46,11 +46,20 @@ public:
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition=0);
+    void handleMouseDrag();
 
     Layout* layout;
     LayoutProjection projection;
 
+    float lastMouseX = 0;
+    float lastMouseY = 0;
+
 private:
+    void resetLastMouse() {
+        lastMouseX = ofGetMouseX();
+        lastMouseY = ofGetMouseY();
+    }
+
     void recalculateTexture(GEVisualizer& store);
     void mouseTestRecalculateTexture();
 

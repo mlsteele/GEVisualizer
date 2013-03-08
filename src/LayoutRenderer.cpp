@@ -65,6 +65,8 @@ void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
 
+    resetLastMouse();
+
     projection.screen_px_corner     = screen_px_corner;
     projection.real_corner          = real_corner;
     projection.screenPixelsPerMeter = screenPixelsPerMeter;
@@ -182,10 +184,20 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
     }
 }
 
+void LayoutRenderer::handleMouseDrag() {
+    // mouse handling
+    float pandx = (ofGetMouseX() - lastMouseX);
+    float pandy = (ofGetMouseY() - lastMouseY);
+    projection.pan.x += pandx * cos(-projection.zRotation / 180. * M_PI) - pandy * sin(-projection.zRotation / 180. * M_PI);
+    projection.pan.y += pandx * sin(-projection.zRotation / 180. * M_PI) + pandy * cos(-projection.zRotation / 180. * M_PI);
+}
+
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
+    resetLastMouse();
+
     GLfloat rootModelView[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, rootModelView);
 
@@ -215,6 +227,9 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     ofTranslate(w/2, y/2);
     ofRotateZ(projection.zRotation);
     ofTranslate(-w/2, -y/2);
+
+    // pan
+    ofTranslate(projection.pan.x, projection.pan.y);
 
     // texture
     ofEnableAlphaBlending(); // required for wall transparency
