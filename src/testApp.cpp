@@ -56,9 +56,19 @@ void testApp::setupLayouts() {
 }
 
 void testApp::setupUI() {
+    // ofColor colorBack             (0x444444, 0);
+    // ofColor colorOutline          (0xdddddd, 255);
+    // ofColor colorOutlineHighlight (0xcccccc, 255);
+    // ofColor colorFill             (0xaaaaaa, 255);
+    // ofColor colorFillHighlight    (0x999999, 255);
+    // ofColor colorPadded           (0x110000, 255);
+    // ofColor colorPaddedOutline    (0x001100, 255);
+
     gui = new ofxUICanvas(0, 0, ofGetWidth(), ofGetHeight());
+    // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
-    gui->addWidgetDown(new ofxUILabel("Media Lab", OFX_UI_FONT_LARGE)); 
+    titleLabel = new ofxUILabel(titleLabelBase, OFX_UI_FONT_LARGE);
+    gui->addWidgetDown(titleLabel);
 
     setupUIServer();
     setupUILayouts();
@@ -106,7 +116,7 @@ void testApp::setupUILayouts() {
 
     layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
     layoutGui->addWidgetDown(new ofxUISlider("Zoom", 1, 5, 1, w, 25));
-    layoutGui->addWidgetDown(new ofxUILabelButton("dry", (bool) false, 200, 40, 0, 0, OFX_UI_FONT_MEDIUM));
+    layoutGui->addWidgetDown(new ofxUILabelButton("Reset", (bool) false, 200, 40, 0, 0, OFX_UI_FONT_MEDIUM));
 
     vector<string> layoutNames;
     for (LayoutRenderer& layoutRenderer : layoutRenderers) {
@@ -118,6 +128,9 @@ void testApp::setupUILayouts() {
 }
 
 void testApp::update(){
+    lastMouseX = ofGetMouseX();
+    lastMouseY = ofGetMouseY();
+
     gelink.update();
 
     // transition to approach selection
@@ -129,6 +142,14 @@ void testApp::update(){
         const float transition_speed = fmax(transition_diff_mag / 10, transition_speed_1);
         renderers_transition_i += (renderers_active_i - renderers_transition_i) > 0 ? transition_speed : -transition_speed;
     }
+
+    // update renderer transformations
+    for (LayoutRenderer& renderer : layoutRenderers) {
+        renderer.projection.dyn = renderTransform;
+    }
+
+    // update label
+    titleLabel->setLabel(titleLabelBase + " - " + layoutRenderers[renderers_active_i].layout->layoutName);
 }
 
 void testApp::draw(){
@@ -183,16 +204,16 @@ void testApp::guiEventLayouts(ofxUIEventArgs &e ) {
 
     if (e.widget->getName() == "Z Spin") {
         float val = (*(ofxUIRotarySlider*) e.widget).getScaledValue();
-        for (LayoutRenderer& renderer : layoutRenderers) {
-            renderer.projection.zRotation = val;
-        }
+        renderTransform.zRotation = val;
     }
 
     if (e.widget->getName() == "Zoom") {
         float val = (*(ofxUISlider*) e.widget).getScaledValue();
-        for (LayoutRenderer& renderer : layoutRenderers) {
-            renderer.projection.zoomFactor = val;
-        }
+        renderTransform.zoomFactor = val;
+    }
+
+    if (e.widget->getName() == "Reset") {
+        renderTransform = LayoutProjectionDynamic();
     }
 }
 
@@ -341,9 +362,11 @@ void testApp::keyReleased(int key) {}
 void testApp::mouseMoved(int x, int y ) {}
 
 void testApp::mouseDragged(int x, int y, int button) {
-    for (LayoutRenderer& renderer : layoutRenderers) {
-        renderer.handleMouseDrag();
-    }
+    float pandx = (ofGetMouseX() - lastMouseX);
+    float pandy = (ofGetMouseY() - lastMouseY);
+    LayoutProjectionDynamic& dyn = renderTransform;
+    dyn.pan.x += pandx * cos(-dyn.zRotation / 180. * M_PI) - pandy * sin(-dyn.zRotation / 180. * M_PI);
+    dyn.pan.y += pandx * sin(-dyn.zRotation / 180. * M_PI) + pandy * cos(-dyn.zRotation / 180. * M_PI);
 }
 
 void testApp::mousePressed(int x, int y, int button) {}

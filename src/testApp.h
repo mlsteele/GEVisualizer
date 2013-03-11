@@ -48,7 +48,9 @@ public:
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
-    ofxUICanvas *gui;
+    ofxUICanvas* gui;
+    string titleLabelBase = "Media Lab";
+    ofxUILabel* titleLabel;
 
     // ofUIMainView UImainView;
     // ofUISubView UIserverSubView;
@@ -56,8 +58,12 @@ public:
 
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderMode mainRenderMode;
+    LayoutProjectionDynamic renderTransform;
     int renderers_active_i;
     float renderers_transition_i;
+
+    float lastMouseX = 0;
+    float lastMouseY = 0;
 
     GEVisualizer gelink;
 

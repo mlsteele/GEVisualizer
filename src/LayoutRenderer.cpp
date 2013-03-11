@@ -8,6 +8,17 @@ string format_double_to_string(double n) {
     return ss.str();
 }
 
+// // returns data or a NULL if none is present in list
+// template <typename T>
+// T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
+//     for (T& thing : list) {
+//         if (thing.locationID == locationID) {
+//             return &thing;
+//         }
+//     }
+//     return NULL;
+// }
+
 // returns data or a NULL if none is present in list
 template <typename T>
 const T* extract_streamed_data(const vector<T>& list, unsigned int locationID) {
@@ -65,8 +76,6 @@ void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
 
-    resetLastMouse();
-
     projection.screen_px_corner     = screen_px_corner;
     projection.real_corner          = real_corner;
     projection.screenPixelsPerMeter = screenPixelsPerMeter;
@@ -102,6 +111,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 
 /*
 // TODO: make this more efficient (less loops)
+/*
 void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     const unsigned int w = textureSize[0];
     const unsigned int h = textureSize[1];
@@ -186,20 +196,10 @@ void LayoutRenderer::mouseTestRecalculateTexture() {
     }
 }
 
-void LayoutRenderer::handleMouseDrag() {
-    // mouse handling
-    float pandx = (ofGetMouseX() - lastMouseX);
-    float pandy = (ofGetMouseY() - lastMouseY);
-    projection.pan.x += pandx * cos(-projection.zRotation / 180. * M_PI) - pandy * sin(-projection.zRotation / 180. * M_PI);
-    projection.pan.y += pandx * sin(-projection.zRotation / 180. * M_PI) + pandy * cos(-projection.zRotation / 180. * M_PI);
-}
-
 // store is the data store for ge information
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
-    resetLastMouse();
-
     GLfloat rootModelView[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, rootModelView);
 
@@ -220,20 +220,21 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     ofPushMatrix(); // skew
     // skew rotation
-    ofRotateX(projection.xRotation);
+    ofRotateX(projection.dyn.xRotation);
 
     // scale
-    ofScale(projection.zoomFactor, projection.zoomFactor, projection.zoomFactor);
+    ofScale(projection.dyn.zoomFactor, projection.dyn.zoomFactor, projection.dyn.zoomFactor);
 
     // rotate around center
     ofTranslate(w/2, y/2);
-    ofRotateZ(projection.zRotation);
+    ofRotateZ(projection.dyn.zRotation);
     ofTranslate(-w/2, -y/2);
 
     // pan
-    ofTranslate(projection.pan.x, projection.pan.y);
+    ofTranslate(projection.dyn.pan.x, projection.dyn.pan.y);
 
     // texture
+    // TODO: reenable texture
     ofEnableAlphaBlending(); // required for wall transparency
     if (renderMode.texture) {
         // recalculateTexture(dataStore);
@@ -410,13 +411,13 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     ofPopMatrix(); // skew
 
     // map name
-    ofPushMatrix();
-        ofTranslate(0, -50);
-        // map name
-        // ofDrawBitmapString(layout->layoutName, 5, 17 );
-        ofSetHexColor(0x000000);
-        fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
-    ofPopMatrix();
+    // ofPushMatrix();
+    //     ofTranslate(0, -50);
+    //     // map name
+    //     // ofDrawBitmapString(layout->layoutName, 5, 17 );
+    //     ofSetHexColor(0x000000);
+    //     fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
+    // ofPopMatrix();
 
     ofPopMatrix(); // translation
 }

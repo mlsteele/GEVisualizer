@@ -7,17 +7,29 @@
 #include <boost/lexical_cast.hpp>
 using boost::lexical_cast;
 
+// dynamic portion of layoutprojection (for common offsets like zoom and pan)
+typedef struct {
+    float xRotation = 20;
+    float zRotation = 0;
+    float zoomFactor = 1;
+    POINT2D pan = {0, 0};
+
+    void print() {
+        printf("projection.xRotation: %f\n", xRotation);
+        printf("projection.zRotation: %f\n", zRotation);
+        printf("projection.zoomFactor: %f\n", zoomFactor);
+        printf("projection.pan: (%f, %f)\n", pan.x, pan.y);
+    }
+} LayoutProjectionDynamic;
+
 typedef struct {
     POINT2D offset = {0, 0};
     POINT2D scale = {1, 1};
     POINT2D screen_px_corner = {0,0};
     POINT2D real_corner = {0,0};
     double screenPixelsPerMeter = 1;
+    LayoutProjectionDynamic dyn;
 
-    float xRotation = 20;
-    float zRotation = 0;
-    float zoomFactor = 1;
-    POINT2D pan = {0, 0};
 } LayoutProjection;
 
 typedef struct {
@@ -46,20 +58,11 @@ public:
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
     void render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition=0);
-    void handleMouseDrag();
 
     Layout* layout;
     LayoutProjection projection;
 
-    float lastMouseX = 0;
-    float lastMouseY = 0;
-
 private:
-    void resetLastMouse() {
-        lastMouseX = ofGetMouseX();
-        lastMouseY = ofGetMouseY();
-    }
-
     // void recalculateTexture(GEVisualizer& store);
     void mouseTestRecalculateTexture();
 
