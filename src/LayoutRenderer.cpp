@@ -10,8 +10,8 @@ string format_double_to_string(double n) {
 
 // returns data or a NULL if none is present in list
 template <typename T>
-T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
-    for (T& thing : list) {
+const T* extract_streamed_data(const vector<T>& list, unsigned int locationID) {
+    for (const T& thing : list) {
         if (thing.locationID == locationID) {
             return &thing;
         }
@@ -100,6 +100,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
 }
 
+/*
 // TODO: make this more efficient (less loops)
 void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     const unsigned int w = textureSize[0];
@@ -152,6 +153,7 @@ void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
         }
     }
 }
+*/
 
 void LayoutRenderer::mouseTestRecalculateTexture() {
     const unsigned int w = textureSize[0];
@@ -234,10 +236,10 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     // texture
     ofEnableAlphaBlending(); // required for wall transparency
     if (renderMode.texture) {
-        recalculateTexture(dataStore);
+        // recalculateTexture(dataStore);
         ofSetHexColor(0x3D9BFF);
-        texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
-        texture.draw(0, 0, textureSize[0], textureSize[1]);
+        // texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
+        // texture.draw(0, 0, textureSize[0], textureSize[1]);
     }
     ofDisableAlphaBlending();
 
@@ -303,18 +305,20 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     // locations locuses
     if (renderMode.locations) {
-        for (LocationInfo& locationInfo : dataStore.getLocationInfo()) {
-            Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
+        for (const LocationInfo& locationInfo : dataStore.getLocationInfo()) {
+            const Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
             if (!localLocation) continue;
 
-            PresenceData* presenceData = NULL;
+            const PresenceData* presenceData = NULL;
             if (renderMode.presence) {
                  presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
+                 // presenceData = NULL;
             }
 
-            UserLocationData* userLocationData = NULL;
+            const UserLocationData* userLocationData = NULL;
             if (renderMode.userLocation) {
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
+                // userLocationData = NULL;
             }
 
             POINT3D loc3dpos;
@@ -368,7 +372,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO: fix smoothing
             // TODO: make prettier
             if (userLocationData != NULL) {
-                for (UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                for (const UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);
                     float theta = localLocation->rotation.theta;

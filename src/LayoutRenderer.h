@@ -60,7 +60,7 @@ private:
         lastMouseY = ofGetMouseY();
     }
 
-    void recalculateTexture(GEVisualizer& store);
+    // void recalculateTexture(GEVisualizer& store);
     void mouseTestRecalculateTexture();
 
     ofTrueTypeFont*  fontMain;

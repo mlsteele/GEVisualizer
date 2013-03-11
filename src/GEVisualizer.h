@@ -113,6 +113,63 @@ struct KeyUserLocationEstimate{
 };
 typedef struct KeyUserLocationEstimate KeyUserLocationEstimate;
 
+struct UserInfo{
+    UserInfo(unsigned int userID=0,string firstName="",string lastName="",string screenName="",bool isKeyUser=false){
+        this->userID = userID;
+        this->firstName = firstName;
+        this->lastName = lastName;
+        this->screenName = screenName;
+        this->isKeyUser = isKeyUser;
+    }
+    unsigned int userID;
+    string firstName;
+    string lastName;
+    string screenName;
+    bool isKeyUser;
+};
+typedef struct UserInfo UserInfo;
+
+struct LocationDescriptorInfo{
+    LocationDescriptorInfo(unsigned int locationID=0,string locationDescriptor=""){
+        this->locationID = locationID;
+        this->locationDescriptor = locationDescriptor;
+    }
+    unsigned int mappingID;
+    unsigned int locationID;
+    string locationDescriptor;
+};
+typedef struct LocationDescriptorInfo LocationDescriptorInfo;
+
+struct ServerInfo{
+    ServerInfo(){
+        inputDataQueueSize = 0;
+        outputDataQueueSize = 0;
+        databaseWriterQueueSize = 0;
+        dataAnalysisQueueSize = 0;
+        numAssignedMemoryBlocks = 0;
+        numFreeMemoryBlocks = 0;
+        numConnectedClients = 0;
+        numConnectedSensorGroups = 0;
+        realtimeDataInputDelay = 0;
+        realtimeDataOutputDelay = 0;
+        totalMemoryUsage = 0;
+    }
+    unsigned int inputDataQueueSize;
+    unsigned int outputDataQueueSize;
+    unsigned int databaseWriterQueueSize;
+    unsigned int dataAnalysisQueueSize;
+    unsigned int numAssignedMemoryBlocks;
+    unsigned int numFreeMemoryBlocks;
+    unsigned int numConnectedClients;
+    unsigned int numConnectedSensorGroups;
+    double realtimeDataInputDelay;
+    double realtimeDataOutputDelay;
+    double totalMemoryUsage;
+};
+
+typedef struct ServerInfo ServerInfo;
+
+
 class GEVisualizer{
 
 public:
@@ -124,6 +181,9 @@ public:
     bool update();
     
     bool sendLocationInfo();
+    bool sendUserInfo();
+    bool sendLocationDescriptorInfo();
+    bool streamServerInfo(bool state);
     bool streamUserPresenceData(bool state);
     bool streamUserCountData(bool state);
     bool streamUserProximityData(bool state);
@@ -136,15 +196,18 @@ public:
     bool recordRGBImages(bool state);
     bool autoLabelRGBImages(bool state);
     
-    vector< LocationInfo >& getLocationInfo();
-    vector< PresenceData >& getPresenceData();
-    vector< CountData >& getCountData();
-    vector< ProximityEstimate >& getProximityData();
-    vector< UserLocationData >& getUserLocationData();
-    vector< GaussianDistribution >& getUserLocationProbabilityData();
-    vector< KeyUserLocationEstimate >& getKeyUserEstimatedLocationData();
-
-    bool getIsConnected() {return connected;}
+    bool getIsConnected(){ return connected; }
+    ServerInfo getServerInfo();
+    const vector< LocationInfo >&            getLocationInfo();
+    const vector< UserInfo >&                getUserInfo();
+    const vector< LocationDescriptorInfo >&  getLocationDescriptorInfo();
+    const vector< UserInfo >&                getKeyUserInfo();
+    const vector< PresenceData >&            getPresenceData();
+    const vector< CountData >&               getCountData();
+    const vector< ProximityEstimate >&       getProximityData();
+    const vector< UserLocationData >&        getUserLocationData();
+    const vector< GaussianDistribution >&    getUserLocationProbabilityData();
+    const vector< KeyUserLocationEstimate >& getKeyUserEstimatedLocationData();
     
 protected:
     bool sendMessage( ofxOscMessage message );
@@ -154,6 +217,7 @@ protected:
     unsigned int listenerPort;
     bool connected;
     bool verbose;
+    bool streamingServerInfo;
     bool streamingUserPresenceData;
     bool streamingUserCountData;
     bool streamingUserProximityData;
@@ -166,7 +230,10 @@ protected:
     ofxOscSender sender;
     ofxOscReceiver receiver;
     
+    ServerInfo serverInfo;
     vector< LocationInfo > locationInfo;
+    vector< UserInfo > userInfo;
+    vector< LocationDescriptorInfo > locationDescriptorInfo;
     vector< PresenceData > presenceData;
     vector< CountData > countData;
     vector< ProximityEstimate > proximityData;

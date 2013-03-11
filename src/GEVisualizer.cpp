@@ -3,6 +3,7 @@
 GEVisualizer::GEVisualizer(){
     verbose = true;
     connected = false;
+    streamingServerInfo = false;
     streamingUserPresenceData = false;
     streamingUserCountData = false;
     streamingUserLocationData = false;
@@ -40,6 +41,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     receiver.setup((int)listenerPort);
     
     connected = true;
+    streamingServerInfo = false;
     streamingUserPresenceData = false;
     streamingUserCountData = false;
     streamingUserProximityData = false;
@@ -48,6 +50,8 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     streamingUserIdentityData = false;
     streamingKeyUserEstimatedLocationData = false;
     locationInfo.clear();
+    userInfo.clear();
+    locationDescriptorInfo.clear();
     presenceData.clear();
     countData.clear();
     proximityData.clear();
@@ -79,6 +83,7 @@ bool GEVisualizer::disconnet(){
     sendMessage( message );
     
     connected = false;
+    streamingServerInfo = false;
     streamingUserPresenceData = false;
     streamingUserCountData = false;
     streamingUserProximityData = false;
@@ -87,6 +92,8 @@ bool GEVisualizer::disconnet(){
     streamingUserIdentityData = false;
     streamingKeyUserEstimatedLocationData = false;
     locationInfo.clear();
+    userInfo.clear();
+    locationDescriptorInfo.clear();
     presenceData.clear();
     countData.clear();
     proximityData.clear();
@@ -103,16 +110,34 @@ bool GEVisualizer::update(){
         
         ofxOscMessage m;
         receiver.getNextMessage( &m );
+        bool debug = false;
         
-        // printf("received new message: %s\n",m.getAddress().c_str());
+        //printf("Got new message! Address: %s\n",m.getAddress().c_str());
         
         if( m.getAddress() == "/Response" ){
             string responseString = m.getArgAsString(0);
             int status = m.getArgAsInt32(1);
-            printf("Got /Response. ResponseString: %s State: %i\n",responseString.c_str(),status);
+            if( debug ) printf("Got /Response. ResponseString: %s State: %i\n",responseString.c_str(),status);
             
+            //TODO - Process response messages
+            
+        }else if( m.getAddress() == "/ServerInfo" ){
+            if( debug ) printf("Got Server Info\n");
+            int messageIndex = 0;
+            serverInfo.inputDataQueueSize = m.getArgAsInt32(messageIndex++);
+            serverInfo.outputDataQueueSize = m.getArgAsInt32(messageIndex++);
+            serverInfo.databaseWriterQueueSize = m.getArgAsInt32(messageIndex++);
+            serverInfo.dataAnalysisQueueSize = m.getArgAsInt32(messageIndex++);
+            serverInfo.numAssignedMemoryBlocks = m.getArgAsInt32(messageIndex++);
+            serverInfo.numFreeMemoryBlocks = m.getArgAsInt32(messageIndex++);
+            serverInfo.numConnectedClients = m.getArgAsInt32(messageIndex++);
+            serverInfo.numConnectedSensorGroups = m.getArgAsInt32(messageIndex++);
+            serverInfo.realtimeDataInputDelay = m.getArgAsFloat(messageIndex++);
+            serverInfo.realtimeDataOutputDelay = m.getArgAsFloat(messageIndex++);
+            serverInfo.totalMemoryUsage = m.getArgAsFloat(messageIndex++);
+        
         }else if( m.getAddress() == "/LocationInfo" ){
-            // printf("Got Location Info\n");
+            if( debug ) printf("Got Location Info\n");
             locationInfo.clear();
             int numLocations = m.getArgAsInt32(0);
             if( numLocations > 0 ){
@@ -122,13 +147,40 @@ bool GEVisualizer::update(){
                     locationInfo[i].locationID =  m.getArgAsInt32(messageIndex++);
                     locationInfo[i].locationType =  m.getArgAsInt32(messageIndex++);
                     locationInfo[i].x =  m.getArgAsFloat(messageIndex++);
-                    locationInfo[i].x =  m.getArgAsFloat(messageIndex++);
-                    locationInfo[i].x =  m.getArgAsFloat(messageIndex++);
+                    locationInfo[i].y =  m.getArgAsFloat(messageIndex++);
+                    locationInfo[i].z =  m.getArgAsFloat(messageIndex++);
                     locationInfo[i].notes =  m.getArgAsString(messageIndex++);
+                    if( debug ) printf("LocationInfo: %i %s\n",locationInfo[i].locationID,locationInfo[i].notes.c_str());
                 }
             }
-            for (LocationInfo& locationInfo : this->locationInfo) {
-                printf("got location info for ID (%i)\n", locationInfo.locationID);
+        }else if( m.getAddress() == "/UserInfo" ){
+            if( debug ) printf("Got User Info\n");
+            userInfo.clear();
+            int numUsers = m.getArgAsInt32(0);
+            if( numUsers > 0 ){
+                userInfo.resize( numUsers );
+                int messageIndex = 1;
+                for(int i=0; i<numUsers; i++){
+                    userInfo[i].userID =  m.getArgAsInt32(messageIndex++);
+                    userInfo[i].firstName =  m.getArgAsString(messageIndex++);
+                    userInfo[i].lastName =  m.getArgAsString(messageIndex++);
+                    userInfo[i].screenName =  m.getArgAsString(messageIndex++);
+                    userInfo[i].isKeyUser = m.getArgAsInt32(messageIndex++) == 1 ? true : false;
+                    if( debug ) printf("UserInfo: %i %s\n",userInfo[i].userID,userInfo[i].screenName.c_str());
+                }
+            }
+        }else if( m.getAddress() == "/LocationDescriptorInfo" ){
+            if( debug ) printf("Got Location Descriptor Info\n");
+            locationDescriptorInfo.clear();
+            int numDescriptors = m.getArgAsInt32(0);
+            if( numDescriptors > 0 ){
+                locationDescriptorInfo.resize( numDescriptors );
+                int messageIndex = 1;
+                for(int i=0; i<numDescriptors; i++){
+                   locationDescriptorInfo[i].locationID =  m.getArgAsInt32(messageIndex++);
+                   locationDescriptorInfo[i].locationDescriptor =  m.getArgAsString(messageIndex++);
+                   if( debug ) printf("LocationDescriptor: %i %s\n",locationDescriptorInfo[i].locationID,locationDescriptorInfo[i].locationDescriptor.c_str());
+                }
             }
         }else if( m.getAddress() == "/UserPresenceData" ){
             presenceData.clear();
@@ -137,9 +189,9 @@ bool GEVisualizer::update(){
                 presenceData.resize( numLocations );
                 int messageIndex = 1;
                 for(int i=0; i<numLocations; i++){
-                   presenceData[i].locationID =  m.getArgAsInt32(messageIndex++);
-                   presenceData[i].presenceEstimate =  m.getArgAsInt32(messageIndex++);
-                   presenceData[i].presenceLikelihood =  m.getArgAsFloat(messageIndex++);
+                    presenceData[i].locationID =  m.getArgAsInt32(messageIndex++);
+                    presenceData[i].presenceEstimate =  m.getArgAsInt32(messageIndex++);
+                    presenceData[i].presenceLikelihood =  m.getArgAsFloat(messageIndex++);
                 }
             }
         }else if( m.getAddress() == "/UserCountData" ){
@@ -201,13 +253,10 @@ bool GEVisualizer::update(){
                     }
                 }
             }
-            
-            
         }else if( m.getAddress() == "/UserLocationProbabilityData" ){
             userLocationProbabilityData.clear();
             
             int numFunctions = m.getArgAsInt32(0);
-            printf("Got /UserLocationProbabilityData message! NumFunctions: %i \n",numFunctions);
             if( numFunctions > 0 ){
                 userLocationProbabilityData.resize( numFunctions );
                 int messageIndex = 1;
@@ -227,8 +276,6 @@ bool GEVisualizer::update(){
                     for(int j=0; j<N; j++){
                         sigma[j] = m.getArgAsFloat(messageIndex++);
                     }
-                    
-                    printf("mu: %f %f %f\n",mu[0],mu[1],mu[2]);
                     
                     userLocationProbabilityData[i].init(mu, sigma, weight);
                 }
@@ -264,6 +311,50 @@ bool GEVisualizer::sendLocationInfo(){
     ofxOscMessage message;
     message.setAddress("/SendLocationInfo");
     message.addIntArg( (int)listenerPort );
+    sendMessage( message );
+    return true;
+}
+
+bool GEVisualizer::sendUserInfo(){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send sendUserInfo() message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/SendUserInfo");
+    message.addIntArg( (int)listenerPort );
+    sendMessage( message );
+    return true;
+}
+
+bool GEVisualizer::sendLocationDescriptorInfo(){
+    
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send sendLocationDescriptorInfo() message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/SendLocationDescriptorInfo");
+    message.addIntArg( (int)listenerPort );
+    sendMessage( message );
+    return true;
+}
+
+bool GEVisualizer::streamServerInfo(bool state){
+    if( !connected ){
+        if( verbose )
+            printf("-[GEVisualizer] Can't send streamServerInfo(..) message, not connected!\n");
+        return false;
+    }
+    
+    ofxOscMessage message;
+    message.setAddress("/StreamServerInfo");
+    message.addIntArg( (int)listenerPort );
+    message.addIntArg( (state ? 1 : 0) );
     sendMessage( message );
     return true;
 }
@@ -427,31 +518,53 @@ bool GEVisualizer::autoLabelRGBImages(bool state){
     return true;
 }
 
-vector< LocationInfo >& GEVisualizer::getLocationInfo(){
+ServerInfo GEVisualizer::getServerInfo(){
+    return serverInfo;
+}
+
+const vector< LocationInfo >& GEVisualizer::getLocationInfo(){
     return locationInfo;
 }
 
-vector< PresenceData >& GEVisualizer::getPresenceData(){
+const vector< UserInfo >& GEVisualizer::getUserInfo(){
+    return userInfo;
+}
+
+const vector< LocationDescriptorInfo >& GEVisualizer::getLocationDescriptorInfo(){
+    return locationDescriptorInfo;
+}
+
+const vector< UserInfo >& GEVisualizer::getKeyUserInfo(){
+    vector< UserInfo > keyUserInfo;
+    for(unsigned int i=0; i<userInfo.size(); i++){
+        if( userInfo[i].isKeyUser ){
+            keyUserInfo.push_back( userInfo[i] );
+        }
+    }
+    return keyUserInfo;
+}
+
+const vector< PresenceData >& GEVisualizer::getPresenceData(){
     return presenceData;
 }
 
-vector< CountData >& GEVisualizer::getCountData(){
+const vector< CountData >& GEVisualizer::getCountData(){
     return countData;
 }
 
-vector< ProximityEstimate >& GEVisualizer::getProximityData(){
+const vector< ProximityEstimate >& GEVisualizer::getProximityData(){
     return proximityData;
 }
 
-vector< UserLocationData >& GEVisualizer::getUserLocationData(){
+const vector< UserLocationData >& GEVisualizer::getUserLocationData(){
     return locationData;
 }
 
-vector< GaussianDistribution >& GEVisualizer::getUserLocationProbabilityData(){
+const vector< GaussianDistribution >& GEVisualizer::getUserLocationProbabilityData(){
     return userLocationProbabilityData;
 }
 
-vector< KeyUserLocationEstimate >& GEVisualizer::getKeyUserEstimatedLocationData(){
+const vector< KeyUserLocationEstimate >& GEVisualizer::getKeyUserEstimatedLocationData(){
     return keyUserEstimatedLocationData;
 }
 
