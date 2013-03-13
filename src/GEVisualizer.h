@@ -116,18 +116,20 @@ struct KeyUserLocationEstimate{
 typedef struct KeyUserLocationEstimate KeyUserLocationEstimate;
 
 struct UserInfo{
-    UserInfo(unsigned int userID=0,string firstName="",string lastName="",string screenName="",bool isKeyUser=false){
+    UserInfo(unsigned int userID=0,string firstName="",string lastName="",string screenName="",bool isKeyUser=false,unsigned int privacySharingState=0){
         this->userID = userID;
         this->firstName = firstName;
         this->lastName = lastName;
         this->screenName = screenName;
         this->isKeyUser = isKeyUser;
+        this->privacySharingState = privacySharingState;
     }
     unsigned int userID;
     string firstName;
     string lastName;
     string screenName;
     bool isKeyUser;
+    unsigned int privacySharingState;
 };
 typedef struct UserInfo UserInfo;
 
@@ -181,7 +183,46 @@ struct ServerInfo{
     double realtimeDataOutputDelay;
     double totalMemoryUsage;
 };
+
 typedef struct ServerInfo ServerInfo;
+
+struct SkeletonJoint{
+    SkeletonJoint(double x=0,double y=0,double z=0,double confidence=0){
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->confidence = confidence;
+    }
+    
+    double x;
+    double y;
+    double z;
+    double confidence;
+    
+};
+typedef struct SkeletonJoint SkeletonJoint;
+
+struct SkeletonData{
+    SkeletonData(unsigned int userID=0){
+        this->userID = userID;
+    }
+    
+    unsigned int userID;
+    vector< SkeletonJoint > jointData;
+    
+};
+typedef struct SkeletonData SkeletonData;
+
+struct LocationSkeletonData{
+    LocationSkeletonData(unsigned int locationID=0){
+        this->locationID = locationID;
+    }
+    
+    unsigned int locationID;
+    vector< SkeletonData > userJointData;
+    
+};
+typedef struct LocationSkeletonData LocationSkeletonData;
 
 
 class GEVisualizer{
@@ -196,6 +237,7 @@ public:
     
     bool sendLocationInfo();
     bool sendUserInfo();
+    bool sendKeyUserInfo();
     bool sendLocationDescriptorInfo();
     bool streamServerInfo(bool state);
     bool streamUserPresenceData(bool state);
@@ -206,6 +248,7 @@ public:
     bool streamUserIdentityData(bool state);
     bool streamUserLocationProbabilityData(bool state);
     bool streamKeyUserEstimatedLocationData(bool state);
+    bool streamUserJointData(bool state);
     
     bool recordRGBImages(bool state);
     bool autoLabelRGBImages(bool state);
@@ -215,14 +258,15 @@ public:
     const vector< LocationInfo >&            getLocationInfo();
     const vector< UserInfo >&                getUserInfo();
     const map< unsigned int, UserPData >&    getUserPData() {return userPData;};
-    const vector< LocationDescriptorInfo >&  getLocationDescriptorInfo();
     const vector< UserInfo >&                getKeyUserInfo();
+    const vector< LocationDescriptorInfo >&  getLocationDescriptorInfo();
     const vector< PresenceData >&            getPresenceData();
     const vector< CountData >&               getCountData();
     const vector< ProximityEstimate >&       getProximityData();
     const vector< UserLocationData >&        getUserLocationData();
     const vector< GaussianDistribution >&    getUserLocationProbabilityData();
     const vector< KeyUserLocationEstimate >& getKeyUserEstimatedLocationData();
+    const vector< LocationSkeletonData >&    getUserJointData();
     
 protected:
     bool sendMessage( ofxOscMessage message );
@@ -241,6 +285,7 @@ protected:
     bool streamingUserIdentityData;
     bool streamingUserLocationProbabilityData;
     bool streamingKeyUserEstimatedLocationData;
+    bool streamingUserJointData;
     
     ofxOscSender sender;
     ofxOscReceiver receiver;
@@ -249,6 +294,7 @@ protected:
     vector< LocationInfo > locationInfo;
     vector< UserInfo > userInfo;
     map< unsigned int, UserPData > userPData;
+    vector< UserInfo > keyUserInfo;
     vector< LocationDescriptorInfo > locationDescriptorInfo;
     vector< PresenceData > presenceData;
     vector< CountData > countData;
@@ -256,5 +302,6 @@ protected:
     vector< UserLocationData > locationData;
     vector< GaussianDistribution > userLocationProbabilityData;
     vector< KeyUserLocationEstimate > keyUserEstimatedLocationData;
+    vector< LocationSkeletonData > userJointData;
     
 };
