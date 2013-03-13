@@ -25,10 +25,9 @@ public:
     void draw();
     void exit();
 
-    // void buttonCallback(ofUIButton& button);
-    // void syncButtonVisibility(ofUIButton& button);
+    void skeletonTestUpdate();
+    void skeletonTestDraw();
 
-    // void guiEvent(ofxUIEventArgs &e);
     void keyPressed  (int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y );
@@ -42,6 +41,7 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     void guiEventLayouts(ofxUIEventArgs &e);
     void guiEventServer(ofxUIEventArgs &e);
+
 
     ofTrueTypeFont fontVerd10;
     ofTrueTypeFont fontVerd14;

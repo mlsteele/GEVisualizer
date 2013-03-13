@@ -127,11 +127,49 @@ void testApp::setupUILayouts() {
 
 }
 
+void testApp::skeletonTestUpdate() {
+    printf("testing all skeleton data\n");
+
+    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+    printf("how many locations have skeletons? %i\n", allSkelData.size());
+    for (const LocationSkeletonData& locationSkeletons : allSkelData) {
+        printf("how many skeletons at location %i? %i\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
+        // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
+        for (const SkeletonData& skel : locationSkeletons.userJointData) {
+            printf("how many joints on skeleton of user %i? %i\n", skel.userID, skel.jointData.size());
+            for (const SkeletonJoint& j : skel.jointData) {
+                printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
+            }
+        }
+    }
+}
+
+void testApp::skeletonTestDraw() {
+    ofPushMatrix();
+    ofTranslate(300, 300, 0);
+    ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
+
+    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+    for (const LocationSkeletonData& locationSkeletons : allSkelData) {
+        for (const SkeletonData& skel : locationSkeletons.userJointData) {
+            for (const SkeletonJoint& j : skel.jointData) {
+                ofSetHexColor(0x000000);
+                // ofSphere(j.x, j.y, j.z, 10);
+                ofSphere(-j.x, -j.y, 0, 10);
+            }
+        }
+    }
+
+    ofPopMatrix();
+}
+
+
 void testApp::update(){
     lastMouseX = ofGetMouseX();
     lastMouseY = ofGetMouseY();
 
     gelink.update();
+    skeletonTestUpdate();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
@@ -155,21 +193,21 @@ void testApp::update(){
 void testApp::draw(){
     ofBackground(0xD8D8D8);
 
-    // render layouts
-    for (int i = 0; i < layoutRenderers.size(); i++) {
-        float transition = i - renderers_transition_i;
-        if (fabs(transition) < .97) {
-            LayoutRenderMode activeRenderMode = mainRenderMode;
-            const bool really_nearby = fabs(transition) < 0.2;
-            activeRenderMode.locations    &= really_nearby;
-            activeRenderMode.texture      &= really_nearby;
-            activeRenderMode.presence     &= really_nearby;
-            activeRenderMode.userLocation &= really_nearby;
-            layoutRenderers[i].render(activeRenderMode, gelink, transition);
-        }
-    }
+    skeletonTestDraw();
 
-    // UImainView.draw(0, 0);
+    // render layouts
+    // for (int i = 0; i < layoutRenderers.size(); i++) {
+    //     float transition = i - renderers_transition_i;
+    //     if (fabs(transition) < .97) {
+    //         LayoutRenderMode activeRenderMode = mainRenderMode;
+    //         const bool really_nearby = fabs(transition) < 0.2;
+    //         activeRenderMode.locations    &= really_nearby;
+    //         activeRenderMode.texture      &= really_nearby;
+    //         activeRenderMode.presence     &= really_nearby;
+    //         activeRenderMode.userLocation &= really_nearby;
+    //         layoutRenderers[i].render(activeRenderMode, gelink, transition);
+    //     }
+    // }
 }
 
 void testApp::exit() {
@@ -351,6 +389,8 @@ void testApp::keyPressed(int key){
         case 'P':
             gui->setDrawWidgetPadding(false);
             break;
+        case 'k':
+            gelink.streamUserJointData(true);
         default:
             printf("Key Pressed: %i\n", key);
             break;
