@@ -347,10 +347,11 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // draw location circle
             ofCircle(loc3dpos.x, loc3dpos.y, 5);
 
+            // hovering beam rings
             ofNoFill();
             ofSetHexColor(0x5DCAE6);
             glEnable(GL_BLEND);
-            for (float z = 0; z < 100; z += 10) {
+            for (float z = 1; z < 100; z += 10) {
                 glColor4f(0, 204/255., 255/255., (100 - z) / 200);
                 ofCircle(loc3dpos.x, loc3dpos.y, z, 2);
             }
@@ -390,15 +391,65 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 4);
 
                     // render label
+                    // if (mouseDist < 40) {
+                    //     pushUnprojectedMatrix(rootModelView, loc3dpos);
+                    //     ofSetHexColor(0x774510);
+                    //     string x_str = lexical_cast<string>(ex);
+                    //     string y_str = lexical_cast<string>(ey);
+                    //     string uid_str = lexical_cast<string>(estimate.userID);
+
+                    //     fontMain->drawString("(" + x_str + ", " + y_str + ")", tex, tey + 10 );
+                    //     fontMain->drawString("uid: " + uid_str, tex, tey + 20 );
+                    //     ofPopMatrix();
+                    // }
+                }
+            }
+
+            // draw pdata location estimates
+            if (renderMode.userLocation) {
+                for (auto& pair : dataStore.getUserPData()) {
+                    const UserPData& pUser = pair.second;
+                    if (!pUser.hasLastSnapshot) continue;
+                    if (pUser.lastLocationID != locationInfo.locationID) continue;
+                    const UserLocationEstimate& estimate = pUser.lastEstimate;
+
+                    ofFill();
+                    ofColor userColor;
+                    userColor.setHsb(276 * 255 / 360, 255, 255);
+
+                    ofSetColor(userColor);
+                    float theta = localLocation->rotation.theta;
+                    // note these are switched to match screen to world
+                    float ex = estimate.y;
+                    float ey = estimate.x;
+
+                    // rotate & scale
+                    float tex = ex * cos(theta) + ey * sin(theta);
+                    float tey = -ex * sin(theta) + ey * cos(theta);
+                    tex *= projection.scale.x / 1000.;
+                    tey *= projection.scale.x / 1000.;
+
+                    unsigned int age = ofGetElapsedTimeMillis() - pUser.lastSnapshotTime;
+                    tex += pUser.vx * age / 500;
+                    tey += pUser.vy * age / 500;
+
+                    ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 2);
+
+                    // render label
                     if (mouseDist < 40) {
                         pushUnprojectedMatrix(rootModelView, loc3dpos);
                         ofSetHexColor(0x774510);
                         string x_str = lexical_cast<string>(ex);
                         string y_str = lexical_cast<string>(ey);
                         string uid_str = lexical_cast<string>(estimate.userID);
+                        string age_str = lexical_cast<string>(age);
+                        string vx_str = lexical_cast<string>(pUser.vx);
+                        string vy_str = lexical_cast<string>(pUser.vy);
 
                         fontMain->drawString("(" + x_str + ", " + y_str + ")", tex, tey + 10 );
-                        fontMain->drawString("uid: " + uid_str, tex, tey + 20 );
+                        fontMain->drawString("uid: " + uid_str, tex, tey + 24 );
+                        fontMain->drawString("age: " + age_str, tex, tey + 38 );
+                        fontMain->drawString("vel: " + vx_str + ", " + vy_str, tex, tey + 52 );
                         ofPopMatrix();
                     }
                 }

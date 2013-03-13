@@ -249,6 +249,19 @@ bool GEVisualizer::update(){
                             locationData[i].userLocationEstimates[j].z = m.getArgAsFloat(messageIndex++);
                             locationData[i].userLocationEstimates[j].estimationLikelihood = m.getArgAsFloat(messageIndex++);
                             //printf("Got User Location Data: %f %f %f\n",locationData[i].userLocationEstimates[j].x,locationData[i].userLocationEstimates[j].y,locationData[i].userLocationEstimates[j].z);
+                            printf("estimationLikelihood %f\n", locationData[i].userLocationEstimates[j].estimationLikelihood);
+
+                            const UserLocationEstimate& est = locationData[i].userLocationEstimates[j];
+                            userPData[est.userID].userID = est.userID;
+                            userPData[est.userID].hasLastSnapshot = true;
+                            userPData[est.userID].lastSnapshotTime = ofGetElapsedTimeMillis();
+                            userPData[est.userID].lastLocationID = locationData[i].locationID;
+
+                            userPData[est.userID].vx = 0.95 * userPData[est.userID].vx + 0.05 * (est.x - userPData[est.userID].lastEstimate.x);
+                            userPData[est.userID].vy = 0.95 * userPData[est.userID].vy + 0.05 * (est.y - userPData[est.userID].lastEstimate.y);
+
+                            userPData[est.userID].lastEstimate = est;
+
                         }
                     }
                 }

@@ -4,6 +4,8 @@
 #include "ofxOsc.h"
 #include "GaussianDistribution.h"
 
+const int UserPDataBufferLen = 20;
+
 struct LocationInfo{
     LocationInfo(){
         locationID = 0;
@@ -129,6 +131,19 @@ struct UserInfo{
 };
 typedef struct UserInfo UserInfo;
 
+// persistent user data
+struct UserPData {
+    unsigned int userID;
+    bool hasLastSnapshot;
+    unsigned int lastSnapshotTime;
+    unsigned int lastLocationID;
+    // queue<UserPDataBufferLen> lastEstimate;
+    UserLocationEstimate lastEstimate;
+    double vx;
+    double vy;
+};
+typedef struct UserPData UserPData;
+
 struct LocationDescriptorInfo{
     LocationDescriptorInfo(unsigned int locationID=0,string locationDescriptor=""){
         this->locationID = locationID;
@@ -166,7 +181,6 @@ struct ServerInfo{
     double realtimeDataOutputDelay;
     double totalMemoryUsage;
 };
-
 typedef struct ServerInfo ServerInfo;
 
 
@@ -200,6 +214,7 @@ public:
     ServerInfo getServerInfo();
     const vector< LocationInfo >&            getLocationInfo();
     const vector< UserInfo >&                getUserInfo();
+    const map< unsigned int, UserPData >&    getUserPData() {return userPData;};
     const vector< LocationDescriptorInfo >&  getLocationDescriptorInfo();
     const vector< UserInfo >&                getKeyUserInfo();
     const vector< PresenceData >&            getPresenceData();
@@ -233,6 +248,7 @@ protected:
     ServerInfo serverInfo;
     vector< LocationInfo > locationInfo;
     vector< UserInfo > userInfo;
+    map< unsigned int, UserPData > userPData;
     vector< LocationDescriptorInfo > locationDescriptorInfo;
     vector< PresenceData > presenceData;
     vector< CountData > countData;
