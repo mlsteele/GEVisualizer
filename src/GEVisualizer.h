@@ -177,7 +177,7 @@ public:
     ~GEVisualizer();
     
     bool connect(string serverIPAddress,unsigned int serverPort,unsigned int listenerPort);
-    bool disconnet();
+    bool disconnect();
     bool update();
     
     bool sendLocationInfo();

@@ -173,7 +173,7 @@ void testApp::draw(){
 }
 
 void testApp::exit() {
-    gelink.disconnet();
+    gelink.disconnect();
     delete gui;
 }
 
@@ -229,7 +229,7 @@ void testApp::guiEventServer(ofxUIEventArgs &e) {
             }
 
             if (btn.getName() == "Unregister") {
-                gelink.disconnet();
+                gelink.disconnect();
             }
 
             if (btn.getName() == "Stream") {

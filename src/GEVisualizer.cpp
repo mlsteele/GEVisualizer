@@ -26,7 +26,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
             printf("-[GEVisualizer] Already connected, disconnecting first...\n");
         }
         
-        disconnet();
+        disconnect();
         
         if( verbose ){
             printf("-[GEVisualizer] Disconnected\n");
@@ -68,7 +68,7 @@ bool GEVisualizer::connect(string serverIPAddress,unsigned int serverPort,unsign
     return true;
 }
 
-bool GEVisualizer::disconnet(){
+bool GEVisualizer::disconnect(){
     
     if( !connected ){
         if( verbose ){
