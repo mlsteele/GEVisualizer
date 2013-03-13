@@ -275,7 +275,7 @@ bool GEVisualizer::update(){
                             locationData[i].userLocationEstimates[j].z = m.getArgAsFloat(messageIndex++);
                             locationData[i].userLocationEstimates[j].estimationLikelihood = m.getArgAsFloat(messageIndex++);
                             //printf("Got User Location Data: %f %f %f\n",locationData[i].userLocationEstimates[j].x,locationData[i].userLocationEstimates[j].y,locationData[i].userLocationEstimates[j].z);
-                            printf("estimationLikelihood %f\n", locationData[i].userLocationEstimates[j].estimationLikelihood);
+                            //printf("estimationLikelihood %f\n", locationData[i].userLocationEstimates[j].estimationLikelihood);
 
                             const UserLocationEstimate& est = locationData[i].userLocationEstimates[j];
                             userPData[est.userID].userID = est.userID;
@@ -336,7 +336,8 @@ bool GEVisualizer::update(){
         }else{
             
             //Parse the userJointData
-            userJointData.clear();
+            // TODO: fix this clear
+            // userJointData.clear();
             
             if( locationInfo.size() > 0 ){
                 userJointData.resize( locationInfo.size() );
@@ -344,22 +345,24 @@ bool GEVisualizer::update(){
                     string address = "/UserJointData/Location_" + ofToString(locationInfo[i].locationID);
                     int messageIndex = 0;
                     if( m.getAddress() == address ){
-                        //printf("Got UserJointData for location %i\n",locationInfo[i].locationID);
-                        userJointData[i].locationID = locationInfo[i].locationID;
+                        LocationSkeletonData& locationSkeletonData = userJointData[i];
+                        // printf("Got UserJointData for location %i\n",locationInfo[i].locationID);
+                        locationSkeletonData.locationID = locationInfo[i].locationID;
+                        // printf("Stored UserJointData for location %i @0x%x\n", locationSkeletonData.locationID, &(locationSkeletonData));
                         int numUsersAtLocation = m.getArgAsInt32(messageIndex++);
                         
                         if( numUsersAtLocation > 0 ){
-                            userJointData[i].userJointData.resize( numUsersAtLocation );
+                            locationSkeletonData.userJointData.resize( numUsersAtLocation );
                             
                             for(int k=0; k<numUsersAtLocation; k++){
-                                userJointData[i].userJointData[k].userID = m.getArgAsInt32(messageIndex++);
-                                userJointData[i].userJointData[k].jointData.resize( 24 );
+                                locationSkeletonData.userJointData[k].userID = m.getArgAsInt32(messageIndex++);
+                                locationSkeletonData.userJointData[k].jointData.resize( 24 );
                                 //TODO - need to setup a switch to cover the different joint modes
                                 for(int j=0; j<24; j++){
-                                    userJointData[i].userJointData[k].jointData[j].x = m.getArgAsFloat(messageIndex++);
-                                    userJointData[i].userJointData[k].jointData[j].y = m.getArgAsFloat(messageIndex++);
-                                    userJointData[i].userJointData[k].jointData[j].z = m.getArgAsFloat(messageIndex++);
-                                    userJointData[i].userJointData[k].jointData[j].confidence = m.getArgAsFloat(messageIndex++);
+                                    locationSkeletonData.userJointData[k].jointData[j].x = m.getArgAsFloat(messageIndex++);
+                                    locationSkeletonData.userJointData[k].jointData[j].y = m.getArgAsFloat(messageIndex++);
+                                    locationSkeletonData.userJointData[k].jointData[j].z = m.getArgAsFloat(messageIndex++);
+                                    locationSkeletonData.userJointData[k].jointData[j].confidence = m.getArgAsFloat(messageIndex++);
                                 }
                             }
                         }
