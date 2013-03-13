@@ -290,18 +290,18 @@ protected:
     ofxOscSender sender;
     ofxOscReceiver receiver;
     
-    ServerInfo serverInfo;
-    vector< LocationInfo > locationInfo;
-    vector< UserInfo > userInfo;
-    map< unsigned int, UserPData > userPData;
-    vector< UserInfo > keyUserInfo;
-    vector< LocationDescriptorInfo > locationDescriptorInfo;
-    vector< PresenceData > presenceData;
-    vector< CountData > countData;
-    vector< ProximityEstimate > proximityData;
-    vector< UserLocationData > locationData;
-    vector< GaussianDistribution > userLocationProbabilityData;
+    ServerInfo                        serverInfo;
+    vector< LocationInfo >            locationInfo;
+    vector< UserInfo >                userInfo;
+    map< unsigned int, UserPData >    userPData;
+    vector< UserInfo >                keyUserInfo;
+    vector< LocationDescriptorInfo >  locationDescriptorInfo;
+    vector< PresenceData >            presenceData;
+    vector< CountData >               countData;
+    vector< ProximityEstimate >       proximityData;
+    vector< UserLocationData >        locationData;
+    vector< GaussianDistribution >    userLocationProbabilityData;
     vector< KeyUserLocationEstimate > keyUserEstimatedLocationData;
-    vector< LocationSkeletonData > userJointData;
+    vector< LocationSkeletonData >    userJointData;
     
 };
