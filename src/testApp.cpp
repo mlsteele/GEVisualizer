@@ -312,68 +312,6 @@ void testApp::guiEventServer(ofxUIEventArgs &e) {
     }
 }
 
-/*
-void testApp::buttonCallback(ofUIButton& button) {
-    // syncButtonVisibility(button);
-
-    // Only respond to a visible button press
-    if( !button.isButtonDownState() || !button.isVisible() ) return;
-    // printf("isButtonDownState() -> true\n");
-
-    printf("button pressed (%s)\n", button.getButtonID().c_str());
-
-
-    string layout_prefix = "layout_";
-    if (boost::starts_with(button.getButtonID(), layout_prefix)) {
-        printf("layout button pressed %s\n", button.getButtonID().c_str());
-        for (int i = 0; i < layoutRenderers.size(); i++) {
-            Layout& layout = *layoutRenderers[i].layout;
-            if (boost::ends_with(button.getButtonID(), layout.layoutName)) {
-                renderers_active_i = i;
-                return;
-            }
-        }
-        printf("WARN: failed to find matching layout for button\n");
-    }
-
-    string rendermode_prefix = "rendermode_";
-    if (boost::starts_with(button.getButtonID(), rendermode_prefix)) {
-        string id = button.getButtonID();
-        printf("rendermode button pressed %s\n", button.getButtonID().c_str());
-        bool state = boost::ends_with(button.getButtonID(), "_on");
-        string mode = string(id.begin() + rendermode_prefix.length(), id.end() - (state ? 3 : 4));
-        printf("button mode %s <- %i\n", mode.c_str(), state);
-
-        if (mode == "locations") {
-            mainRenderMode.locations = state;
-        }
-        else if (mode == "texture") {
-            mainRenderMode.texture = state;
-        }
-        else if (mode == "presence") {
-            mainRenderMode.presence = state;
-        }
-        else if (mode == "userlocation") {
-            mainRenderMode.userLocation = state;
-        }
-
-        // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
-        // button.setVisible(!button.isVisible());
-        // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
-    }
-}
-
-void testApp::syncButtonVisibility(ofUIButton& button) {
-    printf("%i\n", button.getButtonID() == "register");
-    if (!gelink.getIsConnected() && !(button.getButtonID() == "register" || button.getButtonID() == "unregister")){
-        printf("visibility false %s\n", button.getButtonID().c_str());
-        button.setVisible(false);
-    } else {
-        printf("visibility true %s\n", button.getButtonID().c_str());
-        button.setVisible(true);
-    }
-}*/
-
 void testApp::keyPressed(int key){
     // UImainView.keyPressedEvent(key);
 
