@@ -116,7 +116,7 @@ void testApp::setupUILayouts() {
 
     layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
     layoutGui->addWidgetDown(new ofxUISlider("Zoom", 1, 5, 1, w, 25));
-    layoutGui->addWidgetDown(new ofxUILabelButton("Reset", (bool) false, 200, 40, 0, 0, OFX_UI_FONT_MEDIUM));
+    layoutGui->addWidgetDown(new ofxUILabelButton("Reset", (bool) false, 210, 40, 0, 0, OFX_UI_FONT_MEDIUM));
 
     vector<string> layoutNames;
     for (LayoutRenderer& layoutRenderer : layoutRenderers) {
@@ -196,18 +196,18 @@ void testApp::draw(){
     skeletonTestDraw();
 
     // render layouts
-    // for (int i = 0; i < layoutRenderers.size(); i++) {
-    //     float transition = i - renderers_transition_i;
-    //     if (fabs(transition) < .97) {
-    //         LayoutRenderMode activeRenderMode = mainRenderMode;
-    //         const bool really_nearby = fabs(transition) < 0.2;
-    //         activeRenderMode.locations    &= really_nearby;
-    //         activeRenderMode.texture      &= really_nearby;
-    //         activeRenderMode.presence     &= really_nearby;
-    //         activeRenderMode.userLocation &= really_nearby;
-    //         layoutRenderers[i].render(activeRenderMode, gelink, transition);
-    //     }
-    // }
+    for (int i = 0; i < layoutRenderers.size(); i++) {
+        float transition = i - renderers_transition_i;
+        if (fabs(transition) < .97) {
+            LayoutRenderMode activeRenderMode = mainRenderMode;
+            const bool really_nearby = fabs(transition) < 0.2;
+            activeRenderMode.locations    &= really_nearby;
+            activeRenderMode.texture      &= really_nearby;
+            activeRenderMode.presence     &= really_nearby;
+            activeRenderMode.userLocation &= really_nearby;
+            layoutRenderers[i].render(activeRenderMode, gelink, transition);
+        }
+    }
 }
 
 void testApp::exit() {
@@ -391,6 +391,11 @@ void testApp::keyPressed(int key){
             break;
         case 'k':
             gelink.streamUserJointData(true);
+        case 'v':
+            gui->toggleVisible();
+            for (ofxUIWidget* w : gui->getWidgets()) {
+                w->toggleVisible();
+            }
         default:
             printf("Key Pressed: %i\n", key);
             break;
