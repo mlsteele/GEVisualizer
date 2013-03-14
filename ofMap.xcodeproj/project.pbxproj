@@ -16,6 +16,7 @@
 		024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FAF16BC7B0E0082D051 /* tinyxml.cpp */; };
 		024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FB116BC7B0E0082D051 /* tinyxmlerror.cpp */; };
 		024F8FCB16BC7B0E0082D051 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FB216BC7B0E0082D051 /* tinyxmlparser.cpp */; };
+		02A17D9516F228C7005AB17D /* SkeletonRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */; };
 		035f125683ef112b263ff275ba2349ab /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c54dc7a5c30cb956123a88cc294b91ab /* UdpSocket.cpp */; };
 		03a01fc41cf9b3bb9eae5c9bf2fd18d4 /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8b71869552d144a2eaa45b2413328254 /* svgtiny.cpp */; };
 		07666e3d771a9f4de76135bb85c7cff2 /* ofxSVG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = dee3bc1a9d1cdd20558fe1261030e80c /* ofxSVG.cpp */; };
@@ -104,6 +105,8 @@
 		024F8FB016BC7B0E0082D051 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		024F8FB116BC7B0E0082D051 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		024F8FB216BC7B0E0082D051 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonRenderer.cpp; sourceTree = "<group>"; };
+		02A17D9416F228C7005AB17D /* SkeletonRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonRenderer.h; sourceTree = "<group>"; };
 		02d71117fa557eae2252a7f8696299e1 /* svgtiny_list.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = svgtiny_list.cpp; path = ../../of_v0073_osx_release/addons/ofxSvg/libs/svgTiny/src/svgtiny_list.cpp; sourceTree = SOURCE_ROOT; };
 		04a0a34fe784bb191a039b40eceb4eff /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../of_v0073_osx_release/addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		04ab4b6de84bc5aba00b6a8716c6705a /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../of_v0073_osx_release/addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
@@ -251,6 +254,8 @@
 			children = (
 				024F8F8016BC7B0E0082D051 /* geometry.h */,
 				024F8F8116BC7B0E0082D051 /* GEVisualizer.cpp */,
+				02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */,
+				02A17D9416F228C7005AB17D /* SkeletonRenderer.h */,
 				024F8F8216BC7B0E0082D051 /* GEVisualizer.h */,
 				024F8F8316BC7B0E0082D051 /* Layout.cpp */,
 				024F8F8416BC7B0E0082D051 /* Layout.h */,
@@ -702,6 +707,7 @@
 				024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */,
 				024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */,
 				024F8FCB16BC7B0E0082D051 /* tinyxmlparser.cpp in Sources */,
+				02A17D9516F228C7005AB17D /* SkeletonRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

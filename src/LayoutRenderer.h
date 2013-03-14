@@ -45,11 +45,6 @@ class LayoutRenderer {
 public:
     // ~LayoutRenderer();
 
-    enum RenderMode {
-        RenderStructure,
-        RenderStructureData
-    };
-    
     void attachLayout(Layout* layout) { this->layout = layout; };
     void attachFonts(ofTrueTypeFont* fontMain, ofTrueTypeFont* fontMapNameLabel) {
         this->fontMain = fontMain;

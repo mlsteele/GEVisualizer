@@ -15,6 +15,13 @@ void testApp::setup(){
     setupLayouts();
     setupUI();
 
+    { // setup skeleton renderer
+        POINT2D screen_px_corner = {450, 100};
+        POINT3D real_corner = {0, 0};
+        double screenPixelsPerMeter = 200;
+        skelRenderer.setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
+    }
+
     mainRenderMode.structure = true;
     mainRenderMode.locations = true;
     mainRenderMode.texture = false;
@@ -127,7 +134,7 @@ void testApp::setupUILayouts() {
 
 }
 
-void testApp::skeletonTestUpdate() {
+void testApp::skeletonTestPrint() {
     printf("testing all skeleton data\n");
 
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
@@ -169,7 +176,7 @@ void testApp::update(){
     lastMouseY = ofGetMouseY();
 
     gelink.update();
-    skeletonTestUpdate();
+    skeletonTestPrint();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
@@ -183,7 +190,7 @@ void testApp::update(){
 
     // update renderer transformations
     for (LayoutRenderer& renderer : layoutRenderers) {
-        renderer.projection.dyn = renderTransform;
+        renderer.projection.dyn = layoutRenderTransform;
     }
 
     // update label
@@ -192,8 +199,6 @@ void testApp::update(){
 
 void testApp::draw(){
     ofBackground(0xD8D8D8);
-
-    skeletonTestDraw();
 
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {
@@ -206,6 +211,16 @@ void testApp::draw(){
             activeRenderMode.presence     &= really_nearby;
             activeRenderMode.userLocation &= really_nearby;
             layoutRenderers[i].render(activeRenderMode, gelink, transition);
+        }
+    }
+
+    // render skeleton
+    {
+        const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+        for (const LocationSkeletonData& locationSkeletons : allSkelData) {
+            for (const SkeletonData& skel : locationSkeletons.userJointData) {
+                skelRenderer.render(skelRenderMode, skel);
+            }
         }
     }
 }
@@ -242,16 +257,16 @@ void testApp::guiEventLayouts(ofxUIEventArgs &e ) {
 
     if (e.widget->getName() == "Z Spin") {
         float val = (*(ofxUIRotarySlider*) e.widget).getScaledValue();
-        renderTransform.zRotation = val;
+        layoutRenderTransform.zRotation = val;
     }
 
     if (e.widget->getName() == "Zoom") {
         float val = (*(ofxUISlider*) e.widget).getScaledValue();
-        renderTransform.zoomFactor = val;
+        layoutRenderTransform.zoomFactor = val;
     }
 
     if (e.widget->getName() == "Reset") {
-        renderTransform = LayoutProjectionDynamic();
+        layoutRenderTransform = LayoutProjectionDynamic();
     }
 }
 
@@ -274,11 +289,13 @@ void testApp::guiEventServer(ofxUIEventArgs &e) {
                 gelink.sendLocationInfo();
                 gelink.streamUserPresenceData(true);
                 gelink.streamUserLocationData(true);
+                gelink.streamUserJointData(true);
             }
 
             if (btn.getName() == "Unstream") {
                 gelink.streamUserPresenceData(false);
                 gelink.streamUserLocationData(false);
+                gelink.streamUserJointData(false);
             }
 
             if (boost::starts_with(btn.getName(), "Show") || boost::starts_with(btn.getName(), "Hide")) {
@@ -317,6 +334,7 @@ void testApp::keyPressed(int key){
 
     switch( key ){
         case 'q':
+            exitApp();
             break;
         case 'r':
             setupLayouts();
@@ -327,8 +345,6 @@ void testApp::keyPressed(int key){
         case 'P':
             gui->setDrawWidgetPadding(false);
             break;
-        case 'k':
-            gelink.streamUserJointData(true);
         case 'v':
             gui->toggleVisible();
             for (ofxUIWidget* w : gui->getWidgets()) {
@@ -347,7 +363,7 @@ void testApp::mouseMoved(int x, int y ) {}
 void testApp::mouseDragged(int x, int y, int button) {
     float pandx = (ofGetMouseX() - lastMouseX);
     float pandy = (ofGetMouseY() - lastMouseY);
-    LayoutProjectionDynamic& dyn = renderTransform;
+    LayoutProjectionDynamic& dyn = layoutRenderTransform;
     dyn.pan.x += pandx * cos(-dyn.zRotation / 180. * M_PI) - pandy * sin(-dyn.zRotation / 180. * M_PI);
     dyn.pan.y += pandx * sin(-dyn.zRotation / 180. * M_PI) + pandy * cos(-dyn.zRotation / 180. * M_PI);
 }

@@ -9,6 +9,7 @@
 // #include "ofUi/ofUIMainView.h"
 #include "Layout.h"
 #include "LayoutRenderer.h"
+#include "SkeletonRenderer.h"
 #include "LocationData.h"
 // #include "GELink.h"
 #include "GEVisualizer.h"
@@ -25,7 +26,7 @@ public:
     void draw();
     void exit();
 
-    void skeletonTestUpdate();
+    void skeletonTestPrint();
     void skeletonTestDraw();
 
     void keyPressed  (int key);
@@ -58,9 +59,13 @@ public:
 
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderMode mainRenderMode;
-    LayoutProjectionDynamic renderTransform;
+    LayoutProjectionDynamic layoutRenderTransform;
     int renderers_active_i;
     float renderers_transition_i;
+
+    SkeletonRenderer skelRenderer;
+    SkeletonRenderMode skelRenderMode;
+    // SkeletonProjectionDynamic renderTransform;
 
     float lastMouseX = 0;
     float lastMouseY = 0;
