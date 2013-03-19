@@ -348,13 +348,13 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             ofCircle(loc3dpos.x, loc3dpos.y, 5);
 
             // hovering beam rings
-            ofNoFill();
-            ofSetHexColor(0x5DCAE6);
-            glEnable(GL_BLEND);
-            for (float z = 1; z < 100; z += 10) {
-                glColor4f(0, 204/255., 255/255., (100 - z) / 200);
-                ofCircle(loc3dpos.x, loc3dpos.y, z, 2);
-            }
+            // ofNoFill();
+            // ofSetHexColor(0x5DCAE6);
+            // glEnable(GL_BLEND);
+            // for (float z = 1; z < 100; z += 10) {
+            //     glColor4f(0, 204/255., 255/255., (100 - z) / 200);
+            //     ofCircle(loc3dpos.x, loc3dpos.y, z, 2);
+            // }
 
             // draw location label
             if (mouseDist < 40) {
