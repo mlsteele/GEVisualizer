@@ -72,7 +72,7 @@ public:
     float lastMouseY = 0;
 
     GEVisualizer gelink;
-    bool geFakeData = true;
+    bool geFakeData = false;
 
     const string ge_server_host = "18.133.7.63";
     const int ge_server_port = 5000;

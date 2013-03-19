@@ -63,8 +63,8 @@ const int skeleton_connections[skeleton_num_connection][2] = {
 // 0, 1, 2, 3                            // head to waist
 // 2, 4, 5, 6, 7, 8, 9                   // left arm
 // 2, 4+6, 5+6, 6+6, 7+6, 8+6, 9+6       // right arm
-// 3, 10, 11, 12, 13, 14, 15             // left leg
-// 3, 10+4, 11+4, 12+4, 13+4, 14+4, 15+4 // right leg
+// 3, 16, 17, 18, 19                     // left leg
+// 3, 16+4, 17+4, 18+4, 19+4             // right leg
 
 vector<vector<int> > generateChains() {
     vector<int> head_chain;
@@ -74,7 +74,7 @@ vector<vector<int> > generateChains() {
     head_chain.push_back(3);
 
     vector<int> left_arm_chain;
-    left_arm_chain.push_back(2);
+    left_arm_chain.push_back(1);
     left_arm_chain.push_back(4);
     left_arm_chain.push_back(5);
     left_arm_chain.push_back(6);
@@ -83,7 +83,7 @@ vector<vector<int> > generateChains() {
     left_arm_chain.push_back(9);
 
     vector<int> right_arm_chain;
-    right_arm_chain.push_back(2);
+    right_arm_chain.push_back(1);
     right_arm_chain.push_back(4+6);
     right_arm_chain.push_back(5+6);
     right_arm_chain.push_back(6+6);
@@ -93,21 +93,18 @@ vector<vector<int> > generateChains() {
 
     vector<int> left_leg_chain;
     left_leg_chain.push_back(3);
-    left_leg_chain.push_back(10);
-    left_leg_chain.push_back(11);
-    left_leg_chain.push_back(12);
-    left_leg_chain.push_back(13);
-    left_leg_chain.push_back(14);
-    left_leg_chain.push_back(15);
+    left_leg_chain.push_back(16);
+    left_leg_chain.push_back(17);
+    left_leg_chain.push_back(18);
+    left_leg_chain.push_back(19);
     
     vector<int> right_leg_chain;
     right_leg_chain.push_back(3);
-    right_leg_chain.push_back(10+4);
-    right_leg_chain.push_back(11+4);
-    right_leg_chain.push_back(12+4);
-    right_leg_chain.push_back(13+4);
-    right_leg_chain.push_back(14+4);
-    right_leg_chain.push_back(15+4);
+    right_leg_chain.push_back(16+4);
+    right_leg_chain.push_back(17+4);
+    right_leg_chain.push_back(18+4);
+    right_leg_chain.push_back(19+4);
+    
 
     vector<vector<int> > skeleton_chains;
     skeleton_chains.push_back(head_chain);
@@ -159,7 +156,8 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
     ofTranslate(projection.dyn.pan.x, projection.dyn.pan.y);
 
     if (renderMode.joints) {
-        for (const SkeletonJoint& j : skel.jointData) {
+        for (int i = 0; i < skel.jointData.size(); i++) {
+            const SkeletonJoint& j = skel.jointData[i];
             ofFill();
             ofSetHexColor(0x9311E9);
 
@@ -170,6 +168,13 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
                 -j.y / 1000. * projection.scale.y ,
                 0    / 1000. * projection.scale.z ,
                 6 );
+
+            ofSetHexColor(0xFFFFFF);
+            if (renderMode.node_indices) {
+                fontMain->drawString(ofToString(i),
+                    -j.x / 1000. * projection.scale.x ,
+                    -j.y / 1000. * projection.scale.y );
+            }
         }
     }
 
@@ -196,21 +201,25 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
             int i_a = chain_next_valid(chain, skel.jointData, 0);
             if (i_a == -1) continue; // skip chain if no valid nodes
             
-            for(int i_b = chain_next_valid(chain, skel.jointData, i_a); i_a != -1 && i_b != -1; i_a = i_b, i_b = chain_next_valid(chain, skel.jointData, i_a)) {
+            for(int i_b = chain_next_valid(chain, skel.jointData, i_a+1);
+                i_a != -1 && i_b != -1;
+                i_a = i_b, i_b = chain_next_valid(chain, skel.jointData, i_a+1))
+            {
                 const SkeletonJoint& a = skel.jointData[chain[i_a]];
                 const SkeletonJoint& b = skel.jointData[chain[i_b]];
 
-            ofFill();
-            ofSetHexColor(0x4D169E);
-            ofLine(
-                -a.x / 1000. * projection.scale.x ,
-                -a.y / 1000. * projection.scale.y ,
-                -b.x / 1000. * projection.scale.x ,
-                -b.y / 1000. * projection.scale.y );
+                ofFill();
+                ofSetHexColor(0x4D169E);
+                ofLine(
+                    -a.x / 1000. * projection.scale.x ,
+                    -a.y / 1000. * projection.scale.y ,
+                    -b.x / 1000. * projection.scale.x ,
+                    -b.y / 1000. * projection.scale.y );
             }
         }
     }
-    for (const SkeletonJoint& j : skel.jointData) {
-        printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
-    }
+
+    // for (const SkeletonJoint& j : skel.jointData) {
+    //     printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
+    // }
 }

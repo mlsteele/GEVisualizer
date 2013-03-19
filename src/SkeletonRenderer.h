@@ -26,7 +26,8 @@ typedef struct {
     bool sticks = false;
     bool chains = true; // stick drawings that skip missing nodes
     bool confidence = false;
-    bool humane = false; // hides improbable and unpleasant mangling of people
+    bool node_indices = false;
+    bool humane = false; // hides improbable and unpleasant mangling of people (NOT IMPLEMENTED)
 } SkeletonRenderMode;
 
 class SkeletonRenderer {
@@ -35,9 +36,8 @@ public:
         // TODO assign chains
     }
 
-    void attachFonts(ofTrueTypeFont* fontMain, ofTrueTypeFont* fontMapNameLabel) {
+    void attachFonts(ofTrueTypeFont* fontMain) {
         this->fontMain = fontMain;
-        this->fontMapNameLabel = fontMapNameLabel;
     }
 
     void setupProjection(POINT2D screen_px_corner, POINT3D real_corner, double screenPixelsPerMeter);
@@ -51,7 +51,6 @@ private:
     void mouseTestRecalculateTexture();
 
     ofTrueTypeFont*  fontMain;
-    ofTrueTypeFont*  fontMapNameLabel;
 
     // static vector<vector<int> > generateChains() {};
 };

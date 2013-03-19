@@ -20,6 +20,7 @@ void testApp::setup(){
         POINT3D real_corner = {0, 0};
         double screenPixelsPerMeter = 200;
         skelRenderer.setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
+        skelRenderer.attachFonts(&fontVerd10);
     }
 
     mainRenderMode.structure = true;
@@ -185,7 +186,7 @@ void testApp::update(){
 
     gelink.update();
     if (geFakeData) gelink.ensureFakeData();
-    skeletonTestPrint();
+    // skeletonTestPrint();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
@@ -368,6 +369,11 @@ void testApp::keyPressed(int key){
             break;
         case '-':
             rescaleAllLayouts(-1);
+            break;
+        case 'w':
+            skelRenderMode.joints = ! skelRenderMode.joints;
+            // skelRenderMode.sticks = skelRenderMode.joints;
+            skelRenderMode.chains = skelRenderMode.joints;
             break;
         default:
             printf("Key Pressed: %i\n", key);
