@@ -350,6 +350,10 @@ void testApp::keyPressed(int key){
             for (ofxUIWidget* w : gui->getWidgets()) {
                 w->toggleVisible();
             }
+            break;
+        case 'f':
+            ofToggleFullscreen();
+            break;
         default:
             printf("Key Pressed: %i\n", key);
             break;
