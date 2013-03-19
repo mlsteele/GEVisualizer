@@ -230,6 +230,8 @@ class GEVisualizer{
 public:
     GEVisualizer();
     ~GEVisualizer();
+
+    void ensureFakeData();
     
     bool connect(string serverIPAddress,unsigned int serverPort,unsigned int listenerPort);
     bool disconnect();

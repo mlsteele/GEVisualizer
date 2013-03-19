@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00dceb4c6387c6f9d935b487c9cb7279 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c0f37a2b9df40e0144b2733b717b32e9 /* ofxTCPManager.cpp */; };
+		021DF7B016F90CE700569C6A /* GEVisualizerFakeData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 021DF7AF16F90CE700569C6A /* GEVisualizerFakeData.cpp */; };
 		024F8FB416BC7B0E0082D051 /* GEVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8116BC7B0E0082D051 /* GEVisualizer.cpp */; };
 		024F8FB516BC7B0E0082D051 /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8316BC7B0E0082D051 /* Layout.cpp */; };
 		024F8FB616BC7B0E0082D051 /* LayoutRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8516BC7B0E0082D051 /* LayoutRenderer.cpp */; };
@@ -89,6 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		021DF7AF16F90CE700569C6A /* GEVisualizerFakeData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizerFakeData.cpp; sourceTree = "<group>"; };
 		024F8F8016BC7B0E0082D051 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
 		024F8F8116BC7B0E0082D051 /* GEVisualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizer.cpp; sourceTree = "<group>"; };
 		024F8F8216BC7B0E0082D051 /* GEVisualizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GEVisualizer.h; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			children = (
 				024F8F8016BC7B0E0082D051 /* geometry.h */,
 				024F8F8116BC7B0E0082D051 /* GEVisualizer.cpp */,
+				021DF7AF16F90CE700569C6A /* GEVisualizerFakeData.cpp */,
 				02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */,
 				02A17D9416F228C7005AB17D /* SkeletonRenderer.h */,
 				024F8F8216BC7B0E0082D051 /* GEVisualizer.h */,
@@ -708,6 +711,7 @@
 				024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */,
 				024F8FCB16BC7B0E0082D051 /* tinyxmlparser.cpp in Sources */,
 				02A17D9516F228C7005AB17D /* SkeletonRenderer.cpp in Sources */,
+				021DF7B016F90CE700569C6A /* GEVisualizerFakeData.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

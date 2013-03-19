@@ -62,6 +62,14 @@ void testApp::setupLayouts() {
     }
 }
 
+void testApp::rescaleAllLayouts(float increment) {
+    for (LayoutRenderer& lr : layoutRenderers) {
+        lr.projection.screenPixelsPerMeter += increment;
+        lr.projection.screen_px_corner.x += increment * 25;
+        lr.reloadProjection();
+    }
+}
+
 void testApp::setupUI() {
     // ofColor colorBack             (0x444444, 0);
     // ofColor colorOutline          (0xdddddd, 255);
@@ -176,6 +184,7 @@ void testApp::update(){
     lastMouseY = ofGetMouseY();
 
     gelink.update();
+    if (geFakeData) gelink.ensureFakeData();
     skeletonTestPrint();
 
     // transition to approach selection
@@ -353,6 +362,12 @@ void testApp::keyPressed(int key){
             break;
         case 'f':
             ofToggleFullscreen();
+            break;
+        case '=':
+            rescaleAllLayouts(1);
+            break;
+        case '-':
+            rescaleAllLayouts(-1);
             break;
         default:
             printf("Key Pressed: %i\n", key);

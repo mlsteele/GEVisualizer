@@ -52,6 +52,7 @@ public:
     }
 
     void setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter);
+    void reloadProjection();
     void render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition=0);
 
     Layout* layout;

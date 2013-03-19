@@ -76,14 +76,12 @@ void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
 
+    // assign
     projection.screen_px_corner     = screen_px_corner;
     projection.real_corner          = real_corner;
     projection.screenPixelsPerMeter = screenPixelsPerMeter;
 
-    projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
-    projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
-    projection.scale.x = screenPixelsPerMeter;
-    projection.scale.y = screenPixelsPerMeter;
+    reloadProjection();
 
     if (textureData) delete[] textureData;
 
@@ -107,6 +105,13 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
 
     texture.allocate(textureSize[0], textureSize[1], GL_RGBA);
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
+}
+
+void LayoutRenderer::reloadProjection() {
+    projection.offset.x = - projection.real_corner.x + (projection.screen_px_corner.x / projection.screenPixelsPerMeter);
+    projection.offset.y = - projection.real_corner.y + (projection.screen_px_corner.y / projection.screenPixelsPerMeter);
+    projection.scale.x = projection.screenPixelsPerMeter;
+    projection.scale.y = projection.screenPixelsPerMeter;
 }
 
 /*
@@ -405,55 +410,55 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 }
             }
 
-            // draw pdata location estimates
-            if (renderMode.userLocation) {
-                for (auto& pair : dataStore.getUserPData()) {
-                    const UserPData& pUser = pair.second;
-                    if (!pUser.hasLastSnapshot) continue;
-                    if (pUser.lastLocationID != locationInfo.locationID) continue;
-                    const UserLocationEstimate& estimate = pUser.lastEstimate;
+            // // draw pdata location estimates
+            // if (renderMode.userLocation) {
+            //     for (auto& pair : dataStore.getUserPData()) {
+            //         const UserPData& pUser = pair.second;
+            //         if (!pUser.hasLastSnapshot) continue;
+            //         if (pUser.lastLocationID != locationInfo.locationID) continue;
+            //         const UserLocationEstimate& estimate = pUser.lastEstimate;
 
-                    ofFill();
-                    ofColor userColor;
-                    userColor.setHsb(276 * 255 / 360, 255, 255);
+            //         ofFill();
+            //         ofColor userColor;
+            //         userColor.setHsb(276 * 255 / 360, 255, 255);
 
-                    ofSetColor(userColor);
-                    float theta = localLocation->rotation.theta;
-                    // note these are switched to match screen to world
-                    float ex = estimate.y;
-                    float ey = estimate.x;
+            //         ofSetColor(userColor);
+            //         float theta = localLocation->rotation.theta;
+            //         // note these are switched to match screen to world
+            //         float ex = estimate.y;
+            //         float ey = estimate.x;
 
-                    // rotate & scale
-                    float tex = ex * cos(theta) + ey * sin(theta);
-                    float tey = -ex * sin(theta) + ey * cos(theta);
-                    tex *= projection.scale.x / 1000.;
-                    tey *= projection.scale.x / 1000.;
+            //         // rotate & scale
+            //         float tex = ex * cos(theta) + ey * sin(theta);
+            //         float tey = -ex * sin(theta) + ey * cos(theta);
+            //         tex *= projection.scale.x / 1000.;
+            //         tey *= projection.scale.x / 1000.;
 
-                    unsigned int age = ofGetElapsedTimeMillis() - pUser.lastSnapshotTime;
-                    tex += pUser.vx * age / 500;
-                    tey += pUser.vy * age / 500;
+            //         unsigned int age = ofGetElapsedTimeMillis() - pUser.lastSnapshotTime;
+            //         tex += pUser.vx * age / 500;
+            //         tey += pUser.vy * age / 500;
 
-                    ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 2);
+            //         ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 2);
 
-                    // render label
-                    if (mouseDist < 40) {
-                        pushUnprojectedMatrix(rootModelView, loc3dpos);
-                        ofSetHexColor(0x774510);
-                        string x_str = lexical_cast<string>(ex);
-                        string y_str = lexical_cast<string>(ey);
-                        string uid_str = lexical_cast<string>(estimate.userID);
-                        string age_str = lexical_cast<string>(age);
-                        string vx_str = lexical_cast<string>(pUser.vx);
-                        string vy_str = lexical_cast<string>(pUser.vy);
+            //         // render label
+            //         if (mouseDist < 40) {
+            //             pushUnprojectedMatrix(rootModelView, loc3dpos);
+            //             ofSetHexColor(0x774510);
+            //             string x_str = lexical_cast<string>(ex);
+            //             string y_str = lexical_cast<string>(ey);
+            //             string uid_str = lexical_cast<string>(estimate.userID);
+            //             string age_str = lexical_cast<string>(age);
+            //             string vx_str = lexical_cast<string>(pUser.vx);
+            //             string vy_str = lexical_cast<string>(pUser.vy);
 
-                        fontMain->drawString("(" + x_str + ", " + y_str + ")", tex, tey + 10 );
-                        fontMain->drawString("uid: " + uid_str, tex, tey + 24 );
-                        fontMain->drawString("age: " + age_str, tex, tey + 38 );
-                        fontMain->drawString("vel: " + vx_str + ", " + vy_str, tex, tey + 52 );
-                        ofPopMatrix();
-                    }
-                }
-            }
+            //             fontMain->drawString("(" + x_str + ", " + y_str + ")", tex, tey + 10 );
+            //             fontMain->drawString("uid: " + uid_str, tex, tey + 24 );
+            //             fontMain->drawString("age: " + age_str, tex, tey + 38 );
+            //             fontMain->drawString("vel: " + vx_str + ", " + vy_str, tex, tey + 52 );
+            //             ofPopMatrix();
+            //         }
+            //     }
+            // }
 
             // draw name in non-skew loop
         }
