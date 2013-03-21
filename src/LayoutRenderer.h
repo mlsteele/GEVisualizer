@@ -15,10 +15,10 @@ typedef struct {
     POINT2D pan = {0, 0};
 
     void print() {
-        printf("projection.xRotation: %f\n", xRotation);
-        printf("projection.zRotation: %f\n", zRotation);
-        printf("projection.zoomFactor: %f\n", zoomFactor);
-        printf("projection.pan: (%f, %f)\n", pan.x, pan.y);
+        printf("projection.dyn.xRotation: %f\n", xRotation);
+        printf("projection.dyn.zRotation: %f\n", zRotation);
+        printf("projection.dyn.zoomFactor: %f\n", zoomFactor);
+        printf("projection.dyn.pan: (%f, %f)\n", pan.x, pan.y);
     }
 } LayoutProjectionDynamic;
 
@@ -30,6 +30,14 @@ typedef struct {
     double screenPixelsPerMeter = 1;
     LayoutProjectionDynamic dyn;
 
+    void print() {
+        printf("projection.offset: %f, %f\n", offset.x, offset.y);
+        printf("projection.scale: %f, %f\n", scale.x, scale.y);
+        printf("projection.screen_px_corner: %f, %f\n", screen_px_corner.x, screen_px_corner.y);
+        printf("projection.real_corner: %f, %f\n", real_corner.x, real_corner.y);
+        printf("projection.screenPixelsPerMeter: %f\n", screenPixelsPerMeter);
+        dyn.print();
+    }
 } LayoutProjection;
 
 typedef struct {

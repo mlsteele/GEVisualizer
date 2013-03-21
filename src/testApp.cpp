@@ -16,8 +16,8 @@ void testApp::setup(){
     setupUI();
 
     { // setup skeleton renderer
-        POINT2D screen_px_corner = {450, 100};
-        POINT3D real_corner = {0, 0};
+        POINT2D screen_px_corner = {20, 20};
+        POINT3D real_corner = {-1, -1};
         double screenPixelsPerMeter = 200;
         skelRenderer.setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
         skelRenderer.attachFonts(&fontVerd10);
@@ -41,12 +41,16 @@ void testApp::setupLayouts() {
     double screenPixelsPerMeter = 9.5;
 
     vector<string> layout_info_files;
-    layout_info_files.push_back("E14_6_LayoutInfo.txt");
-    layout_info_files.push_back("E14_5_LayoutInfo.txt");
-    layout_info_files.push_back("E14_4_LayoutInfo.txt");
-    layout_info_files.push_back("E14_3_LayoutInfo.txt");
-    layout_info_files.push_back("E14_2_LayoutInfo.txt");
-    layout_info_files.push_back("E14_1_LayoutInfo.txt");
+    if (debugStartup) {
+        layout_info_files.push_back("E14_5_LayoutInfo.txt");
+    } else {
+        layout_info_files.push_back("E14_6_LayoutInfo.txt");
+        layout_info_files.push_back("E14_5_LayoutInfo.txt");
+        layout_info_files.push_back("E14_4_LayoutInfo.txt");
+        layout_info_files.push_back("E14_3_LayoutInfo.txt");
+        layout_info_files.push_back("E14_2_LayoutInfo.txt");
+        layout_info_files.push_back("E14_1_LayoutInfo.txt");
+    }
 
     for (string layout_info_file : layout_info_files) {
         Layout* newLayout = new Layout();
@@ -58,12 +62,18 @@ void testApp::setupLayouts() {
     }
 
     if (!reload) {
-        renderers_active_i = 1;
-        renderers_transition_i = renderers_active_i;
+        if (debugStartup) {
+            renderers_active_i = 0;
+            renderers_transition_i = renderers_active_i;
+        } else {
+            renderers_active_i = 1;
+            renderers_transition_i = renderers_active_i;
+        }
     }
 }
 
 void testApp::rescaleAllLayouts(float increment) {
+    printf("BAD\n");
     for (LayoutRenderer& lr : layoutRenderers) {
         lr.projection.screenPixelsPerMeter += increment;
         lr.projection.screen_px_corner.x += increment * 25;
@@ -374,6 +384,10 @@ void testApp::keyPressed(int key){
             skelRenderMode.joints = ! skelRenderMode.joints;
             // skelRenderMode.sticks = skelRenderMode.joints;
             skelRenderMode.chains = skelRenderMode.joints;
+            break;
+        case 'x':
+            layoutRenderers[renderers_active_i].projection.print();
+            // layoutRenderTransform = LayoutProjectionDynamic();
             break;
         default:
             printf("Key Pressed: %i\n", key);

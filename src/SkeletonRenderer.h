@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "geometry.h"
 #include "GEVisualizer.h"
-#include <boost/mpl/vector.hpp>
 
 // dynamic portion of SkeletonProjection (for common offsets like zoom and pan)
 typedef struct {
@@ -24,33 +23,25 @@ typedef struct {
 typedef struct {
     bool joints = true;
     bool sticks = false;
-    bool chains = true; // stick drawings that skip missing nodes
+    bool chains = true; // stick drawing that connects over missing nodes
     bool confidence = false;
     bool node_indices = false;
+    bool node_locations = true;
     bool humane = false; // hides improbable and unpleasant mangling of people (NOT IMPLEMENTED)
 } SkeletonRenderMode;
 
 class SkeletonRenderer {
 public:
-    SkeletonRenderer() {
-        // TODO assign chains
-    }
-
     void attachFonts(ofTrueTypeFont* fontMain) {
         this->fontMain = fontMain;
     }
 
     void setupProjection(POINT2D screen_px_corner, POINT3D real_corner, double screenPixelsPerMeter);
     void render(SkeletonRenderMode& renderMode, const SkeletonData& skeleton);
-    void print(SkeletonData& skel);
+    // void print(SkeletonData& skel);
 
     SkeletonProjection projection;
 
 private:
-    // void recalculateTexture(GEVisualizer& store);
-    void mouseTestRecalculateTexture();
-
     ofTrueTypeFont*  fontMain;
-
-    // static vector<vector<int> > generateChains() {};
 };

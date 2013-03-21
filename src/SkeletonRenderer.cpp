@@ -167,11 +167,18 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
                 -j.x / 1000. * projection.scale.x ,
                 -j.y / 1000. * projection.scale.y ,
                 0    / 1000. * projection.scale.z ,
-                6 );
+                5 );
 
-            ofSetHexColor(0xFFFFFF);
+            ofSetHexColor(0x000000);
             if (renderMode.node_indices) {
                 fontMain->drawString(ofToString(i),
+                    -j.x / 1000. * projection.scale.x ,
+                    -j.y / 1000. * projection.scale.y );
+            }
+            if (renderMode.node_locations) {
+                string s = "x: " + ofToString(j.x) + "\ny: " + ofToString(j.y);
+
+                fontMain->drawString(s,
                     -j.x / 1000. * projection.scale.x ,
                     -j.y / 1000. * projection.scale.y );
             }
@@ -222,4 +229,6 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
     // for (const SkeletonJoint& j : skel.jointData) {
     //     printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
     // }
+
+    ofPopMatrix();
 }
