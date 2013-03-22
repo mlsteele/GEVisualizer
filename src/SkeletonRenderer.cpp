@@ -126,15 +126,14 @@ int chain_next_valid(const vector<int>& chain, const vector< SkeletonJoint >& jo
     return -1;
 }
 
-
-void SkeletonRenderer::setupProjection(POINT2D screen_px_corner, POINT3D real_corner, double screenPixelsPerMeter) {
-    projection.screen_px_corner     = screen_px_corner;
-    projection.real_corner          = real_corner;
+void SkeletonRenderer::setupProjection(ofRectangle view_rect, POINT3D real_center, double screenPixelsPerMeter) {
+    projection.view_rect            = view_rect;
+    projection.real_center          = real_center;
     projection.screenPixelsPerMeter = screenPixelsPerMeter;
 
-    projection.offset.x = - real_corner.x + (screen_px_corner.x / screenPixelsPerMeter);
-    projection.offset.y = - real_corner.y + (screen_px_corner.y / screenPixelsPerMeter);
-    projection.offset.z = - real_corner.z + (screen_px_corner.y / screenPixelsPerMeter);
+    projection.offset.x = -real_center.x + ((view_rect.x + view_rect.width /2.) / screenPixelsPerMeter);
+    projection.offset.y = -real_center.y + ((view_rect.y + view_rect.height/2.) / screenPixelsPerMeter);
+    projection.offset.z = -real_center.z;
     projection.scale.x = screenPixelsPerMeter;
     projection.scale.y = screenPixelsPerMeter;
     projection.scale.z = screenPixelsPerMeter;
@@ -142,6 +141,24 @@ void SkeletonRenderer::setupProjection(POINT2D screen_px_corner, POINT3D real_co
 
 void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData& skel) {
     ofPushMatrix();
+
+    if (renderMode.backdrop) {
+        // fill background
+        ofFill();
+        ofSetHexColor(0xFFFFFF);
+        ofRect(projection.view_rect);
+        ofNoFill();
+        ofSetHexColor(0x000000);
+        ofRect(projection.view_rect);
+
+        // Draw only in box.
+        glScissor(
+            (int) projection.view_rect.x ,
+            (int) ofGetHeight() - projection.view_rect.y - projection.view_rect.height ,
+            (int) projection.view_rect.width ,
+            (int) projection.view_rect.height );
+        glEnable(GL_SCISSOR_TEST);
+    }
 
     // x,y projection offset
     ofTranslate(
@@ -167,15 +184,15 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
                 -j.x / 1000. * projection.scale.x ,
                 -j.y / 1000. * projection.scale.y ,
                 0    / 1000. * projection.scale.z ,
-                5 );
+                projection.screenPixelsPerMeter / 20. );
 
             ofSetHexColor(0x000000);
-            if (renderMode.node_indices) {
+            if (renderMode.node_label_indices) {
                 fontMain->drawString(ofToString(i),
                     -j.x / 1000. * projection.scale.x ,
                     -j.y / 1000. * projection.scale.y );
             }
-            if (renderMode.node_locations) {
+            if (renderMode.node_label_locations || renderMode.node_label_location_index == i) {
                 string s = "x: " + ofToString(j.x) + "\ny: " + ofToString(j.y);
 
                 fontMain->drawString(s,
@@ -229,6 +246,8 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
     // for (const SkeletonJoint& j : skel.jointData) {
     //     printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
     // }
+
+    glDisable(GL_SCISSOR_TEST);
 
     ofPopMatrix();
 }

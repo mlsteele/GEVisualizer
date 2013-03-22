@@ -16,10 +16,10 @@ void testApp::setup(){
     setupUI();
 
     { // setup skeleton renderer
-        POINT2D screen_px_corner = {20, 20};
-        POINT3D real_corner = {-1, -1};
-        double screenPixelsPerMeter = 200;
-        skelRenderer.setupProjection(screen_px_corner, real_corner, screenPixelsPerMeter);
+        ofRectangle view_rect(20, 20, 230, 230);
+        POINT3D real_center = {0, 1.2};
+        double screenPixelsPerMeter = 70;
+        skelRenderer.setupProjection(view_rect, real_center, screenPixelsPerMeter);
         skelRenderer.attachFonts(&fontVerd10);
     }
 
