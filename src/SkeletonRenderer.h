@@ -40,6 +40,7 @@ public:
 
     void setupProjection(ofRectangle view_rect, POINT3D real_center, double screenPixelsPerMeter);
     void render(SkeletonRenderMode& renderMode, const SkeletonData& skeleton);
+    // void render(SkeletonRenderMode& renderMode, const vector<SkeletonData*>& skeletons);
     // void print(SkeletonData& skel);
 
     SkeletonProjection projection;

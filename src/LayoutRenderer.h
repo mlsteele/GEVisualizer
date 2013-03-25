@@ -66,6 +66,11 @@ public:
     Layout* layout;
     LayoutProjection projection;
 
+    bool hoverClosestLocationExists     = false;
+    unsigned int hoverClosestLocationID = 0;
+    float hoverClosestLocationDistance  = 0;
+
+
 private:
     // void recalculateTexture(GEVisualizer& store);
     void mouseTestRecalculateTexture();

@@ -213,6 +213,11 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     // const float projection.xRotation = ofGetElapsedTimef()*10;
     float smoothed_transition = pow(transition, 3);
 
+    // reset finding hoverClosestLocationID
+    hoverClosestLocationExists = false;
+    hoverClosestLocationID = -1;
+    hoverClosestLocationDistance = 0;
+
     ofPushMatrix(); // translation
 
     // transition
@@ -333,6 +338,16 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             POINT3D locWinPos = getWinCoords(loc3dpos);
             POINT3D mousePos = (POINT3D){ofGetMouseX(), ofGetMouseY(), 0};
             float mouseDist = sqrt(pow(mousePos.x - locWinPos.x, 2) + pow(mousePos.y - locWinPos.y, 2));
+
+            // find hoverClosestLocationID
+            // printf("current closest exists(%i) id(%i) dist(%f)\n", hoverClosestLocationExists, hoverClosestLocationID, hoverClosestLocationDistance);
+            // printf("loc(%i) dist %f\n", locationInfo.locationID, mouseDist);
+            if (!hoverClosestLocationExists || mouseDist < hoverClosestLocationDistance) {
+                // printf("yes\n");
+                hoverClosestLocationExists = true;
+                hoverClosestLocationID = locationInfo.locationID;
+                hoverClosestLocationDistance = mouseDist;
+            }
 
             // draw presence indication
             if (presenceData) {

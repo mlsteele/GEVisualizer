@@ -16,7 +16,7 @@ void testApp::setup(){
     setupUI();
 
     { // setup skeleton renderer
-        ofRectangle view_rect(20, 20, 230, 230);
+        ofRectangle view_rect(20, 40, 230, 230);
         POINT3D real_center = {0, 1.2};
         double screenPixelsPerMeter = 70;
         skelRenderer.setupProjection(view_rect, real_center, screenPixelsPerMeter);
@@ -90,7 +90,7 @@ void testApp::setupUI() {
     // ofColor colorPadded           (0x110000, 255);
     // ofColor colorPaddedOutline    (0x001100, 255);
 
-    gui = new ofxUICanvas(0, 0, ofGetWidth(), ofGetHeight());
+    gui = new ofxUICanvas(0, 0, 0, 0);
     // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
     titleLabel = new ofxUILabel(titleLabelBase, OFX_UI_FONT_LARGE);
@@ -234,12 +234,15 @@ void testApp::draw(){
         }
     }
 
-    // render skeleton
+    // render skeletons for hovered location
     {
         const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
         for (const LocationSkeletonData& locationSkeletons : allSkelData) {
-            for (const SkeletonData& skel : locationSkeletons.userJointData) {
-                skelRenderer.render(skelRenderMode, skel);
+            LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
+            if (locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
+                for (const SkeletonData& skel : locationSkeletons.userJointData) {
+                    skelRenderer.render(skelRenderMode, skel);
+                }
             }
         }
     }
