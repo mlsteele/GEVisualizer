@@ -13,11 +13,11 @@
 		024F8FB516BC7B0E0082D051 /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8316BC7B0E0082D051 /* Layout.cpp */; };
 		024F8FB616BC7B0E0082D051 /* LayoutRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8516BC7B0E0082D051 /* LayoutRenderer.cpp */; };
 		024F8FB716BC7B0E0082D051 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8F8816BC7B0E0082D051 /* main.cpp */; };
-		024F8FC816BC7B0E0082D051 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FAB16BC7B0E0082D051 /* testApp.cpp */; };
 		024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FAF16BC7B0E0082D051 /* tinyxml.cpp */; };
 		024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FB116BC7B0E0082D051 /* tinyxmlerror.cpp */; };
 		024F8FCB16BC7B0E0082D051 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024F8FB216BC7B0E0082D051 /* tinyxmlparser.cpp */; };
 		02A17D9516F228C7005AB17D /* SkeletonRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */; };
+		02E479611708B64A009691CB /* LayoutApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02E479581708B64A009691CB /* LayoutApp.cpp */; };
 		035f125683ef112b263ff275ba2349ab /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c54dc7a5c30cb956123a88cc294b91ab /* UdpSocket.cpp */; };
 		03a01fc41cf9b3bb9eae5c9bf2fd18d4 /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8b71869552d144a2eaa45b2413328254 /* svgtiny.cpp */; };
 		07666e3d771a9f4de76135bb85c7cff2 /* ofxSVG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = dee3bc1a9d1cdd20558fe1261030e80c /* ofxSVG.cpp */; };
@@ -100,8 +100,6 @@
 		024F8F8616BC7B0E0082D051 /* LayoutRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRenderer.h; sourceTree = "<group>"; };
 		024F8F8716BC7B0E0082D051 /* LocationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationData.h; sourceTree = "<group>"; };
 		024F8F8816BC7B0E0082D051 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		024F8FAB16BC7B0E0082D051 /* testApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testApp.cpp; sourceTree = "<group>"; };
-		024F8FAC16BC7B0E0082D051 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testApp.h; sourceTree = "<group>"; };
 		024F8FAD16BC7B0E0082D051 /* TimeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEvent.h; sourceTree = "<group>"; };
 		024F8FAF16BC7B0E0082D051 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		024F8FB016BC7B0E0082D051 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
@@ -109,6 +107,12 @@
 		024F8FB216BC7B0E0082D051 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		02A17D9316F228C7005AB17D /* SkeletonRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonRenderer.cpp; sourceTree = "<group>"; };
 		02A17D9416F228C7005AB17D /* SkeletonRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonRenderer.h; sourceTree = "<group>"; };
+		02E479581708B64A009691CB /* LayoutApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutApp.cpp; sourceTree = "<group>"; };
+		02E479591708B64A009691CB /* LayoutApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutApp.h; sourceTree = "<group>"; };
+		02E4795B1708B64A009691CB /* ViewApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewApp.h; sourceTree = "<group>"; };
+		02E4795C1708B64A009691CB /* ViewAppBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAppBase.h; sourceTree = "<group>"; };
+		02E4795D1708B64A009691CB /* ViewControllerApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerApp.h; sourceTree = "<group>"; };
+		02E479621708FC5F009691CB /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProxyManyApp.h; path = src/AppController/ProxyManyApp.h; sourceTree = "<group>"; };
 		02d71117fa557eae2252a7f8696299e1 /* svgtiny_list.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = svgtiny_list.cpp; path = ../../of_v0073_osx_release/addons/ofxSvg/libs/svgTiny/src/svgtiny_list.cpp; sourceTree = SOURCE_ROOT; };
 		04a0a34fe784bb191a039b40eceb4eff /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../of_v0073_osx_release/addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		04ab4b6de84bc5aba00b6a8716c6705a /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../of_v0073_osx_release/addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
@@ -254,6 +258,7 @@
 		024F8F7D16BC7B0E0082D051 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				02E479511708B64A009691CB /* AppController */,
 				024F8F8016BC7B0E0082D051 /* geometry.h */,
 				024F8F8116BC7B0E0082D051 /* GEVisualizer.cpp */,
 				021DF7AF16F90CE700569C6A /* GEVisualizerFakeData.cpp */,
@@ -266,8 +271,6 @@
 				024F8F8616BC7B0E0082D051 /* LayoutRenderer.h */,
 				024F8F8716BC7B0E0082D051 /* LocationData.h */,
 				024F8F8816BC7B0E0082D051 /* main.cpp */,
-				024F8FAB16BC7B0E0082D051 /* testApp.cpp */,
-				024F8FAC16BC7B0E0082D051 /* testApp.h */,
 				024F8FAD16BC7B0E0082D051 /* TimeEvent.h */,
 				024F8FAE16BC7B0E0082D051 /* XMLReader */,
 			);
@@ -283,6 +286,18 @@
 				024F8FB216BC7B0E0082D051 /* tinyxmlparser.cpp */,
 			);
 			path = XMLReader;
+			sourceTree = "<group>";
+		};
+		02E479511708B64A009691CB /* AppController */ = {
+			isa = PBXGroup;
+			children = (
+				02E479581708B64A009691CB /* LayoutApp.cpp */,
+				02E479591708B64A009691CB /* LayoutApp.h */,
+				02E4795B1708B64A009691CB /* ViewApp.h */,
+				02E4795C1708B64A009691CB /* ViewAppBase.h */,
+				02E4795D1708B64A009691CB /* ViewControllerApp.h */,
+			);
+			path = AppController;
 			sourceTree = "<group>";
 		};
 		18240ecce4076fb0833a8578697ffa74 /* ofxNetwork */ = {
@@ -436,6 +451,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				02E479621708FC5F009691CB /* ProxyManyApp.h */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				024F8F7D16BC7B0E0082D051 /* src */,
@@ -706,12 +722,12 @@
 				024F8FB516BC7B0E0082D051 /* Layout.cpp in Sources */,
 				024F8FB616BC7B0E0082D051 /* LayoutRenderer.cpp in Sources */,
 				024F8FB716BC7B0E0082D051 /* main.cpp in Sources */,
-				024F8FC816BC7B0E0082D051 /* testApp.cpp in Sources */,
 				024F8FC916BC7B0E0082D051 /* tinyxml.cpp in Sources */,
 				024F8FCA16BC7B0E0082D051 /* tinyxmlerror.cpp in Sources */,
 				024F8FCB16BC7B0E0082D051 /* tinyxmlparser.cpp in Sources */,
 				02A17D9516F228C7005AB17D /* SkeletonRenderer.cpp in Sources */,
 				021DF7B016F90CE700569C6A /* GEVisualizerFakeData.cpp in Sources */,
+				02E479611708B64A009691CB /* LayoutApp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

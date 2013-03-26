@@ -7,6 +7,7 @@
 #include <boost/regex.hpp>
 
 // #include "ofUi/ofUIMainView.h"
+#include "ViewApp.h"
 #include "Layout.h"
 #include "LayoutRenderer.h"
 #include "SkeletonRenderer.h"
@@ -14,7 +15,7 @@
 // #include "GELink.h"
 #include "GEVisualizer.h"
 
-class testApp : public ofBaseApp {
+class LayoutApp : public ViewApp {
 public:
     void setup();
     void setupLayouts();
@@ -73,7 +74,7 @@ public:
 
     GEVisualizer gelink;
     bool geFakeData = false;
-    bool debugStartup = true; // only loads 1 floor, faster startup, not for production use.
+    bool quickStartup = false; // only loads 1 floor, faster startup, not for production use.
 
     const string ge_server_host = "18.133.7.63";
     const int ge_server_port = 5000;

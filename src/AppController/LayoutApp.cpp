@@ -1,8 +1,8 @@
-#include "testApp.h"
+#include "LayoutApp.h"
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/regex.hpp>
 
-void testApp::setup(){
+void LayoutApp::setup(){
     ofSetWindowTitle("Map");
     ofSeedRandom();
     ofEnableSmoothing();
@@ -30,7 +30,7 @@ void testApp::setup(){
     mainRenderMode.userLocation = true;
 }
 
-void testApp::setupLayouts() {
+void LayoutApp::setupLayouts() {
     bool reload = layoutRenderers.size() != 0;
     // clear old layouts
     // TODO: clean up memory!
@@ -41,7 +41,7 @@ void testApp::setupLayouts() {
     double screenPixelsPerMeter = 9.5;
 
     vector<string> layout_info_files;
-    if (debugStartup) {
+    if (quickStartup) {
         layout_info_files.push_back("E14_5_LayoutInfo.txt");
     } else {
         layout_info_files.push_back("E14_6_LayoutInfo.txt");
@@ -62,7 +62,7 @@ void testApp::setupLayouts() {
     }
 
     if (!reload) {
-        if (debugStartup) {
+        if (quickStartup) {
             renderers_active_i = 0;
             renderers_transition_i = renderers_active_i;
         } else {
@@ -72,7 +72,7 @@ void testApp::setupLayouts() {
     }
 }
 
-void testApp::rescaleAllLayouts(float increment) {
+void LayoutApp::rescaleAllLayouts(float increment) {
     printf("BAD\n");
     for (LayoutRenderer& lr : layoutRenderers) {
         lr.projection.screenPixelsPerMeter += increment;
@@ -81,7 +81,7 @@ void testApp::rescaleAllLayouts(float increment) {
     }
 }
 
-void testApp::setupUI() {
+void LayoutApp::setupUI() {
     // ofColor colorBack             (0x444444, 0);
     // ofColor colorOutline          (0xdddddd, 255);
     // ofColor colorOutlineHighlight (0xcccccc, 255);
@@ -91,8 +91,9 @@ void testApp::setupUI() {
     // ofColor colorPaddedOutline    (0x001100, 255);
 
     gui = new ofxUICanvas(0, 0, 0, 0);
+    viewGuis.push_back(ofPtr<ofxUICanvas>(gui));
     // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
-    ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
+    ofAddListener(gui->newGUIEvent, this, &LayoutApp::guiEvent);
     titleLabel = new ofxUILabel(titleLabelBase, OFX_UI_FONT_LARGE);
     gui->addWidgetDown(titleLabel);
 
@@ -100,11 +101,12 @@ void testApp::setupUI() {
     setupUILayouts();
 }
 
-void testApp::setupUIServer() {
+void LayoutApp::setupUIServer() {
     float h = 100;
     ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
+    viewGuis.push_back(ofPtr<ofxUICanvas>(serverGui));
     gui->addWidget(serverGui);
-    ofAddListener(serverGui->newGUIEvent, this, &testApp::guiEventServer);
+    ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
 
     // TODO make radio
     vector<string> toggleable_attributes;
@@ -134,11 +136,12 @@ void testApp::setupUIServer() {
 
 }
 
-void testApp::setupUILayouts() {
+void LayoutApp::setupUILayouts() {
     float w = 240;
     ofxUICanvas* layoutGui = new ofxUICanvas(ofGetWidth() - w, 0, w, ofGetHeight());
+    viewGuis.push_back(ofPtr<ofxUICanvas>(layoutGui));
     gui->addWidget(layoutGui);
-    ofAddListener(layoutGui->newGUIEvent, this, &testApp::guiEventLayouts);
+    ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
 
     layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
     layoutGui->addWidgetDown(new ofxUISlider("Zoom", 1, 5, 1, w, 25));
@@ -153,7 +156,7 @@ void testApp::setupUILayouts() {
 
 }
 
-void testApp::skeletonTestPrint() {
+void LayoutApp::skeletonTestPrint() {
     printf("testing all skeleton data\n");
 
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
@@ -170,7 +173,7 @@ void testApp::skeletonTestPrint() {
     }
 }
 
-void testApp::skeletonTestDraw() {
+void LayoutApp::skeletonTestDraw() {
     ofPushMatrix();
     ofTranslate(300, 300, 0);
     ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
@@ -190,7 +193,7 @@ void testApp::skeletonTestDraw() {
 }
 
 
-void testApp::update(){
+void LayoutApp::update(){
     lastMouseX = ofGetMouseX();
     lastMouseY = ofGetMouseY();
 
@@ -217,7 +220,7 @@ void testApp::update(){
     titleLabel->setLabel(titleLabelBase + " - " + layoutRenderers[renderers_active_i].layout->layoutName);
 }
 
-void testApp::draw(){
+void LayoutApp::draw(){
     ofBackground(0xD8D8D8);
 
     // render layouts
@@ -248,12 +251,12 @@ void testApp::draw(){
     }
 }
 
-void testApp::exit() {
+void LayoutApp::exit() {
     gelink.disconnect();
     delete gui;
 }
 
-void testApp::guiEvent(ofxUIEventArgs &e ) {
+void LayoutApp::guiEvent(ofxUIEventArgs &e ) {
     if(e.widget->getName() == "BACKGROUND VALUE")
     {
         ofxUISlider *slider = (ofxUISlider *) e.widget;    
@@ -266,7 +269,7 @@ void testApp::guiEvent(ofxUIEventArgs &e ) {
     }
 }
 
-void testApp::guiEventLayouts(ofxUIEventArgs &e ) {
+void LayoutApp::guiEventLayouts(ofxUIEventArgs &e ) {
     if (e.widget->getKind() == OFX_UI_WIDGET_TOGGLE) {
         for (int i = 0; i < layoutRenderers.size(); i++) {
             Layout& layout = *layoutRenderers[i].layout;
@@ -293,7 +296,7 @@ void testApp::guiEventLayouts(ofxUIEventArgs &e ) {
     }
 }
 
-void testApp::guiEventServer(ofxUIEventArgs &e) {
+void LayoutApp::guiEventServer(ofxUIEventArgs &e) {
     // TODO debounce buttons
     if (e.widget->getKind() == OFX_UI_WIDGET_LABELBUTTON) {
         ofxUILabelButton& btn = *((ofxUILabelButton*)e.widget);
@@ -352,7 +355,7 @@ void testApp::guiEventServer(ofxUIEventArgs &e) {
     }
 }
 
-void testApp::keyPressed(int key){
+void LayoutApp::keyPressed(int key){
     // UImainView.keyPressedEvent(key);
 
     switch( key ){
@@ -398,11 +401,11 @@ void testApp::keyPressed(int key){
     }
 }
 
-void testApp::keyReleased(int key) {}
+void LayoutApp::keyReleased(int key) {}
 
-void testApp::mouseMoved(int x, int y ) {}
+void LayoutApp::mouseMoved(int x, int y ) {}
 
-void testApp::mouseDragged(int x, int y, int button) {
+void LayoutApp::mouseDragged(int x, int y, int button) {
     float pandx = (ofGetMouseX() - lastMouseX);
     float pandy = (ofGetMouseY() - lastMouseY);
     LayoutProjectionDynamic& dyn = layoutRenderTransform;
@@ -410,17 +413,17 @@ void testApp::mouseDragged(int x, int y, int button) {
     dyn.pan.y += pandx * sin(-dyn.zRotation / 180. * M_PI) + pandy * cos(-dyn.zRotation / 180. * M_PI);
 }
 
-void testApp::mousePressed(int x, int y, int button) {}
+void LayoutApp::mousePressed(int x, int y, int button) {}
 
-void testApp::mouseReleased(int x, int y, int button) {}
+void LayoutApp::mouseReleased(int x, int y, int button) {}
 
-void testApp::windowResized(int w, int h) {}
+void LayoutApp::windowResized(int w, int h) {}
 
-void testApp::gotMessage(ofMessage msg) {}
+void LayoutApp::gotMessage(ofMessage msg) {}
 
-void testApp::dragEvent(ofDragInfo dragInfo) {}
+void LayoutApp::dragEvent(ofDragInfo dragInfo) {}
 
-string testApp::getMainAppDataDirectory(){
+string LayoutApp::getMainAppDataDirectory(){
 
     string mainAppDataDirectory = "";
     ofFilePath filePath;
