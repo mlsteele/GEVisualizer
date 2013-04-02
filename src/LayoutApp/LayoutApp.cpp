@@ -90,7 +90,7 @@ void LayoutApp::setupUI() {
     // ofColor colorPadded           (0x110000, 255);
     // ofColor colorPaddedOutline    (0x001100, 255);
 
-    gui = new ofxUICanvas(0, 0, 0, 0);
+    ofxUICanvas* gui = new ofxUICanvas(0, 0, 0, 0);
     viewGuis.push_back(ofPtr<ofxUICanvas>(gui));
     // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
     ofAddListener(gui->newGUIEvent, this, &LayoutApp::guiEvent);
@@ -99,13 +99,13 @@ void LayoutApp::setupUI() {
 
     setupUIServer();
     setupUILayouts();
+    // setupUIRenderOpts();
 }
 
 void LayoutApp::setupUIServer() {
     float h = 100;
     ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
     viewGuis.push_back(ofPtr<ofxUICanvas>(serverGui));
-    gui->addWidget(serverGui);
     ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
 
     // TODO make radio
@@ -140,7 +140,6 @@ void LayoutApp::setupUILayouts() {
     float w = 240;
     ofxUICanvas* layoutGui = new ofxUICanvas(ofGetWidth() - w, 0, w, ofGetHeight());
     viewGuis.push_back(ofPtr<ofxUICanvas>(layoutGui));
-    gui->addWidget(layoutGui);
     ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
 
     layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
@@ -253,7 +252,7 @@ void LayoutApp::draw(){
 
 void LayoutApp::exit() {
     gelink.disconnect();
-    delete gui;
+    // TODO cleanup gui memory
 }
 
 void LayoutApp::guiEvent(ofxUIEventArgs &e ) {
@@ -364,18 +363,6 @@ void LayoutApp::keyPressed(int key){
             break;
         case 'r':
             setupLayouts();
-            break;
-        case 'p':
-            gui->setDrawWidgetPadding(true);
-            break;
-        case 'P':
-            gui->setDrawWidgetPadding(false);
-            break;
-        case 'v':
-            gui->toggleVisible();
-            for (ofxUIWidget* w : gui->getWidgets()) {
-                w->toggleVisible();
-            }
             break;
         case 'f':
             ofToggleFullscreen();

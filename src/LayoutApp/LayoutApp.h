@@ -23,6 +23,7 @@ public:
     void setupUI();
     void setupUIServer();
     void setupUILayouts();
+    void setupUIRenderOpts();
 
     void update();
     void draw();
@@ -41,9 +42,10 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    void guiEvent(ofxUIEventArgs &e);
-    void guiEventLayouts(ofxUIEventArgs &e);
-    void guiEventServer(ofxUIEventArgs &e);
+    void guiEvent(ofxUIEventArgs& e);
+    void guiEventLayouts(ofxUIEventArgs& e);
+    void guiEventServer(ofxUIEventArgs& e);
+    void guiEventRenderOpts(ofxUIEventArgs& e);
 
 
     ofTrueTypeFont fontVerd10;
