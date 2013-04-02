@@ -159,14 +159,14 @@ void LayoutApp::skeletonTestPrint() {
     printf("testing all skeleton data\n");
 
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    printf("how many locations have skeletons? %i\n", allSkelData.size());
+    printf("how many locations have skeletons? %li\n", allSkelData.size());
     for (const LocationSkeletonData& locationSkeletons : allSkelData) {
-        printf("how many skeletons at location %i? %i\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
+        printf("how many skeletons at location %i? %li\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
         // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
         for (const SkeletonData& skel : locationSkeletons.userJointData) {
-            printf("how many joints on skeleton of user %i? %i\n", skel.userID, skel.jointData.size());
+            printf("how many joints on skeleton of user %i? %li\n", skel.userID, skel.jointData.size());
             for (const SkeletonJoint& j : skel.jointData) {
-                printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
+                printf("joint (%f, %f, %f)     confidence: %f\n", j.x, j.y, j.z, j.confidence);
             }
         }
     }

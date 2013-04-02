@@ -116,7 +116,6 @@ void LayoutRenderer::reloadProjection() {
 
 /*
 // TODO: make this more efficient (less loops)
-/*
 void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     const unsigned int w = textureSize[0];
     const unsigned int h = textureSize[1];
