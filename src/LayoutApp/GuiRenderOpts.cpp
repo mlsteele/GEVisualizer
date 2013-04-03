@@ -18,7 +18,7 @@ void LayoutApp::setupUIRenderOpts(){
 
     ofxUIWidget* cursor = NULL;
 
-    for (string attr : toggleable_attributes) {
+    BOOST_FOREACH (string attr, toggleable_attributes) {
         // ofxUILabelToggle (
         //     string _name, bool _value, float w=0, float h=0, float x=0, float y=0, int _size=OFX_UI_FONT_MEDIUM)
 
@@ -34,7 +34,7 @@ void LayoutApp::setupUIRenderOpts(){
 void LayoutApp::guiEventRenderOpts(ofxUIEventArgs &e) {
     ofxUILabelToggle* toggle = (ofxUILabelToggle*) e.widget;
 
-    for (string attr : toggleable_attributes) {
+    BOOST_FOREACH (string attr, toggleable_attributes) {
         if (e.widget->getName() == attr) {
             printf("guiEventRenderOpts button event %s", toggle->getName().c_str());
         }

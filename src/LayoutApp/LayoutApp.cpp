@@ -1,4 +1,5 @@
 #include "LayoutApp.h"
+#include <boost/foreach.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/regex.hpp>
 
@@ -52,7 +53,7 @@ void LayoutApp::setupLayouts() {
         layout_info_files.push_back("E14_1_LayoutInfo.txt");
     }
 
-    for (string layout_info_file : layout_info_files) {
+    BOOST_FOREACH (string layout_info_file, layout_info_files) {
         Layout* newLayout = new Layout();
         newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
         layoutRenderers.push_back(LayoutRenderer());
@@ -74,7 +75,7 @@ void LayoutApp::setupLayouts() {
 
 void LayoutApp::rescaleAllLayouts(float increment) {
     printf("BAD\n");
-    for (LayoutRenderer& lr : layoutRenderers) {
+    BOOST_FOREACH (LayoutRenderer& lr, layoutRenderers) {
         lr.projection.screenPixelsPerMeter += increment;
         lr.projection.screen_px_corner.x += increment * 25;
         lr.reloadProjection();
@@ -127,7 +128,7 @@ void LayoutApp::setupUIServer() {
     serverGui->addWidgetSouthOf(new ofxUILabelButton(
         "Unstream", (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
 
-    for (string attr : toggleable_attributes) {
+    BOOST_FOREACH (string attr, toggleable_attributes) {
         cursor = serverGui->addWidgetEastOf(new ofxUILabelButton(
             "Show " + attr, (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
         serverGui->addWidgetSouthOf(new ofxUILabelButton(
@@ -147,7 +148,7 @@ void LayoutApp::setupUILayouts() {
     layoutGui->addWidgetDown(new ofxUILabelButton("Reset", (bool) false, 210, 40, 0, 0, OFX_UI_FONT_MEDIUM));
 
     vector<string> layoutNames;
-    for (LayoutRenderer& layoutRenderer : layoutRenderers) {
+    BOOST_FOREACH (LayoutRenderer& layoutRenderer, layoutRenderers) {
         layoutNames.push_back(layoutRenderer.layout->layoutName);
     }
 
@@ -160,12 +161,12 @@ void LayoutApp::skeletonTestPrint() {
 
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
     printf("how many locations have skeletons? %li\n", allSkelData.size());
-    for (const LocationSkeletonData& locationSkeletons : allSkelData) {
+    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
         printf("how many skeletons at location %i? %li\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
         // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
-        for (const SkeletonData& skel : locationSkeletons.userJointData) {
+        BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
             printf("how many joints on skeleton of user %i? %li\n", skel.userID, skel.jointData.size());
-            for (const SkeletonJoint& j : skel.jointData) {
+            BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
                 printf("joint (%f, %f, %f)     confidence: %f\n", j.x, j.y, j.z, j.confidence);
             }
         }
@@ -178,9 +179,9 @@ void LayoutApp::skeletonTestDraw() {
     ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
 
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    for (const LocationSkeletonData& locationSkeletons : allSkelData) {
-        for (const SkeletonData& skel : locationSkeletons.userJointData) {
-            for (const SkeletonJoint& j : skel.jointData) {
+    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+        BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+            BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
                 ofSetHexColor(0x000000);
                 // ofSphere(j.x, j.y, j.z, 10);
                 ofSphere(-j.x, -j.y, 0, 10);
@@ -211,7 +212,7 @@ void LayoutApp::update(){
     }
 
     // update renderer transformations
-    for (LayoutRenderer& renderer : layoutRenderers) {
+    BOOST_FOREACH (LayoutRenderer& renderer, layoutRenderers) {
         renderer.projection.dyn = layoutRenderTransform;
     }
 
@@ -239,10 +240,10 @@ void LayoutApp::draw(){
     // render skeletons for hovered location
     {
         const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-        for (const LocationSkeletonData& locationSkeletons : allSkelData) {
+        BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
             LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
             if (locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
-                for (const SkeletonData& skel : locationSkeletons.userJointData) {
+                BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
                     skelRenderer.render(skelRenderMode, skel);
                 }
             }

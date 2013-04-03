@@ -1,5 +1,6 @@
 // TODO: add controller introspection
 #pragma once
+#include <boost/foreach.hpp>
 
 #include "ofMain.h"
 #define OFX_UI_NO_XML
@@ -12,13 +13,13 @@
 class ViewApp : public ViewAppBase {
 public:
     void enable()  {
-        for (ofPtr<ofxUICanvas> gui : viewGuis) {
+        BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
             gui->enable();
         }
     }
 
     void disable() {
-        for (ofPtr<ofxUICanvas> gui : viewGuis) {
+        BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
             gui->disable();
         }
     }

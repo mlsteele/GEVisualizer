@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/foreach.hpp>
 
 #include "ofMain.h"
 #include "ProxyManyApp.h"
@@ -14,7 +15,8 @@ public:
     }
 
     void disableAll() {
-        for (pair<string, ofPtr<MemberApp> > pr : apps) {
+        typedef pair<string, ofPtr<MemberApp> > apps_kv;
+        BOOST_FOREACH (apps_kv pr, apps) {
             pr.second->disable();
         }
     }

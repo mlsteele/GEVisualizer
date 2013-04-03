@@ -1,5 +1,5 @@
 #include "LayoutRenderer.h"
-
+#include <boost/foreach.hpp>
 
 string format_double_to_string(double n) {
     string s;
@@ -11,7 +11,7 @@ string format_double_to_string(double n) {
 // // returns data or a NULL if none is present in list
 // template <typename T>
 // T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
-//     for (T& thing : list) {
+//     BOOST_FOREACH (T& thing, list) {
 //         if (thing.locationID == locationID) {
 //             return &thing;
 //         }
@@ -22,7 +22,7 @@ string format_double_to_string(double n) {
 // returns data or a NULL if none is present in list
 template <typename T>
 const T* extract_streamed_data(const vector<T>& list, unsigned int locationID) {
-    for (const T& thing : list) {
+    BOOST_FOREACH (const T& thing, list) {
         if (thing.locationID == locationID) {
             return &thing;
         }
@@ -126,7 +126,7 @@ void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
             textureData[(j * w + i) * 4 + 3] = 0; // alpha
 
     int weight_accumulator = 0;
-    for (LocationInfo& locationInfo : store.getLocationInfo()) {
+    BOOST_FOREACH (LocationInfo& locationInfo, store.getLocationInfo()) {
         Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
         if (!localLocation) continue;
         PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
@@ -135,7 +135,7 @@ void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
     }
 
     // loop and fill against locations
-    for (LocationInfo& locationInfo : store.getLocationInfo()) {
+    BOOST_FOREACH (LocationInfo& locationInfo, store.getLocationInfo()) {
         Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
         if (!localLocation) continue;
         PresenceData* presenceData = extract_streamed_data(store.getPresenceData(), locationInfo.locationID);
@@ -264,7 +264,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
         // walls
         const float wallHeight = 2.5 * projection.screenPixelsPerMeter;
-        for (LINE& wall : layout->wallLines) {
+        BOOST_FOREACH (LINE& wall, layout->wallLines) {
             ofSetHexColor(0xB3B3B3);
             glColor4f(0, 0, 0, 0.2);
             ofFill();
@@ -315,7 +315,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     // locations locuses
     if (renderMode.locations) {
-        for (const LocationInfo& locationInfo : dataStore.getLocationInfo()) {
+        BOOST_FOREACH (const LocationInfo& locationInfo, dataStore.getLocationInfo()) {
             const Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
             if (!localLocation) continue;
 
@@ -393,7 +393,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO: fix smoothing
             // TODO: make prettier
             if (userLocationData != NULL) {
-                for (const UserLocationEstimate& estimate : userLocationData->userLocationEstimates) {
+                BOOST_FOREACH (const UserLocationEstimate& estimate, userLocationData->userLocationEstimates) {
                     ofFill();
                     ofSetHexColor(0xE78317);
                     float theta = localLocation->rotation.theta;
@@ -426,7 +426,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
             // // draw pdata location estimates
             // if (renderMode.userLocation) {
-            //     for (auto& pair : dataStore.getUserPData()) {
+            //     BOOST_FOREACH (auto& pair, dataStore.getUserPData()) {
             //         const UserPData& pUser = pair.second;
             //         if (!pUser.hasLastSnapshot) continue;
             //         if (pUser.lastLocationID != locationInfo.locationID) continue;

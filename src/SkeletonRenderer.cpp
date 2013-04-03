@@ -1,4 +1,5 @@
 #include "SkeletonRenderer.h"
+#include <boost/foreach.hpp>
 
 // indices of connected skeleton joints
 // [0] Head
@@ -221,7 +222,7 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
     }
 
     if (renderMode.chains) {
-        for (vector<int> chain : skeleton_chains) {
+        BOOST_FOREACH (vector<int> chain, skeleton_chains) {
             int i_a = chain_next_valid(chain, skel.jointData, 0);
             if (i_a == -1) continue; // skip chain if no valid nodes
             
@@ -243,7 +244,7 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
         }
     }
 
-    // for (const SkeletonJoint& j : skel.jointData) {
+    // BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
     //     printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
     // }
 

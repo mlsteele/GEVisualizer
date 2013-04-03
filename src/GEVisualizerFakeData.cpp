@@ -1,7 +1,8 @@
 #include "GEVisualizer.h"
+#include <boost/foreach.hpp>
 
 void GEVisualizer::ensureFakeData() {
-    for (UserLocationData& userLocationData: locationData) {
+    BOOST_FOREACH (UserLocationData& userLocationData, locationData) {
         if (userLocationData.locationID == 11){
             {
                 UserLocationEstimate fake_estimate;
