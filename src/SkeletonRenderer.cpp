@@ -28,8 +28,8 @@
 // [23] RightFoot
 
 // connections used for stick drawing
-const int skeleton_num_connection = 23;
-const int skeleton_connections[skeleton_num_connection][2] = {
+static const int skeleton_num_connection = 23;
+static const int skeleton_connections[skeleton_num_connection][2] = {
 // center
 { 0      , 1 },
 { 1      , 2 },
@@ -67,7 +67,7 @@ const int skeleton_connections[skeleton_num_connection][2] = {
 // 3, 16, 17, 18, 19                     // left leg
 // 3, 16+4, 17+4, 18+4, 19+4             // right leg
 
-vector<vector<int> > generateChains() {
+static vector<vector<int> > generateChains() {
     vector<int> head_chain;
     head_chain.push_back(0);
     head_chain.push_back(1);
@@ -116,10 +116,10 @@ vector<vector<int> > generateChains() {
     return skeleton_chains;
 };
 
-const vector<vector<int> > skeleton_chains = generateChains();
+static const vector<vector<int> > skeleton_chains = generateChains();
 
 // returns -1 if no more valid nodes
-int chain_next_valid(const vector<int>& chain, const vector< SkeletonJoint >& joints, int first_index) {
+static int chain_next_valid(const vector<int>& chain, const vector< SkeletonJoint >& joints, int first_index) {
     for (int i = first_index; i < chain.size(); i++) {
         if (joints[chain[i]].x != 0) return i;
     }
