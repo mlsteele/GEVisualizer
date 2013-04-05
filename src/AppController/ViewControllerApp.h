@@ -8,6 +8,8 @@
 class ViewControllerApp : public ProxyManyApps {
 public: typedef ViewAppBase MemberApp;
 public:
+    void setup(){} // prevent proxying of setup
+
     void registerApp(string name, ofPtr<MemberApp> app) {
         apps[name] = app;
         apps[name]->setup();

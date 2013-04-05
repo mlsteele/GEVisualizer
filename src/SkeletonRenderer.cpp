@@ -1,6 +1,8 @@
 #include "SkeletonRenderer.h"
 #include <boost/foreach.hpp>
 
+namespace SkeletonRenderer{
+
 // indices of connected skeleton joints
 // [0] Head
 // [1] Neck
@@ -127,30 +129,29 @@ int chain_next_valid(const vector<int>& chain, const vector< SkeletonJoint >& jo
     return -1;
 }
 
-void SkeletonRenderer::setupProjection(ofRectangle view_rect, POINT3D real_center, double screenPixelsPerMeter) {
-    projection.view_rect            = view_rect;
-    projection.real_center          = real_center;
-    projection.screenPixelsPerMeter = screenPixelsPerMeter;
 
-    projection.offset.x = -real_center.x + ((view_rect.x + view_rect.width /2.) / screenPixelsPerMeter);
-    projection.offset.y = -real_center.y + ((view_rect.y + view_rect.height/2.) / screenPixelsPerMeter);
-    projection.offset.z = -real_center.z;
-    projection.scale.x = screenPixelsPerMeter;
-    projection.scale.y = screenPixelsPerMeter;
-    projection.scale.z = screenPixelsPerMeter;
+POINT3D render2D_point_pretransform(POINT3D& i) {
+    POINT3D o;
+    o.x = i.x;
+    o.y = -i.y;
+    o.z = i.z;
+    return o;
 }
 
-void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData& skel) {
+void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Projection2D& projection,
+              ofTrueTypeFont& font, bool clear) {
     ofPushMatrix();
 
     if (renderMode.backdrop) {
-        // fill background
-        ofFill();
-        ofSetHexColor(0xFFFFFF);
-        ofRect(projection.view_rect);
-        ofNoFill();
-        ofSetHexColor(0x000000);
-        ofRect(projection.view_rect);
+        if (clear) {
+            // fill background
+            ofFill();
+            ofSetHexColor(0xFFFFFF);
+            ofRect(projection.view_rect);
+            ofNoFill();
+            ofSetHexColor(0x000000);
+            ofRect(projection.view_rect);
+        }
 
         // Draw only in box.
         glScissor(
@@ -161,17 +162,17 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
         glEnable(GL_SCISSOR_TEST);
     }
 
-    // x,y projection offset
+    // x,y projection setup
     ofTranslate(
-        projection.offset.x * projection.scale.x ,
-        projection.offset.y * projection.scale.y ,
-        projection.offset.z * projection.scale.z );
+        -projection.real_center.x * projection.screenPixelsPerMeter,
+        -projection.real_center.y * projection.screenPixelsPerMeter,
+        0 );
+    ofTranslate(
+        projection.view_rect.x + projection.view_rect.width / 2.,
+        projection.view_rect.y + projection.view_rect.height / 2.,
+        0 );
+    // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
 
-    // scale
-    ofScale(projection.dyn.zoomFactor, projection.dyn.zoomFactor, projection.dyn.zoomFactor);
-
-    // pan
-    ofTranslate(projection.dyn.pan.x, projection.dyn.pan.y);
 
     if (renderMode.joints) {
         for (int i = 0; i < skel.jointData.size(); i++) {
@@ -181,24 +182,26 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
 
             if (j.x == 0) continue;
 
+            POINT3D j_point = {j.x / 1000., j.y / 1000., j.z / 100.};
+            POINT3D render_point = render2D_point_pretransform(j_point);
+
             ofSphere(
-                -j.x / 1000. * projection.scale.x ,
-                -j.y / 1000. * projection.scale.y ,
-                0    / 1000. * projection.scale.z ,
-                projection.screenPixelsPerMeter / 20. );
+                render_point.x * projection.screenPixelsPerMeter,
+                render_point.y * projection.screenPixelsPerMeter,
+                0, projection.screenPixelsPerMeter / 20. );
 
             ofSetHexColor(0x000000);
             if (renderMode.node_label_indices) {
-                fontMain->drawString(ofToString(i),
-                    -j.x / 1000. * projection.scale.x ,
-                    -j.y / 1000. * projection.scale.y );
+                font.drawString(ofToString(i),
+                render_point.x * projection.screenPixelsPerMeter,
+                render_point.y * projection.screenPixelsPerMeter );
             }
             if (renderMode.node_label_locations || renderMode.node_label_location_index == i) {
                 string s = "x: " + ofToString(j.x) + "\ny: " + ofToString(j.y);
 
-                fontMain->drawString(s,
-                    -j.x / 1000. * projection.scale.x ,
-                    -j.y / 1000. * projection.scale.y );
+                font.drawString(s,
+                    render_point.x * projection.screenPixelsPerMeter,
+                    render_point.y * projection.screenPixelsPerMeter );
             }
         }
     }
@@ -211,13 +214,18 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
             // skip joints which are not seen (default to 0)
             if (a.x == 0 || b.x == 0) continue;
 
+            POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 100.};
+            POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 100.};
+            POINT3D a_render_point = render2D_point_pretransform(a_point);
+            POINT3D b_render_point = render2D_point_pretransform(b_point);
+
             ofFill();
             ofSetHexColor(0x4D169E);
             ofLine(
-                -a.x / 1000. * projection.scale.x ,
-                -a.y / 1000. * projection.scale.y ,
-                -b.x / 1000. * projection.scale.x ,
-                -b.y / 1000. * projection.scale.y );
+                a_render_point.x * projection.screenPixelsPerMeter ,
+                a_render_point.y * projection.screenPixelsPerMeter ,
+                b_render_point.x * projection.screenPixelsPerMeter ,
+                b_render_point.y * projection.screenPixelsPerMeter );
         }
     }
 
@@ -233,13 +241,18 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
                 const SkeletonJoint& a = skel.jointData[chain[i_a]];
                 const SkeletonJoint& b = skel.jointData[chain[i_b]];
 
+                POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 100.};
+                POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 100.};
+                POINT3D a_render_point = render2D_point_pretransform(a_point);
+                POINT3D b_render_point = render2D_point_pretransform(b_point);
+
                 ofFill();
                 ofSetHexColor(0x4D169E);
                 ofLine(
-                    -a.x / 1000. * projection.scale.x ,
-                    -a.y / 1000. * projection.scale.y ,
-                    -b.x / 1000. * projection.scale.x ,
-                    -b.y / 1000. * projection.scale.y );
+                    a_render_point.x * projection.screenPixelsPerMeter ,
+                    a_render_point.y * projection.screenPixelsPerMeter ,
+                    b_render_point.x * projection.screenPixelsPerMeter ,
+                    b_render_point.y * projection.screenPixelsPerMeter );
             }
         }
     }
@@ -252,3 +265,7 @@ void SkeletonRenderer::render(SkeletonRenderMode& renderMode, const SkeletonData
 
     ofPopMatrix();
 }
+
+
+
+} // namespace

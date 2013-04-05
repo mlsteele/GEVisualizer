@@ -16,14 +16,6 @@ void LayoutApp::setup(){
     setupLayouts();
     setupUI();
 
-    { // setup skeleton renderer
-        ofRectangle view_rect(20, 40, 230, 230);
-        POINT3D real_center = {0, 1.2};
-        double screenPixelsPerMeter = 70;
-        skelRenderer.setupProjection(view_rect, real_center, screenPixelsPerMeter);
-        skelRenderer.attachFonts(&fontVerd10);
-    }
-
     mainRenderMode.structure = true;
     mainRenderMode.locations = true;
     mainRenderMode.texture = false;
@@ -199,7 +191,7 @@ void LayoutApp::update(){
 
     gelink.update();
     if (geFakeData) gelink.ensureFakeData();
-    // skeletonTestPrint();
+    skeletonTestPrint();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
@@ -237,15 +229,29 @@ void LayoutApp::draw(){
         }
     }
 
-    // render skeletons for hovered location
-    {
-        const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-        BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-            LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
-            if (locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
-                BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-                    skelRenderer.render(skelRenderMode, skel);
-                }
+    // render skeletons
+    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+        LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
+        if (active_renderer.hoverClosestLocationExists && locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
+            SkeletonRenderer::RenderMode renderMode2D;
+            SkeletonRenderer::Projection2D projection2D;
+
+            projection2D.view_rect = ofRectangle(20, 40, 230, 230);
+            projection2D.real_center.x = 0;
+            projection2D.real_center.y = 1.2;
+            projection2D.screenPixelsPerMeter = 70;
+
+            BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+                SkeletonRenderer::render2D(
+                    skel, 
+                    renderMode2D, 
+                    projection2D,
+                    // ofPtr<ofTrueTypeFont>(&fontVerd10),
+                    fontVerd10,
+                    true // clear
+                );
+
             }
         }
     }
@@ -373,11 +379,6 @@ void LayoutApp::keyPressed(int key){
             break;
         case '-':
             rescaleAllLayouts(-1);
-            break;
-        case 'w':
-            skelRenderMode.joints = ! skelRenderMode.joints;
-            // skelRenderMode.sticks = skelRenderMode.joints;
-            skelRenderMode.chains = skelRenderMode.joints;
             break;
         case 'x':
             layoutRenderers[renderers_active_i].projection.print();

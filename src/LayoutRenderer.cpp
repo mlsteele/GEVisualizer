@@ -89,7 +89,7 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     textureSize[1] = layout->svgBoundingRect.height / layout->pixelsPerMeter * projection.scale.y;
     const unsigned int w = textureSize[0];
     const unsigned int h = textureSize[1];
-    printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
+    // printf("textureSize -> {%i, %i}\n", textureSize[0], textureSize[1]);
 
     textureData = new unsigned char [w * h * 4];
 

@@ -4,47 +4,36 @@
 #include "geometry.h"
 #include "GEVisualizer.h"
 
-// dynamic portion of SkeletonProjection (for common offsets like zoom and pan)
-typedef struct {
-    float zoomFactor = 1;
-    POINT2D pan = {0, 0};
-} SkeletonProjectionDynamic;
+namespace SkeletonRenderer {
 
 typedef struct {
-    POINT3D offset = {0, 0, 0};
-    POINT3D scale = {1, 1, 1};
-    ofRectangle view_rect;
-    POINT3D real_center = {0,0};
-    double screenPixelsPerMeter = 1;
-    SkeletonProjectionDynamic dyn;
-
-} SkeletonProjection;
-
-typedef struct {
-    bool backdrop = true;
+    bool backdrop = true; // for 2D only, enforces square rendering and draw background if clear=true on render2D
     bool joints = true;
     bool sticks = false;
-    bool chains = true; // stick drawing that connects over missing nodes
+    // stick drawing that connects over missing nodes
+    bool chains = true;
     bool confidence = false;
     bool node_label_indices = false;
     bool node_label_locations = false;
-    int node_label_location_index = 8; // -1 for off
-    bool humane = false; // hides improbable and unpleasant mangling of people (NOT IMPLEMENTED)
-} SkeletonRenderMode;
+    int  node_label_location_index = 8; // -1 for off
+    // hides improbable and unpleasant mangling of people (NOT IMPLEMENTED)
+    bool humane = false;
+} RenderMode;
 
-class SkeletonRenderer {
-public:
-    void attachFonts(ofTrueTypeFont* fontMain) {
-        this->fontMain = fontMain;
-    }
+typedef struct {
+    ofRectangle view_rect;
+    POINT3D real_center;
+    double screenPixelsPerMeter;
+} Projection2D;
 
-    void setupProjection(ofRectangle view_rect, POINT3D real_center, double screenPixelsPerMeter);
-    void render(SkeletonRenderMode& renderMode, const SkeletonData& skeleton);
-    // void render(SkeletonRenderMode& renderMode, const vector<SkeletonData*>& skeletons);
-    // void print(SkeletonData& skel);
+typedef struct {
+    // TBD
+} Projection3D;
 
-    SkeletonProjection projection;
+void render2D(const SkeletonData&, const RenderMode&, const Projection2D&,
+              ofTrueTypeFont&, bool clear=false);
 
-private:
-    ofTrueTypeFont*  fontMain;
-};
+void render3D(const SkeletonData&, const RenderMode&, const Projection3D&,
+              ofTrueTypeFont&);
+
+}

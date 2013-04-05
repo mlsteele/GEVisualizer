@@ -4,56 +4,30 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
+         filePath = "src/LayoutApp/LayoutApp.cpp"
+         timestampString = "386890646.062343"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "204"
-         endingLineNumber = "204"
-         landmarkName = "SkeletonRenderer::render(SkeletonRenderMode&amp; renderMode, const SkeletonData&amp; skel)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "196"
-         endingLineNumber = "196"
-         landmarkName = "SkeletonRenderer::render(SkeletonRenderMode&amp; renderMode, const SkeletonData&amp; skel)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "198"
-         endingLineNumber = "198"
-         landmarkName = "SkeletonRenderer::render(SkeletonRenderMode&amp; renderMode, const SkeletonData&amp; skel)"
+         startingLineNumber = "236"
+         endingLineNumber = "236"
+         landmarkName = "LayoutApp::draw()"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/AppController/ProxyManyApp.h"
-         timestampString = "386639831.937045"
+         filePath = "src/LayoutApp/LayoutApp.cpp"
+         timestampString = "386890653.679018"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "11"
-         endingLineNumber = "11"
-         landmarkName = "class ProxyManyApps"
-         landmarkType = "3">
+         startingLineNumber = "237"
+         endingLineNumber = "237"
+         landmarkName = "LayoutApp::draw()"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

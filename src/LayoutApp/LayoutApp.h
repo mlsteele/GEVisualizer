@@ -67,10 +67,6 @@ public:
     int renderers_active_i;
     float renderers_transition_i;
 
-    SkeletonRenderer skelRenderer;
-    SkeletonRenderMode skelRenderMode;
-    // SkeletonProjectionDynamic renderTransform;
-
     float lastMouseX = 0;
     float lastMouseY = 0;
 
