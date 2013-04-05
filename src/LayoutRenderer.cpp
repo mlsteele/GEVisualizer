@@ -1,6 +1,5 @@
 #include "LayoutRenderer.h"
 #include <boost/foreach.hpp>
-#include "SkeletonRenderer3D.h"
 
 string format_double_to_string(double n) {
     string s;
@@ -332,11 +331,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 // userLocationData = NULL;
             }
 
-            const LocationSkeletonData* locationSkeletons = NULL;
-            if (renderMode.skeletons) {
-                locationSkeletons = extract_streamed_data(dataStore.getUserJointData(), locationInfo.locationID);
-            }
-
             POINT3D loc3dpos;
             loc3dpos.x = localLocation->position.x * projection.scale.x;
             loc3dpos.y = localLocation->position.y * projection.scale.y;
@@ -427,14 +421,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     //     fontMain->drawString("uid: " + uid_str, tex, tey + 20 );
                     //     ofPopMatrix();
                     // }
-                }
-            }
-
-            // draw skeletons
-            if (locationSkeletons != NULL) {
-                BOOST_FOREACH (const SkeletonData& skel, locationSkeletons->userJointData) {
-                    SkeletonRenderMode3D rm;
-                    SkeletonRenderer3D().render3D(rm, skel, loc3dpos, this);
                 }
             }
 
