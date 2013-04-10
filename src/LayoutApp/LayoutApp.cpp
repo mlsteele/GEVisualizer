@@ -387,6 +387,16 @@ void LayoutApp::keyPressed(int key){
             layoutRenderers[renderers_active_i].projection.print();
             // layoutRenderTransform = LayoutProjectionDynamic();
             break;
+        case 'y':
+            BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
+                gui->enable();
+            }
+            break;
+        case 'u':
+            BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
+                gui->disable();
+            }
+            break;
         default:
             printf("Key Pressed: %i\n", key);
             break;
