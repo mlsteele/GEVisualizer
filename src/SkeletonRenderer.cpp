@@ -141,9 +141,9 @@ POINT3D render2D_point_pretransform(POINT3D& i) {
 
 POINT3D render3D_point_pretransform(POINT3D& i) {
     POINT3D o;
-    o.x = i.x;
-    o.y = -i.y;
-    o.z = 0;
+    o.x = -i.x;
+    o.y = i.z;
+    o.z = i.y;
     return o;
 }
 

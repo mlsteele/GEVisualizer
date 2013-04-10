@@ -320,6 +320,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             const Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
             if (!localLocation) continue;
 
+            printf("driving location %i\n", locationInfo.locationID);
+
             const PresenceData* presenceData = NULL;
             if (renderMode.presence) {
                  presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
@@ -497,6 +499,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
             if (locationSkeletonData != NULL) {
                 BOOST_FOREACH (const SkeletonData& skel, locationSkeletonData->userJointData) {
+                    printf("calling skel draw on location %i == %i\n", locationSkeletonData->locationID, locationInfo.locationID);
                     SkeletonRenderer::render3D(
                         skel, 
                         skelRenderMode3D, 
@@ -504,6 +507,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                         *fontMain
                     );
                 }
+                printf("leaving loop\n");
             }
 
 

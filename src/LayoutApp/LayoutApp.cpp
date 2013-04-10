@@ -13,6 +13,8 @@ void LayoutApp::setup(){
     fontVerd10.loadFont("verdana.ttf", 10);
     fontVerd14.loadFont("verdana.ttf", 14);
 
+    if (geFakeData) gelink.ensureFakeData();
+
     setupLayouts();
     setupUI();
 
@@ -190,8 +192,7 @@ void LayoutApp::update(){
     lastMouseX = ofGetMouseX();
     lastMouseY = ofGetMouseY();
 
-    gelink.update();
-    if (geFakeData) gelink.ensureFakeData();
+    if (!geFakeData) gelink.update();
     // skeletonTestPrint();
 
     // transition to approach selection
@@ -216,6 +217,8 @@ void LayoutApp::update(){
 void LayoutApp::draw(){
     ofBackground(0xD8D8D8);
 
+    printf("draw\n");
+
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {
         float transition = i - renderers_transition_i;
@@ -231,30 +234,30 @@ void LayoutApp::draw(){
     }
 
     // render skeletons
-    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-        LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
-        if (active_renderer.hoverClosestLocationExists && locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
-            SkeletonRenderer::RenderMode renderMode2D;
-            SkeletonRenderer::Projection2D projection2D;
+    // const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+    // BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+    //     LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
+    //     if (active_renderer.hoverClosestLocationExists && locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
+    //         SkeletonRenderer::RenderMode renderMode2D;
+    //         SkeletonRenderer::Projection2D projection2D;
 
-            projection2D.view_rect = ofRectangle(20, 40, 230, 230);
-            projection2D.real_center.x = 0;
-            projection2D.real_center.y = 1.2;
-            projection2D.screenPixelsPerMeter = 70;
+    //         projection2D.view_rect = ofRectangle(20, 40, 230, 230);
+    //         projection2D.real_center.x = 0;
+    //         projection2D.real_center.y = 1.2;
+    //         projection2D.screenPixelsPerMeter = 70;
 
-            BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-                SkeletonRenderer::render2D(
-                    skel, 
-                    renderMode2D, 
-                    projection2D,
-                    // ofPtr<ofTrueTypeFont>(&fontVerd10),
-                    fontVerd10,
-                    true // clear
-                );
-            }
-        }
-    }
+    //         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+    //             SkeletonRenderer::render2D(
+    //                 skel, 
+    //                 renderMode2D, 
+    //                 projection2D,
+    //                 // ofPtr<ofTrueTypeFont>(&fontVerd10),
+    //                 fontVerd10,
+    //                 true // clear
+    //             );
+    //         }
+    //     }
+    // }
 }
 
 void LayoutApp::exit() {
