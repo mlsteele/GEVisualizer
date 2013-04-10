@@ -1,5 +1,6 @@
 #include "SkeletonRenderer.h"
 #include <boost/foreach.hpp>
+#include <boost/function.hpp>
 
 namespace SkeletonRenderer{
 
@@ -138,7 +139,8 @@ POINT3D render2D_point_pretransform(POINT3D& i) {
     return o;
 }
 
-void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double screenPixelsPerMeter, ofTrueTypeFont& font) {
+void renderBase(const SkeletonData& skel, const RenderMode& renderMode,
+                boost::function< POINT3D(POINT3D&) > point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont& font) {
 
     ofPushMatrix();
 
@@ -151,7 +153,7 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
             if (j.x == 0) continue;
 
             POINT3D j_point = {j.x / 1000., j.y / 1000., j.z / 1000.};
-            POINT3D render_point = render2D_point_pretransform(j_point);
+            POINT3D render_point = point_pretransform(j_point);
 
             ofSphere(
                 render_point.x * screenPixelsPerMeter,
@@ -186,8 +188,8 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
 
             POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 1000.};
             POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 1000.};
-            POINT3D a_render_point = render2D_point_pretransform(a_point);
-            POINT3D b_render_point = render2D_point_pretransform(b_point);
+            POINT3D a_render_point = point_pretransform(a_point);
+            POINT3D b_render_point = point_pretransform(b_point);
 
             ofFill();
             ofSetHexColor(0x4D169E);
@@ -215,8 +217,8 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
 
                 POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 1000.};
                 POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 1000.};
-                POINT3D a_render_point = render2D_point_pretransform(a_point);
-                POINT3D b_render_point = render2D_point_pretransform(b_point);
+                POINT3D a_render_point = point_pretransform(a_point);
+                POINT3D b_render_point = point_pretransform(b_point);
 
                 ofFill();
                 ofSetHexColor(0x4D169E);
@@ -273,7 +275,7 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
         0 );
     // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
 
-    renderBase(skel, renderMode, projection.screenPixelsPerMeter, font);
+    renderBase(skel, renderMode, render2D_point_pretransform, projection.screenPixelsPerMeter, font);
 
     // cleanup
     ofPopMatrix();
