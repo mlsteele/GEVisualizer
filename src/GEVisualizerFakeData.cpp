@@ -2,6 +2,12 @@
 #include <boost/foreach.hpp>
 
 void GEVisualizer::ensureFakeData() {
+    // locations
+    LocationInfo l22;
+    l22.locationID = 22;
+    l22.notes = "fake location 22";
+    locationInfo.push_back(l22);
+
     // user estimates
     BOOST_FOREACH (UserLocationData& userLocationData, locationData) {
         if (userLocationData.locationID == 11){

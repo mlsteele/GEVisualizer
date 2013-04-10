@@ -71,8 +71,8 @@ public:
     float lastMouseY = 0;
 
     GEVisualizer gelink;
-    bool geFakeData = false;
-    bool quickStartup = false; // only loads 1 floor, faster startup, not for production use.
+    bool geFakeData = true;
+    bool quickStartup = true; // only loads 1 floor, faster startup, not for production use.
 
     const string ge_server_host = "18.133.7.63";
     const int ge_server_port = 5000;

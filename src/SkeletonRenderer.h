@@ -36,4 +36,4 @@ void render2D(const SkeletonData&, const RenderMode&, const Projection2D&,
 void render3D(const SkeletonData&, const RenderMode&, const Projection3D&,
               ofTrueTypeFont&);
 
-}
+} // namespace

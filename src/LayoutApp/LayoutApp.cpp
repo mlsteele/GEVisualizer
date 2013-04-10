@@ -191,7 +191,7 @@ void LayoutApp::update(){
 
     gelink.update();
     if (geFakeData) gelink.ensureFakeData();
-    skeletonTestPrint();
+    // skeletonTestPrint();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
