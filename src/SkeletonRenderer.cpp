@@ -138,41 +138,9 @@ POINT3D render2D_point_pretransform(POINT3D& i) {
     return o;
 }
 
-void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Projection2D& projection,
-              ofTrueTypeFont& font, bool clear) {
+void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double screenPixelsPerMeter, ofTrueTypeFont& font) {
+
     ofPushMatrix();
-
-    if (renderMode.backdrop) {
-        if (clear) {
-            // fill background
-            ofFill();
-            ofSetHexColor(0xFFFFFF);
-            ofRect(projection.view_rect);
-            ofNoFill();
-            ofSetHexColor(0x000000);
-            ofRect(projection.view_rect);
-        }
-
-        // Draw only in box.
-        glScissor(
-            (int) projection.view_rect.x ,
-            (int) ofGetHeight() - projection.view_rect.y - projection.view_rect.height ,
-            (int) projection.view_rect.width ,
-            (int) projection.view_rect.height );
-        glEnable(GL_SCISSOR_TEST);
-    }
-
-    // x,y projection setup
-    ofTranslate(
-        -projection.real_center.x * projection.screenPixelsPerMeter,
-        -projection.real_center.y * projection.screenPixelsPerMeter,
-        0 );
-    ofTranslate(
-        projection.view_rect.x + projection.view_rect.width / 2.,
-        projection.view_rect.y + projection.view_rect.height / 2.,
-        0 );
-    // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
-
 
     if (renderMode.joints) {
         for (int i = 0; i < skel.jointData.size(); i++) {
@@ -186,22 +154,22 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
             POINT3D render_point = render2D_point_pretransform(j_point);
 
             ofSphere(
-                render_point.x * projection.screenPixelsPerMeter,
-                render_point.y * projection.screenPixelsPerMeter,
-                0, projection.screenPixelsPerMeter / 20. );
+                render_point.x * screenPixelsPerMeter,
+                render_point.y * screenPixelsPerMeter,
+                0, screenPixelsPerMeter / 20. );
 
             ofSetHexColor(0x000000);
             if (renderMode.node_label_indices) {
                 font.drawString(ofToString(i),
-                render_point.x * projection.screenPixelsPerMeter,
-                render_point.y * projection.screenPixelsPerMeter );
+                render_point.x * screenPixelsPerMeter,
+                render_point.y * screenPixelsPerMeter );
             }
             if (renderMode.node_label_locations || renderMode.node_label_location_index == i) {
                 string s = "x: " + ofToString(j.x) + "\ny: " + ofToString(j.y);
 
                 font.drawString(s,
-                    render_point.x * projection.screenPixelsPerMeter,
-                    render_point.y * projection.screenPixelsPerMeter );
+                    render_point.x * screenPixelsPerMeter,
+                    render_point.y * screenPixelsPerMeter );
             }
         }
     }
@@ -222,10 +190,10 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
             ofFill();
             ofSetHexColor(0x4D169E);
             ofLine(
-                a_render_point.x * projection.screenPixelsPerMeter ,
-                a_render_point.y * projection.screenPixelsPerMeter ,
-                b_render_point.x * projection.screenPixelsPerMeter ,
-                b_render_point.y * projection.screenPixelsPerMeter );
+                a_render_point.x * screenPixelsPerMeter ,
+                a_render_point.y * screenPixelsPerMeter ,
+                b_render_point.x * screenPixelsPerMeter ,
+                b_render_point.y * screenPixelsPerMeter );
         }
     }
 
@@ -249,10 +217,10 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
                 ofFill();
                 ofSetHexColor(0x4D169E);
                 ofLine(
-                    a_render_point.x * projection.screenPixelsPerMeter ,
-                    a_render_point.y * projection.screenPixelsPerMeter ,
-                    b_render_point.x * projection.screenPixelsPerMeter ,
-                    b_render_point.y * projection.screenPixelsPerMeter );
+                    a_render_point.x * screenPixelsPerMeter ,
+                    a_render_point.y * screenPixelsPerMeter ,
+                    b_render_point.x * screenPixelsPerMeter ,
+                    b_render_point.y * screenPixelsPerMeter );
             }
         }
     }
@@ -260,11 +228,52 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
     // BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
     //     printf("joint (%f, %f, %f)     confidence: %s\n", j.x, j.y, j.z, j.confidence);
     // }
-
-    glDisable(GL_SCISSOR_TEST);
-
-    ofPopMatrix();
 }
+
+
+void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Projection2D& projection,
+              ofTrueTypeFont& font, bool clear) {
+
+    if (renderMode.backdrop) {
+        if (clear) {
+            // fill background
+            ofFill();
+            ofSetHexColor(0xFFFFFF);
+            ofRect(projection.view_rect);
+            ofNoFill();
+            ofSetHexColor(0x000000);
+            ofRect(projection.view_rect);
+        }
+
+        // Draw only in box.
+        glScissor(
+            (int) projection.view_rect.x ,
+            (int) ofGetHeight() - projection.view_rect.y - projection.view_rect.height ,
+            (int) projection.view_rect.width ,
+            (int) projection.view_rect.height );
+        glEnable(GL_SCISSOR_TEST);
+    }
+
+    ofPushMatrix();
+
+    // x,y projection setup
+    ofTranslate(
+        -projection.real_center.x * projection.screenPixelsPerMeter,
+        -projection.real_center.y * projection.screenPixelsPerMeter,
+        0 );
+    ofTranslate(
+        projection.view_rect.x + projection.view_rect.width / 2.,
+        projection.view_rect.y + projection.view_rect.height / 2.,
+        0 );
+    // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
+
+    renderBase(skel, renderMode, projection.screenPixelsPerMeter, font);
+
+    // cleanup
+    ofPopMatrix();
+    glDisable(GL_SCISSOR_TEST);
+}
+
 
 
 
