@@ -134,7 +134,7 @@ POINT3D render2D_point_pretransform(POINT3D& i) {
     POINT3D o;
     o.x = i.x;
     o.y = -i.y;
-    o.z = i.z;
+    o.z = 0;
     return o;
 }
 
@@ -150,16 +150,18 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
 
             if (j.x == 0) continue;
 
-            POINT3D j_point = {j.x / 1000., j.y / 1000., j.z / 100.};
+            POINT3D j_point = {j.x / 1000., j.y / 1000., j.z / 1000.};
             POINT3D render_point = render2D_point_pretransform(j_point);
 
             ofSphere(
                 render_point.x * screenPixelsPerMeter,
                 render_point.y * screenPixelsPerMeter,
-                0, screenPixelsPerMeter / 20. );
+                render_point.z * screenPixelsPerMeter,
+                screenPixelsPerMeter / 20. );
 
             ofSetHexColor(0x000000);
             if (renderMode.node_label_indices) {
+                // TODO: project onto screen correctly
                 font.drawString(ofToString(i),
                 render_point.x * screenPixelsPerMeter,
                 render_point.y * screenPixelsPerMeter );
@@ -182,8 +184,8 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
             // skip joints which are not seen (default to 0)
             if (a.x == 0 || b.x == 0) continue;
 
-            POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 100.};
-            POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 100.};
+            POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 1000.};
+            POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 1000.};
             POINT3D a_render_point = render2D_point_pretransform(a_point);
             POINT3D b_render_point = render2D_point_pretransform(b_point);
 
@@ -192,8 +194,10 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
             ofLine(
                 a_render_point.x * screenPixelsPerMeter ,
                 a_render_point.y * screenPixelsPerMeter ,
+                a_render_point.z * screenPixelsPerMeter ,
                 b_render_point.x * screenPixelsPerMeter ,
-                b_render_point.y * screenPixelsPerMeter );
+                b_render_point.y * screenPixelsPerMeter ,
+                b_render_point.z * screenPixelsPerMeter );
         }
     }
 
@@ -209,8 +213,8 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
                 const SkeletonJoint& a = skel.jointData[chain[i_a]];
                 const SkeletonJoint& b = skel.jointData[chain[i_b]];
 
-                POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 100.};
-                POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 100.};
+                POINT3D a_point = {a.x / 1000., a.y / 1000., a.z / 1000.};
+                POINT3D b_point = {b.x / 1000., b.y / 1000., b.z / 1000.};
                 POINT3D a_render_point = render2D_point_pretransform(a_point);
                 POINT3D b_render_point = render2D_point_pretransform(b_point);
 
@@ -219,8 +223,10 @@ void renderBase(const SkeletonData& skel, const RenderMode& renderMode, double s
                 ofLine(
                     a_render_point.x * screenPixelsPerMeter ,
                     a_render_point.y * screenPixelsPerMeter ,
+                    a_render_point.z * screenPixelsPerMeter ,
                     b_render_point.x * screenPixelsPerMeter ,
-                    b_render_point.y * screenPixelsPerMeter );
+                    b_render_point.y * screenPixelsPerMeter ,
+                    b_render_point.z * screenPixelsPerMeter );
             }
         }
     }
