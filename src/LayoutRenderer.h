@@ -46,6 +46,7 @@ typedef struct {
     bool texture = false;
     bool presence = false;
     bool userLocation = false;
+    bool skeletons = false;
 } LayoutRenderMode;
 
 

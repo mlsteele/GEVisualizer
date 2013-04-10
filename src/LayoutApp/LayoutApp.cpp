@@ -21,6 +21,7 @@ void LayoutApp::setup(){
     mainRenderMode.texture = false;
     mainRenderMode.presence = true;
     mainRenderMode.userLocation = true;
+    mainRenderMode.skeletons = true;
 }
 
 void LayoutApp::setupLayouts() {
@@ -251,7 +252,6 @@ void LayoutApp::draw(){
                     fontVerd10,
                     true // clear
                 );
-
             }
         }
     }

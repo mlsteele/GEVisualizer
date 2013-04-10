@@ -139,10 +139,17 @@ POINT3D render2D_point_pretransform(POINT3D& i) {
     return o;
 }
 
+POINT3D render3D_point_pretransform(POINT3D& i) {
+    POINT3D o;
+    o.x = i.x;
+    o.y = -i.y;
+    o.z = 0;
+    return o;
+}
+
 void renderBase(const SkeletonData& skel, const RenderMode& renderMode,
                 boost::function< POINT3D(POINT3D&) > point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont& font) {
 
-    ofPushMatrix();
 
     if (renderMode.joints) {
         for (int i = 0; i < skel.jointData.size(); i++) {
@@ -282,6 +289,28 @@ void render2D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
     glDisable(GL_SCISSOR_TEST);
 }
 
+
+void render3D(const SkeletonData& skel, const RenderMode& renderMode, const Projection3D& projection,
+              ofTrueTypeFont& font) {
+    ofPushMatrix();
+
+    // x,y projection setup
+    // ofTranslate(
+    //     -projection.real_center.x * projection.screenPixelsPerMeter,
+    //     -projection.real_center.y * projection.screenPixelsPerMeter,
+    //     0 );
+    ofTranslate(
+        projection.locationRoot.x ,
+        projection.locationRoot.y ,
+        projection.locationRoot.z );
+    // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
+
+    renderBase(skel, renderMode, render3D_point_pretransform, projection.screenPixelsPerMeter, font);
+
+    // cleanup
+    ofPopMatrix();
+    glDisable(GL_SCISSOR_TEST);
+}
 
 
 

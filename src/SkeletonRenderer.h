@@ -27,7 +27,9 @@ typedef struct {
 } Projection2D;
 
 typedef struct {
-    // TBD
+    double screenPixelsPerMeter;
+    POINT3D locationRoot;
+    double theta = 0;
 } Projection3D;
 
 void render2D(const SkeletonData&, const RenderMode&, const Projection2D&,

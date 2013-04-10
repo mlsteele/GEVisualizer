@@ -1,4 +1,5 @@
 #include "LayoutRenderer.h"
+#include "SkeletonRenderer.h"
 #include <boost/foreach.hpp>
 
 string format_double_to_string(double n) {
@@ -322,13 +323,16 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             const PresenceData* presenceData = NULL;
             if (renderMode.presence) {
                  presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
-                 // presenceData = NULL;
             }
 
             const UserLocationData* userLocationData = NULL;
             if (renderMode.userLocation) {
                 userLocationData = extract_streamed_data(dataStore.getUserLocationData(), locationInfo.locationID);
-                // userLocationData = NULL;
+            }
+
+            const LocationSkeletonData* locationSkeletonData = NULL;
+            if (renderMode.skeletons) {
+                locationSkeletonData = extract_streamed_data(dataStore.getUserJointData(), locationInfo.locationID);
             }
 
             POINT3D loc3dpos;
@@ -473,6 +477,35 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             //         }
             //     }
             // }
+
+            // draw skeletons
+            // TODO assuming rectangular and giving the option for stretch is a bad plan. screenPixelsPerMeter is not scale.x
+            SkeletonRenderer::RenderMode skelRenderMode3D;
+            skelRenderMode3D.joints = true;
+            skelRenderMode3D.sticks = false;
+            skelRenderMode3D.chains = true;
+            skelRenderMode3D.confidence = false;
+            skelRenderMode3D.node_label_indices = false;
+            skelRenderMode3D.node_label_locations = false;
+            skelRenderMode3D.node_label_location_index = -1; // -1 for off
+            skelRenderMode3D.humane = false;
+
+            SkeletonRenderer::Projection3D skelProjection3D;
+            skelProjection3D.screenPixelsPerMeter = projection.scale.x;
+            skelProjection3D.locationRoot = loc3dpos;
+            skelProjection3D.theta = 0;
+
+            if (locationSkeletonData != NULL) {
+                BOOST_FOREACH (const SkeletonData& skel, locationSkeletonData->userJointData) {
+                    SkeletonRenderer::render3D(
+                        skel, 
+                        skelRenderMode3D, 
+                        skelProjection3D,
+                        *fontMain
+                    );
+                }
+            }
+
 
             // draw name in non-skew loop
         }
