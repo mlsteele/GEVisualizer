@@ -114,6 +114,31 @@ void GEVisualizer::ensureFakeData() {
     skeletonData_rhand.jointData.push_back(SkeletonJoint(0.000000    , 0.000000     , 0.000000   , 0.000000));
     skeletonData_rhand.jointData.push_back(SkeletonJoint(29.330540   , -1217.922974 , 1909.208618, 0.000000));
 
+    SkeletonData skeletonData_rhand_2;
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -42.922260  , 10 + 182.198807   , 10 + 1564.243530, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -117.219269 , 10 + -6.828606    , 10 + 1683.587891, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -115.551750 , 10 + -193.178421  , 10 + 1722.945557, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -266.406982 , 10 + -15.121567   , 10 + 1650.567749, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -418.456818 , 10 + -121.848244  , 10 + 1467.721069, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -433.584045 , 10 + -166.177032  , 10 + 1109.493042, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 31.968430   , 10 + 1.464355     , 10 + 1716.608154, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 30.801613   , 10 + -200.089020  , 10 + 1872.445923, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 189.777084  , 10 + -515.598633  , 10 + 1775.777954, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -191.734665 , 10 + -383.859863  , 10 + 1745.052002, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -265.701630 , 10 + -805.451599  , 10 + 1796.952148, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -193.130524 , 10 + -1210.846802 , 10 + 1864.930908, 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + -36.033794  , 10 + -375.196625  , 10 + 1779.554199, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 13.381758   , 10 + -807.687683  , 10 + 1819.289673, 1.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 0.000000    , 10 + 0.000000     , 10 + 0.000000   , 0.000000));
+    skeletonData_rhand_2.jointData.push_back(SkeletonJoint(100 + 29.330540   , 10 + -1217.922974 , 10 + 1909.208618, 0.000000));
 
     // skeletons
     LocationSkeletonData locationSkeletonData;
@@ -124,5 +149,6 @@ void GEVisualizer::ensureFakeData() {
 
     locationSkeletonData.locationID = 9;
     locationSkeletonData.userJointData.push_back(skeletonData_rhand);
+    locationSkeletonData.userJointData.push_back(skeletonData_rhand_2);
     userJointData.push_back(locationSkeletonData);
 }
