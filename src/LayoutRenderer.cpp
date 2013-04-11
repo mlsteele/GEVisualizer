@@ -410,7 +410,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     float tex = ex * cos(theta) + ey * sin(theta);
                     float tey = -ex * sin(theta) + ey * cos(theta);
                     tex *= projection.scale.x / 1000.;
-                    tey *= projection.scale.x / 1000.;
+                    tey *= projection.scale.y / 1000.;
 
                     ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 3);
 
