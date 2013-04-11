@@ -217,8 +217,6 @@ void LayoutApp::update(){
 void LayoutApp::draw(){
     ofBackground(0xD8D8D8);
 
-    printf("draw\n");
-
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {
         float transition = i - renderers_transition_i;
