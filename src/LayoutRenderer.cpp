@@ -483,6 +483,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             // TODO assuming rectangular and giving the option for stretch is a bad plan. screenPixelsPerMeter is not scale.x
             SkeletonRenderer::RenderMode skelRenderMode3D;
             skelRenderMode3D.joints = true;
+            skelRenderMode3D.head = false;
             skelRenderMode3D.sticks = false;
             skelRenderMode3D.chains = true;
             skelRenderMode3D.confidence = false;

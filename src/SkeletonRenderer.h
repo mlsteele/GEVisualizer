@@ -9,6 +9,7 @@ namespace SkeletonRenderer {
 typedef struct {
     bool backdrop = true; // for 2D only, enforces square rendering and draw background if clear=true on render2D
     bool joints = true;
+    bool head = false; // untested
     bool sticks = false;
     // stick drawing that connects over missing nodes
     bool chains = true;

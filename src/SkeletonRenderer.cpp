@@ -165,6 +165,17 @@ POINT3D render3D_point_pretransform(POINT3D& i) {
 void renderBase(const SkeletonData& skel, const RenderMode& renderMode,
                 boost::function< POINT3D(POINT3D&) > point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont& font) {
 
+    if (renderMode.head) {
+        const SkeletonJoint& j = skel.jointData[0];
+        POINT3D j_point = {j.x / 1000., j.y / 1000., j.z / 1000.};
+        POINT3D render_point = point_pretransform(j_point);
+
+        ofFill();
+        ofSetHexColor(0x9311E9);
+
+        ofSphere(render_point.x, render_point.y, render_point.z, screenPixelsPerMeter / 17.);
+    }
+
 
     if (renderMode.joints) {
         for (int i = 0; i < skel.jointData.size(); i++) {
