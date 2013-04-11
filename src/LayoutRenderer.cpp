@@ -232,13 +232,18 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
     // skew rotation
     ofRotateX(projection.dyn.xRotation);
 
-    // scale
-    ofScale(projection.dyn.zoomFactor, projection.dyn.zoomFactor, projection.dyn.zoomFactor);
-
     // rotate around center
     ofTranslate(w/2, y/2);
     ofRotateZ(projection.dyn.zRotation);
     ofTranslate(-w/2, -y/2);
+
+    // scale
+    ofScale(projection.dyn.zoomFactor, projection.dyn.zoomFactor, projection.dyn.zoomFactor);
+
+    // rotate around center
+    // ofTranslate(w/2 / projection.dyn.zoomFactor, y/2 / projection.dyn.zoomFactor);
+    // ofRotateZ(projection.dyn.zRotation);
+    // ofTranslate(-w/2 / projection.dyn.zoomFactor, -y/2 / projection.dyn.zoomFactor);
 
     // pan
     ofTranslate(projection.dyn.pan.x, projection.dyn.pan.y);
