@@ -56,6 +56,8 @@ public:
     ofxUICanvas* gui;
     string titleLabelBase = "Media Lab";
     ofxUILabel* titleLabel;
+    const int UI_START_X = ofGetWidth() - 240;
+    int UI_START_Y = ofGetHeight() - 100;
 
     // ofUIMainView UImainView;
     // ofUISubView UIserverSubView;

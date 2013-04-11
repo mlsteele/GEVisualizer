@@ -99,8 +99,11 @@ void LayoutApp::setupUI() {
 }
 
 void LayoutApp::setupUIServer() {
-    float h = 100;
-    ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
+    int h = 100;
+    int UI_START_Y = ofGetHeight() - 100;
+    // ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, UI_START_X, 100);
+    // ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
+    ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, ofGetWidth() - 240, h);
     viewGuis.push_back(ofPtr<ofxUICanvas>(serverGui));
     ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
 
@@ -133,8 +136,8 @@ void LayoutApp::setupUIServer() {
 }
 
 void LayoutApp::setupUILayouts() {
-    float w = 240;
-    ofxUICanvas* layoutGui = new ofxUICanvas(ofGetWidth() - w, 0, w, ofGetHeight());
+    int w = 240;
+    ofxUICanvas* layoutGui = new ofxUICanvas(UI_START_X, 0, 240, ofGetHeight());
     viewGuis.push_back(ofPtr<ofxUICanvas>(layoutGui));
     ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
 
@@ -406,11 +409,19 @@ void LayoutApp::keyReleased(int key) {}
 void LayoutApp::mouseMoved(int x, int y ) {}
 
 void LayoutApp::mouseDragged(int x, int y, int button) {
-    float pandx = (ofGetMouseX() - lastMouseX);
-    float pandy = (ofGetMouseY() - lastMouseY);
-    LayoutProjectionDynamic& dyn = layoutRenderTransform;
-    dyn.pan.x += pandx * cos(-dyn.zRotation / 180. * M_PI) - pandy * sin(-dyn.zRotation / 180. * M_PI);
-    dyn.pan.y += pandx * sin(-dyn.zRotation / 180. * M_PI) + pandy * cos(-dyn.zRotation / 180. * M_PI);
+    // drag layouts
+    // TODO make this less dumb
+    LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
+    bool inLayoutViewBounds = (x > 0) && (x < UI_START_X) && (y > 0) && (y < UI_START_Y);
+
+    if (inLayoutViewBounds) {
+        float pandx = (ofGetMouseX() - lastMouseX);
+        float pandy = (ofGetMouseY() - lastMouseY);
+        LayoutProjectionDynamic& dyn = layoutRenderTransform;
+        dyn.pan.x += pandx * cos(-dyn.zRotation / 180. * M_PI) - pandy * sin(-dyn.zRotation / 180. * M_PI);
+        dyn.pan.y += pandx * sin(-dyn.zRotation / 180. * M_PI) + pandy * cos(-dyn.zRotation / 180. * M_PI);
+    }
+
 }
 
 void LayoutApp::mousePressed(int x, int y, int button) {}
