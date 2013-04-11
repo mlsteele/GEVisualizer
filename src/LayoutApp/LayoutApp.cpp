@@ -154,41 +154,41 @@ void LayoutApp::setupUILayouts() {
 
 }
 
-void LayoutApp::skeletonTestPrint() {
-    printf("testing all skeleton data\n");
+// void LayoutApp::skeletonTestPrint() {
+//     printf("testing all skeleton data\n");
 
-    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    printf("how many locations have skeletons? %li\n", allSkelData.size());
-    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-        printf("how many skeletons at location %i? %li\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
-        // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
-        BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-            printf("how many joints on skeleton of user %i? %li\n", skel.userID, skel.jointData.size());
-            BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
-                printf("joint (%f, %f, %f)     confidence: %f\n", j.x, j.y, j.z, j.confidence);
-            }
-        }
-    }
-}
+//     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+//     printf("how many locations have skeletons? %li\n", allSkelData.size());
+//     BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+//         printf("how many skeletons at location %i? %li\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
+//         // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
+//         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+//             printf("how many joints on skeleton of user %i? %li\n", skel.userID, skel.jointData.size());
+//             BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
+//                 printf("joint (%f, %f, %f)     confidence: %f\n", j.x, j.y, j.z, j.confidence);
+//             }
+//         }
+//     }
+// }
 
-void LayoutApp::skeletonTestDraw() {
-    ofPushMatrix();
-    ofTranslate(300, 300, 0);
-    ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
+// void LayoutApp::skeletonTestDraw() {
+//     ofPushMatrix();
+//     ofTranslate(300, 300, 0);
+//     ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
 
-    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-        BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-            BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
-                ofSetHexColor(0x000000);
-                // ofSphere(j.x, j.y, j.z, 10);
-                ofSphere(-j.x, -j.y, 0, 10);
-            }
-        }
-    }
+//     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+//     BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+//         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+//             BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
+//                 ofSetHexColor(0x000000);
+//                 // ofSphere(j.x, j.y, j.z, 10);
+//                 ofSphere(-j.x, -j.y, 0, 10);
+//             }
+//         }
+//     }
 
-    ofPopMatrix();
-}
+//     ofPopMatrix();
+// }
 
 
 void LayoutApp::update(){
@@ -234,31 +234,34 @@ void LayoutApp::draw(){
         }
     }
 
-    // render skeletons
-    // const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-    // BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-    //     LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
-    //     if (active_renderer.hoverClosestLocationExists && locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
-    //         SkeletonRenderer::RenderMode renderMode2D;
-    //         SkeletonRenderer::Projection2D projection2D;
+    // render skeletons for current location in 2d
+    const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
+    BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
+        LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
+        if (active_renderer.hoverClosestLocationExists && locationSkeletons.locationID == active_renderer.hoverClosestLocationID && active_renderer.hoverClosestLocationDistance < 40) {
+            SkeletonRenderer::RenderMode renderMode2D;
+            SkeletonRenderer::Projection2D projection2D;
 
-    //         projection2D.view_rect = ofRectangle(20, 40, 230, 230);
-    //         projection2D.real_center.x = 0;
-    //         projection2D.real_center.y = 1.2;
-    //         projection2D.screenPixelsPerMeter = 70;
+            projection2D.view_rect = ofRectangle(20, 40, 230, 230);
+            projection2D.real_center.x = 0;
+            projection2D.real_center.y = 1.2;
+            projection2D.screenPixelsPerMeter = 70;
+            bool clear = true;
 
-    //         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-    //             SkeletonRenderer::render2D(
-    //                 skel, 
-    //                 renderMode2D, 
-    //                 projection2D,
-    //                 // ofPtr<ofTrueTypeFont>(&fontVerd10),
-    //                 fontVerd10,
-    //                 true // clear
-    //             );
-    //         }
-    //     }
-    // }
+            BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
+                SkeletonRenderer::render2D(
+                    skel, 
+                    renderMode2D, 
+                    projection2D,
+                    // ofPtr<ofTrueTypeFont>(&fontVerd10),
+                    fontVerd10,
+                    clear // clear
+                );
+
+                clear = false;
+            }
+        }
+    }
 }
 
 void LayoutApp::exit() {
