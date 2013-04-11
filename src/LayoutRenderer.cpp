@@ -401,7 +401,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             if (userLocationData != NULL) {
                 BOOST_FOREACH (const UserLocationEstimate& estimate, userLocationData->userLocationEstimates) {
                     ofFill();
-                    ofSetHexColor(0xE78317);
+                    // ofSetHexColor(0xE78317); // orange
+                    ofSetHexColor(0x4AD338); // green
                     float theta = localLocation->rotation.theta;
                     // note these are switched to match screen to world
                     float ex = estimate.y;
@@ -413,7 +414,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     tex *= projection.scale.x / 1000.;
                     tey *= projection.scale.x / 1000.;
 
-                    ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 4);
+                    ofCircle(loc3dpos.x + tex, loc3dpos.y + tey, 3);
 
                     // render label
                     // if (mouseDist < 40) {
