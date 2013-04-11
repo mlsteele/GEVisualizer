@@ -494,7 +494,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             SkeletonRenderer::Projection3D skelProjection3D;
             skelProjection3D.screenPixelsPerMeter = projection.scale.x;
             skelProjection3D.locationRoot = loc3dpos;
-            skelProjection3D.theta = 0;
+            // skelProjection3D.theta = M_PI/2. - localLocation->rotation.theta;
+            skelProjection3D.theta = -M_PI/2 -localLocation->rotation.theta;
 
             if (locationSkeletonData != NULL) {
                 BOOST_FOREACH (const SkeletonData& skel, locationSkeletonData->userJointData) {

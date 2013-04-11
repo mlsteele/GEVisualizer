@@ -130,6 +130,21 @@ int chain_next_valid(const vector<int>& chain, const vector< SkeletonJoint >& jo
     return -1;
 }
 
+// not a real minimum, used for making sure no one sinks into the floor
+double skeleton_min_y(const SkeletonData& skel) {
+    double miny = 0;
+    BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
+        // ignore invalid joints
+        if (j.x == 0) continue;
+
+        if (j.y < miny) {
+            miny = j.y;
+        }
+    }
+
+    return miny;
+}
+
 
 POINT3D render2D_point_pretransform(POINT3D& i) {
     POINT3D o;
@@ -303,6 +318,12 @@ void render3D(const SkeletonData& skel, const RenderMode& renderMode, const Proj
         projection.locationRoot.x ,
         projection.locationRoot.y ,
         projection.locationRoot.z );
+
+    ofRotate(projection.theta * 180. / M_PI, 0, 0, 1);
+
+    // ensure no one falls through floor
+    ofTranslate(0,0, -skeleton_min_y(skel) / 1000. * projection.screenPixelsPerMeter);
+
     // NOTE: zoom stays at 1 so that pixelsPerMeter doesn't effect feature drawing size (how big circles are, etc.)
 
     renderBase(skel, renderMode, render3D_point_pretransform, projection.screenPixelsPerMeter, font);
