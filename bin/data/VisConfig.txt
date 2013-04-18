@@ -1,0 +1,8 @@
+VISUALIZER_CONFIG_FILE_V1.0
+QuickStart: 0
+FakeData: 0
+GEServerHost: 18.133.5.116
+GEServerPort: 5000
+GEClientPort: 5087
+
+// FakeData: only loads a few floors, faster startup, for development.

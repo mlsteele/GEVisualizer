@@ -13,7 +13,12 @@ void LayoutApp::setup(){
     fontVerd10.loadFont("verdana.ttf", 10);
     fontVerd14.loadFont("verdana.ttf", 14);
 
-    if (geFakeData) gelink.ensureFakeData();
+    if (!visConfig.loadFile(mainAppDataDirectory + "VisConfig.txt")) {
+        printf("ERR: (fatal) config load failed\n");
+        exitApp();
+    }
+
+    if (visConfig.fake_data) gelink.ensureFakeData();
 
     setupLayouts();
     setupUI();
@@ -37,7 +42,7 @@ void LayoutApp::setupLayouts() {
     double screenPixelsPerMeter = 9.5;
 
     vector<string> layout_info_files;
-    if (quickStartup) {
+    if (visConfig.quick_start) {
         layout_info_files.push_back("E14_5_LayoutInfo.txt");
     } else {
         layout_info_files.push_back("E14_6_LayoutInfo.txt");
@@ -58,7 +63,7 @@ void LayoutApp::setupLayouts() {
     }
 
     if (!reload) {
-        if (quickStartup) {
+        if (visConfig.quick_start) {
             renderers_active_i = 0;
             renderers_transition_i = renderers_active_i;
         } else {
@@ -216,7 +221,7 @@ void LayoutApp::update(){
     lastMouseX = ofGetMouseX();
     lastMouseY = ofGetMouseY();
 
-    if (!geFakeData) gelink.update();
+    if (!visConfig.fake_data) gelink.update();
     // skeletonTestPrint();
 
     // transition to approach selection
@@ -338,7 +343,7 @@ void LayoutApp::guiEventServer(ofxUIEventArgs &e) {
             printf("%i %i %s\n", btn.getKind(), btn.getValue(), btn.getName().c_str());
 
             if (btn.getName() == "Register") {
-                gelink.connect(ge_server_host, ge_server_port, listening_port);
+                gelink.connect(visConfig.ge_server_host, visConfig.ge_server_port, visConfig.ge_client_port);
             }
 
             if (btn.getName() == "Unregister") {

@@ -8,6 +8,7 @@
 
 // #include "ofUi/ofUIMainView.h"
 #include "ViewApp.h"
+#include "VisConfig.h"
 #include "Layout.h"
 #include "LayoutRenderer.h"
 #include "SkeletonRenderer.h"
@@ -76,6 +77,8 @@ public:
     string getMainAppDataDirectory();
     string mainAppDataDirectory;
 
+    VisConfig visConfig;
+
     // const int ofx_theme = OFX_UI_THEME_MINBLACK;
     const int ofx_theme = 0;
     ofxUIColorSet uiColors;
@@ -99,13 +102,4 @@ public:
     float lastMouseY = 0;
 
     GEVisualizer gelink;
-    bool geFakeData = false;
-    bool quickStartup = true; // only loads 1 floor, faster startup, not for production use.
-
-    // const string ge_server_host = "18.133.7.63";
-    const string ge_server_host = "18.133.5.116";
-    const int ge_server_port = 5000;
-    // const string ge_server_host = "127.0.0.1";
-    // const int ge_server_port = 5094;
-    const int listening_port = 5087;
 };
