@@ -76,7 +76,8 @@ public:
     bool geFakeData = false;
     bool quickStartup = true; // only loads 1 floor, faster startup, not for production use.
 
-    const string ge_server_host = "18.133.7.63";
+    // const string ge_server_host = "18.133.7.63";
+    const string ge_server_host = "18.133.5.116";
     const int ge_server_port = 5000;
     // const string ge_server_host = "127.0.0.1";
     // const int ge_server_port = 5094;
