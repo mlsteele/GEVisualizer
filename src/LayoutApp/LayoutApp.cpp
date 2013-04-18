@@ -78,6 +78,17 @@ void LayoutApp::rescaleAllLayouts(float increment) {
 }
 
 void LayoutApp::setupUI() {
+    uiColors.color_back = ofColor(50, 50, 50, 75);
+    // uiColors.color_back = OFX_UI_COLOR_BACK;
+
+    // ofColor color_back = OFX_UI_COLOR_BACK;
+    // ofColor color_outline = OFX_UI_COLOR_OUTLINE;
+    // ofColor color_outline_highlight = OFX_UI_COLOR_OUTLINE_HIGHLIGHT;
+    // ofColor color_fill = OFX_UI_COLOR_FILL;
+    // ofColor color_fill_highlight = OFX_UI_COLOR_FILL_HIGHLIGHT;
+    // ofColor color_padded_rect = OFX_UI_COLOR_PADDED;
+    // ofColor color_padded_rect_outline = OFX_UI_COLOR_PADDED_OUTLINE;     
+
     // ofColor colorBack             (0x444444, 0);
     // ofColor colorOutline          (0xdddddd, 255);
     // ofColor colorOutlineHighlight (0xcccccc, 255);
@@ -89,6 +100,10 @@ void LayoutApp::setupUI() {
     ofxUICanvas* gui = new ofxUICanvas(0, 0, 0, 0);
     viewGuis.push_back(ofPtr<ofxUICanvas>(gui));
     // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
+    // gui->setUIColors(color_back, color_outline, color_outline_highlight, color_fill, color_fill_highlight, color_padded_rect, color_padded_rect_outline);
+    // gui->setTheme(ofx_theme);
+    uiColors.apply(*gui);
+    // gui->color_back = ofColor(60,60,60);
     ofAddListener(gui->newGUIEvent, this, &LayoutApp::guiEvent);
     titleLabel = new ofxUILabel(titleLabelBase, OFX_UI_FONT_LARGE);
     gui->addWidgetDown(titleLabel);
@@ -104,6 +119,9 @@ void LayoutApp::setupUIServer() {
     // ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, UI_START_X, 100);
     // ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
     ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, ofGetWidth() - 240, h);
+    // serverGui->setTheme(ofx_theme);
+    uiColors.apply(*serverGui);
+    // serverGui->color_back = ofColor(60,60,60);
     viewGuis.push_back(ofPtr<ofxUICanvas>(serverGui));
     ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
 
@@ -138,6 +156,9 @@ void LayoutApp::setupUIServer() {
 void LayoutApp::setupUILayouts() {
     int w = 240;
     ofxUICanvas* layoutGui = new ofxUICanvas(UI_START_X, 0, 240, ofGetHeight());
+    // layoutGui->setTheme(ofx_theme);
+    uiColors.apply(*layoutGui);
+    // layoutGui->color_back = ofColor(60,60,60);
     viewGuis.push_back(ofPtr<ofxUICanvas>(layoutGui));
     ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
 
