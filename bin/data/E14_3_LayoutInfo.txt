@@ -7,10 +7,10 @@ PixelsPerMeter:	7.38209159262
 FloorLevel: 5
 NumLocationNodes: 2
 LocationNode: 1
-LocationID: 5
-LocationPosition: 290.87  220.36  0
-LocationRotation: 0 0 0
-LocationNode: 2
 LocationID: 6
 LocationPosition: 148.00  189.00  0
 LocationRotation: 0 0 0
+LocationNode: 2
+LocationID: 5
+LocationPosition: 290.87  220.36  0
+LocationRotation: 180 0 0
