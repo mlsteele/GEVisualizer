@@ -9,8 +9,8 @@ NumLocationNodes: 2
 LocationNode: 1
 LocationID: 1
 LocationPosition: 313.00  232.00  0
-LocationRotation: 0 0 0
+LocationRotation: 180 0 0
 LocationNode: 2
 LocationID: 2
 LocationPosition: 253.00  302.00  0
-LocationRotation: 0 0 0
+LocationRotation: 90 0 0

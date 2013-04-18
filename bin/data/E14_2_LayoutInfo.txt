@@ -13,4 +13,4 @@ LocationRotation: 0 0 0
 LocationNode: 2
 LocationID: 4
 LocationPosition: 293.00  243.00  0
-LocationRotation: 0 0 0
+LocationRotation: 180 0 0

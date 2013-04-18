@@ -43,8 +43,6 @@ void LayoutApp::setupLayouts() {
 
     vector<string> layout_info_files;
     if (visConfig.quick_start) {
-        // layout_info_files.push_back("E14_4_LayoutInfo.txt");
-        // layout_info_files.push_back("E14_3_LayoutInfo.txt");
         layout_info_files.push_back("E14_5_LayoutInfo.txt");
     } else {
         layout_info_files.push_back("E14_6_LayoutInfo.txt");
