@@ -39,8 +39,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     #include <mmsystem.h>
 #endif
 
-#define __GE_MAC_BUILD__
-#if defined(__GE_MAC_BUILD__)
+#if defined(__GE_OSX_BUILD__)
     #include <sys/time.h>
 #endif
 

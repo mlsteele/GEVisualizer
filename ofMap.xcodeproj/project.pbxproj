@@ -812,7 +812,6 @@
 					"-mtune=native",
 				);
 				SDKROOT = "";
-				__GE_MAC_BUILD__ = 1;
 			};
 			name = Debug;
 		};
@@ -865,7 +864,6 @@
 					"-mtune=native",
 				);
 				SDKROOT = "";
-				__GE_MAC_BUILD__ = 1;
 			};
 			name = Release;
 		};
