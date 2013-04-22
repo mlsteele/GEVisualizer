@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include <boost/foreach.hpp>
 #include "GaussianDistribution.h"
 
 const int UserPDataBufferLen = 20;
@@ -205,11 +206,13 @@ typedef struct SkeletonJoint SkeletonJoint;
 struct SkeletonData{
     SkeletonData(unsigned int userID=0){
         this->userID = userID;
+        timer_countdown = 20;
     }
     
     unsigned int userID;
     vector< SkeletonJoint > jointData;
-    
+    // TODO replace with more sophisticated timer
+    int timer_countdown;
 };
 typedef struct SkeletonData SkeletonData;
 

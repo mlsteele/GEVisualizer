@@ -374,6 +374,24 @@ bool GEVisualizer::update(){
         }
         
     }
+
+
+    // clean old skeletons
+    BOOST_FOREACH (LocationSkeletonData& locationSkeletonData, userJointData) {
+        vector<SkeletonData>& list = locationSkeletonData.userJointData;
+        vector<SkeletonData>::iterator i = list.begin();
+
+        while(i != list.end()) {
+            SkeletonData& skel = (*i);
+
+            bool mark_for_erasure = (--skel.timer_countdown <= 0);
+            printf("(x=%i) skel.timer_countdown -> %i\n", mark_for_erasure, skel.timer_countdown);
+
+            if (mark_for_erasure) i = list.erase(i);
+            else ++i;
+            // ++i;
+        }
+    }
     
     return true;
 }

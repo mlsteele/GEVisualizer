@@ -268,6 +268,8 @@ void LayoutApp::draw(){
             SkeletonRenderer::RenderMode renderMode2D;
             SkeletonRenderer::Projection2D projection2D;
 
+            renderMode2D.node_label_location_index = -1;
+
             projection2D.view_rect = ofRectangle(20, 40, 230, 230);
             projection2D.real_center.x = 0;
             projection2D.real_center.y = 1.2;
@@ -332,6 +334,12 @@ void LayoutApp::guiEventLayouts(ofxUIEventArgs &e ) {
 
     if (e.widget->getName() == "Reset") {
         layoutRenderTransform = LayoutProjectionDynamic();
+
+        // TODO get widget foreach
+        // BOOST_FOREACH(viewGuis) {
+        //     getWidget("Z Spin")->setValue(0);
+        //     getWidget("Zoom")->setValue(0);
+        // }
     }
 }
 
@@ -426,6 +434,9 @@ void LayoutApp::keyPressed(int key){
             BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
                 gui->disable();
             }
+            break;
+        case 'm':
+            if (visConfig.fake_data) gelink.update();
             break;
         default:
             printf("Key Pressed: %i\n", key);
