@@ -335,11 +335,13 @@ void LayoutApp::guiEventLayouts(ofxUIEventArgs &e ) {
     if (e.widget->getName() == "Reset") {
         layoutRenderTransform = LayoutProjectionDynamic();
 
-        // TODO get widget foreach
-        // BOOST_FOREACH(viewGuis) {
-        //     getWidget("Z Spin")->setValue(0);
-        //     getWidget("Zoom")->setValue(0);
-        // }
+        BOOST_FOREACH(ofPtr<ofxUICanvas> viewGui, viewGuis) {
+            ofxUIWidget* spinner = viewGui->getWidget("Z Spin");
+            if (spinner != NULL) ((ofxUIRotarySlider*) spinner)->setValue(0);
+
+            ofxUIWidget* zoomer = viewGui->getWidget("Zoom");
+            if (zoomer != NULL) ((ofxUISlider*) zoomer)->setValue(0);
+        }
     }
 }
 
