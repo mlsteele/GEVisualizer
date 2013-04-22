@@ -384,19 +384,6 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             //     ofCircle(loc3dpos.x, loc3dpos.y, z, 2);
             // }
 
-            // draw location label
-            if (mouseDist < 40) {
-                pushUnprojectedMatrix(rootModelView, loc3dpos);
-                    ofSetHexColor(0x000000);
-                    ofFill();
-                    fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
-                        -20, -20 );
-                    ofSetHexColor(0x202020);
-                    // fontMain->drawString("theta: " + lexical_cast<string>(localLocation->rotation.theta / M_PI * 180.),
-                    //     -20, -12 );
-                ofPopMatrix();
-            }
-
 
             // draw user location estimates
             // TODO: fix smoothing
@@ -432,6 +419,19 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     //     ofPopMatrix();
                     // }
                 }
+            }
+
+            // draw location label
+            if (mouseDist < 40) {
+                pushUnprojectedMatrix(rootModelView, loc3dpos);
+                    ofSetHexColor(0x000000);
+                    ofFill();
+                    fontMain->drawString("(" + lexical_cast<string>(locationInfo.locationID) + ") " + locationInfo.notes,
+                        -20, -20 );
+                    ofSetHexColor(0x202020);
+                    // fontMain->drawString("theta: " + lexical_cast<string>(localLocation->rotation.theta / M_PI * 180.),
+                    //     -20, -12 );
+                ofPopMatrix();
             }
 
             // // draw pdata location estimates
