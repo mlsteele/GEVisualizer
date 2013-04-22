@@ -272,7 +272,7 @@ void LayoutApp::draw(){
 
             projection2D.view_rect = ofRectangle(20, 40, 230, 230);
             projection2D.real_center.x = 0;
-            projection2D.real_center.y = 1.2;
+            projection2D.real_center.y = 0;
             projection2D.screenPixelsPerMeter = 70;
             bool clear = true;
 
