@@ -4,7 +4,9 @@
 #include "ofxOsc.h"
 #include <boost/foreach.hpp>
 #include "GaussianDistribution.h"
+#include "Timer.h"
 
+const int UserSkeletonFadeTimerDuration = 1100;
 const int UserPDataBufferLen = 20;
 
 struct LocationInfo{
@@ -206,13 +208,12 @@ typedef struct SkeletonJoint SkeletonJoint;
 struct SkeletonData{
     SkeletonData(unsigned int userID=0){
         this->userID = userID;
-        timer_countdown = 20;
+        this->timer.start(UserSkeletonFadeTimerDuration);
     }
     
     unsigned int userID;
     vector< SkeletonJoint > jointData;
-    // TODO replace with more sophisticated timer
-    int timer_countdown;
+    Timer timer;
 };
 typedef struct SkeletonData SkeletonData;
 

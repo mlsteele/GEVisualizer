@@ -357,6 +357,8 @@ bool GEVisualizer::update(){
                             for(int k=0; k<numUsersAtLocation; k++){
                                 locationSkeletonData.userJointData[k].userID = m.getArgAsInt32(messageIndex++);
                                 locationSkeletonData.userJointData[k].jointData.resize( 24 );
+                                locationSkeletonData.userJointData[k].timer = Timer();
+                                locationSkeletonData.userJointData[k].timer.start(UserSkeletonFadeTimerDuration);
                                 //TODO - need to setup a switch to cover the different joint modes
                                 for(int j=0; j<24; j++){
                                     locationSkeletonData.userJointData[k].jointData[j].x = m.getArgAsFloat(messageIndex++);
@@ -384,8 +386,9 @@ bool GEVisualizer::update(){
         while(i != list.end()) {
             SkeletonData& skel = (*i);
 
-            bool mark_for_erasure = (--skel.timer_countdown <= 0);
-            printf("(x=%i) skel.timer_countdown -> %i\n", mark_for_erasure, skel.timer_countdown);
+            // bool mark_for_erasure = (--skel.timer_countdown <= 0);
+            bool mark_for_erasure = skel.timer.timerReached();
+            // printf("(x=%i) skel.timer_countdown -> %i\n", mark_for_erasure, skel.timer_countdown);
 
             if (mark_for_erasure) i = list.erase(i);
             else ++i;

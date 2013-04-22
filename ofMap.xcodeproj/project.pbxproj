@@ -91,6 +91,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02078B631725E3E200069E0C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		02078B641725E3E200069E0C /* TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeStamp.h; sourceTree = "<group>"; };
 		028CAD9817175C0700F28BFD /* PassThroughApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassThroughApp.h; sourceTree = "<group>"; };
 		028CAD9917175C0700F28BFD /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyManyApp.h; sourceTree = "<group>"; };
 		028CAD9A17175C0700F28BFD /* ViewApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewApp.h; sourceTree = "<group>"; };
@@ -112,7 +114,6 @@
 		028CADAB17175C0700F28BFD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		028CADAC17175C0700F28BFD /* SkeletonRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkeletonRenderer.cpp; sourceTree = "<group>"; };
 		028CADAD17175C0700F28BFD /* SkeletonRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonRenderer.h; sourceTree = "<group>"; };
-		028CADAE17175C0700F28BFD /* TimeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEvent.h; sourceTree = "<group>"; };
 		028CADB017175C0700F28BFD /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		028CADB117175C0700F28BFD /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		028CADB217175C0700F28BFD /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
@@ -279,7 +280,8 @@
 				028CADAB17175C0700F28BFD /* main.cpp */,
 				028CADAC17175C0700F28BFD /* SkeletonRenderer.cpp */,
 				028CADAD17175C0700F28BFD /* SkeletonRenderer.h */,
-				028CADAE17175C0700F28BFD /* TimeEvent.h */,
+				02078B631725E3E200069E0C /* Timer.h */,
+				02078B641725E3E200069E0C /* TimeStamp.h */,
 				02D69B191720924500F2D0A5 /* VisConfig.h */,
 				028CADAF17175C0700F28BFD /* XMLReader */,
 			);
@@ -810,6 +812,7 @@
 					"-mtune=native",
 				);
 				SDKROOT = "";
+				__GE_MAC_BUILD__ = 1;
 			};
 			name = Debug;
 		};
@@ -862,6 +865,7 @@
 					"-mtune=native",
 				);
 				SDKROOT = "";
+				__GE_MAC_BUILD__ = 1;
 			};
 			name = Release;
 		};
