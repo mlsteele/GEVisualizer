@@ -133,9 +133,10 @@ void LayoutApp::setupUIServer() {
     // TODO make radio
     vector<string> toggleable_attributes;
     toggleable_attributes.push_back("Locations");
-    toggleable_attributes.push_back("Texture");
+    // toggleable_attributes.push_back("Texture");
     toggleable_attributes.push_back("Presence");
     toggleable_attributes.push_back("Users");
+    toggleable_attributes.push_back("Skeletons");
 
     ofxUIWidget* cursor;
 
@@ -180,49 +181,11 @@ void LayoutApp::setupUILayouts() {
 
 }
 
-// void LayoutApp::skeletonTestPrint() {
-//     printf("testing all skeleton data\n");
-
-//     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-//     printf("how many locations have skeletons? %li\n", allSkelData.size());
-//     BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-//         printf("how many skeletons at location %i? %li\n", locationSkeletons.locationID, locationSkeletons.userJointData.size());
-//         // printf("this LocationSkeletonData is @0x%x\n", &locationSkeletons);
-//         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-//             printf("how many joints on skeleton of user %i? %li\n", skel.userID, skel.jointData.size());
-//             BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
-//                 printf("joint (%f, %f, %f)     confidence: %f\n", j.x, j.y, j.z, j.confidence);
-//             }
-//         }
-//     }
-// }
-
-// void LayoutApp::skeletonTestDraw() {
-//     ofPushMatrix();
-//     ofTranslate(300, 300, 0);
-//     ofTranslate(ofGetMouseX(), ofGetMouseY(), 0);
-
-//     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
-//     BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
-//         BOOST_FOREACH (const SkeletonData& skel, locationSkeletons.userJointData) {
-//             BOOST_FOREACH (const SkeletonJoint& j, skel.jointData) {
-//                 ofSetHexColor(0x000000);
-//                 // ofSphere(j.x, j.y, j.z, 10);
-//                 ofSphere(-j.x, -j.y, 0, 10);
-//             }
-//         }
-//     }
-
-//     ofPopMatrix();
-// }
-
-
 void LayoutApp::update(){
     lastMouseX = ofGetMouseX();
     lastMouseY = ofGetMouseY();
 
     if (!visConfig.fake_data) gelink.update();
-    // skeletonTestPrint();
 
     // transition to approach selection
     static const float transition_speed_1 = 0.06;
@@ -243,24 +206,7 @@ void LayoutApp::update(){
     titleLabel->setLabel(titleLabelBase + " - " + layoutRenderers[renderers_active_i].layout->layoutName);
 }
 
-void LayoutApp::draw(){
-    ofBackground(0xD8D8D8);
-
-    // render layouts
-    for (int i = 0; i < layoutRenderers.size(); i++) {
-        float transition = i - renderers_transition_i;
-        if (fabs(transition) < .97) {
-            LayoutRenderMode activeRenderMode = mainRenderMode;
-            const bool really_nearby = fabs(transition) < 0.2;
-            activeRenderMode.locations    &= really_nearby;
-            activeRenderMode.texture      &= really_nearby;
-            activeRenderMode.presence     &= really_nearby;
-            activeRenderMode.userLocation &= really_nearby;
-            layoutRenderers[i].render(activeRenderMode, gelink, transition);
-        }
-    }
-
-    // render skeletons for current location in 2d
+void LayoutApp::renderSkeletons2D() {
     const vector< LocationSkeletonData >& allSkelData = gelink.getUserJointData();
     BOOST_FOREACH (const LocationSkeletonData& locationSkeletons, allSkelData) {
         LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
@@ -290,6 +236,27 @@ void LayoutApp::draw(){
             }
         }
     }
+}
+
+void LayoutApp::draw(){
+    ofBackground(0xD8D8D8);
+
+    // render layouts
+    for (int i = 0; i < layoutRenderers.size(); i++) {
+        float transition = i - renderers_transition_i;
+        if (fabs(transition) < .97) {
+            LayoutRenderMode activeRenderMode = mainRenderMode;
+            const bool really_nearby = fabs(transition) < 0.2;
+            activeRenderMode.locations    &= really_nearby;
+            activeRenderMode.texture      &= really_nearby;
+            activeRenderMode.presence     &= really_nearby;
+            activeRenderMode.userLocation &= really_nearby;
+            layoutRenderers[i].render(activeRenderMode, gelink, transition);
+        }
+    }
+
+    // render skeletons for current location in 2d
+    if (mainRenderMode.skeletons) renderSkeletons2D();
 }
 
 void LayoutApp::exit() {
@@ -393,6 +360,9 @@ void LayoutApp::guiEventServer(ofxUIEventArgs &e) {
                 }
                 else if (mode == "Users") {
                     mainRenderMode.userLocation = state;
+                }
+                else if (mode == "Skeletons") {
+                    mainRenderMode.skeletons = state;
                 }
 
                 // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());

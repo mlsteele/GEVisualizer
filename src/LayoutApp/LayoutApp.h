@@ -50,6 +50,7 @@ public:
     void setupUIRenderOpts();
 
     void update();
+    void renderSkeletons2D();
     void draw();
     void exit();
 
@@ -92,6 +93,7 @@ public:
     // ofUISubView UIserverSubView;
     // ofUISubView UIlayoutSubView;
 
+    // bool enableSkeletons = false;
     vector<LayoutRenderer> layoutRenderers;
     LayoutRenderMode mainRenderMode;
     LayoutProjectionDynamic layoutRenderTransform;
