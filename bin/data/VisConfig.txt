@@ -1,7 +1,7 @@
 VISUALIZER_CONFIG_FILE_V1.0
 QuickStart: 0
 FakeData: 0
-GEServerHost: 18.133.5.116
+GEServerHost: 18.133.7.63
 GEServerPort: 5000
 GEClientPort: 5087
 
