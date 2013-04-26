@@ -9,11 +9,10 @@ void LayoutApp::setup(){
     ofEnableSmoothing();
     ofSetFrameRate(30);
 
-    mainAppDataDirectory = getMainAppDataDirectory();
     fontVerd10.loadFont("verdana.ttf", 10);
     fontVerd14.loadFont("verdana.ttf", 14);
 
-    if (!visConfig.loadFile(mainAppDataDirectory + "VisConfig.txt")) {
+    if (!visConfig.loadFile(getMainAppDataDirectory() + "VisConfig.txt")) {
         printf("ERR: (fatal) config load failed\n");
         exitApp();
     }
@@ -55,7 +54,7 @@ void LayoutApp::setupLayouts() {
 
     BOOST_FOREACH (string layout_info_file, layout_info_files) {
         Layout* newLayout = new Layout();
-        newLayout->loadLayoutFiles(mainAppDataDirectory, layout_info_file);
+        newLayout->loadLayoutFiles(getMainAppDataDirectory(), layout_info_file);
         layoutRenderers.push_back(LayoutRenderer());
         layoutRenderers.back().attachLayout(newLayout);
         layoutRenderers.back().attachFonts(&fontVerd10, &fontVerd14);
@@ -70,15 +69,6 @@ void LayoutApp::setupLayouts() {
             renderers_active_i = 1;
             renderers_transition_i = renderers_active_i;
         }
-    }
-}
-
-void LayoutApp::rescaleAllLayouts(float increment) {
-    printf("BAD\n");
-    BOOST_FOREACH (LayoutRenderer& lr, layoutRenderers) {
-        lr.projection.screenPixelsPerMeter += increment;
-        lr.projection.screen_px_corner.x += increment * 25;
-        lr.reloadProjection();
     }
 }
 
@@ -446,8 +436,16 @@ void LayoutApp::gotMessage(ofMessage msg) {}
 
 void LayoutApp::dragEvent(ofDragInfo dragInfo) {}
 
-string LayoutApp::getMainAppDataDirectory(){
+void LayoutApp::rescaleAllLayouts(float increment) {
+    printf("BAD rescaleAllLayouts\n");
+    BOOST_FOREACH (LayoutRenderer& lr, layoutRenderers) {
+        lr.projection.screenPixelsPerMeter += increment;
+        lr.projection.screen_px_corner.x += increment * 25;
+        lr.reloadProjection();
+    }
+}
 
+string LayoutApp::getMainAppDataDirectory() {
     string mainAppDataDirectory = "";
     ofFilePath filePath;
     string workingDir = filePath.getCurrentWorkingDirectory();

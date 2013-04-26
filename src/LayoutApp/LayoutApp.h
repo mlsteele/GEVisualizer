@@ -41,22 +41,22 @@ typedef struct {
 
 class LayoutApp : public ViewApp {
 public:
+    // setup
     void setup();
     void setupLayouts();
-    void rescaleAllLayouts(float);
     void setupUI();
     void setupUIServer();
     void setupUILayouts();
     void setupUIRenderOpts();
 
+    // frame steps
     void update();
     void renderSkeletons2D();
     void draw();
+
     void exit();
 
-    void skeletonTestPrint();
-    void skeletonTestDraw();
-
+    // interaction callbacks
     void keyPressed  (int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y );
@@ -67,41 +67,41 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    // gui callbacks
     void guiEvent(ofxUIEventArgs& e);
     void guiEventLayouts(ofxUIEventArgs& e);
     void guiEventServer(ofxUIEventArgs& e);
     void guiEventRenderOpts(ofxUIEventArgs& e);
 
-
-    ofTrueTypeFont fontVerd10;
-    ofTrueTypeFont fontVerd14;
-    string getMainAppDataDirectory();
-    string mainAppDataDirectory;
-
+    // config
     VisConfig visConfig;
 
-    // const int ofx_theme = OFX_UI_THEME_MINBLACK;
+    // ui settings
     const int ofx_theme = 0;
-    ofxUIColorSet uiColors;
-    ofxUICanvas* gui;
     string titleLabelBase = "Media Lab";
-    ofxUILabel* titleLabel;
+
+    // operation modes
+    LayoutRenderMode mainRenderMode;
+    LayoutProjectionDynamic layoutRenderTransform;
+
+    // layout measurements
     const int UI_START_X = ofGetWidth() - 240;
     int UI_START_Y = ofGetHeight() - 100;
 
-    // ofUIMainView UImainView;
-    // ofUISubView UIserverSubView;
-    // ofUISubView UIlayoutSubView;
-
-    // bool enableSkeletons = false;
+    // ui storage
     vector<LayoutRenderer> layoutRenderers;
-    LayoutRenderMode mainRenderMode;
-    LayoutProjectionDynamic layoutRenderTransform;
-    int renderers_active_i;
-    float renderers_transition_i;
+    ofxUIColorSet uiColors;
+    ofxUICanvas* gui;
+    ofxUILabel* titleLabel;
+    ofTrueTypeFont fontVerd10;
+    ofTrueTypeFont fontVerd14;
 
+    // util storage
+    GEVisualizer gelink;
+    string getMainAppDataDirectory();
+    void rescaleAllLayouts(float);
     float lastMouseX = 0;
     float lastMouseY = 0;
-
-    GEVisualizer gelink;
+    int renderers_active_i;
+    float renderers_transition_i;
 };
