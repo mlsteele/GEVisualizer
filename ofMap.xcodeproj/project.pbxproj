@@ -120,6 +120,7 @@
 		028CADB317175C0700F28BFD /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		02D69B191720924500F2D0A5 /* VisConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisConfig.h; sourceTree = "<group>"; };
 		02E479621708FC5F009691CB /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProxyManyApp.h; path = src/AppController/ProxyManyApp.h; sourceTree = "<group>"; };
+		02EF66EF172B2EF700DB024B /* ofxUIColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIColorSet.h; sourceTree = "<group>"; };
 		02d71117fa557eae2252a7f8696299e1 /* svgtiny_list.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = svgtiny_list.cpp; path = ../../of_v0073_osx_release/addons/ofxSvg/libs/svgTiny/src/svgtiny_list.cpp; sourceTree = SOURCE_ROOT; };
 		04a0a34fe784bb191a039b40eceb4eff /* ofxUIImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageToggle.h; path = ../../of_v0073_osx_release/addons/ofxUI/src/ofxUIImageToggle.h; sourceTree = SOURCE_ROOT; };
 		04ab4b6de84bc5aba00b6a8716c6705a /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../of_v0073_osx_release/addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
@@ -278,6 +279,7 @@
 				028CADA917175C0700F28BFD /* LayoutRenderer.h */,
 				028CADAA17175C0700F28BFD /* LocationData.h */,
 				028CADAB17175C0700F28BFD /* main.cpp */,
+				02EF66EF172B2EF700DB024B /* ofxUIColorSet.h */,
 				028CADAC17175C0700F28BFD /* SkeletonRenderer.cpp */,
 				028CADAD17175C0700F28BFD /* SkeletonRenderer.h */,
 				02078B631725E3E200069E0C /* Timer.h */,
