@@ -13,7 +13,7 @@ vector<string> toggleable_attributes = generate_toggleable_attributes();
 
 void LayoutApp::setupUIRenderOpts(){
     ofPtr<ofxUICanvas> renderOptsGui(new ofxUICanvas(0, 0, 200, 200));
-    viewGuis.push_back(renderOptsGui);
+    viewGuis["render_opts_dep"] = renderOptsGui;
     ofAddListener(renderOptsGui->newGUIEvent, this, &LayoutApp::guiEventRenderOpts);
 
     ofxUIWidget* cursor = NULL;

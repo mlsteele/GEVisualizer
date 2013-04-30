@@ -36,7 +36,7 @@ void LayoutApp::setupLayouts() {
     // TODO: clean up memory!
     if (reload) layoutRenderers.clear();
 
-    POINT2D screen_px_corner = {135, 100};
+    POINT2D screen_px_corner = {135, 100 + UI_TOP_BAR_HEIGHT};
     POINT2D real_corner = {0, 0};
     double screenPixelsPerMeter = 9.5;
 
@@ -92,8 +92,8 @@ void LayoutApp::setupUI() {
     // ofColor colorPadded           (0x110000, 255);
     // ofColor colorPaddedOutline    (0x001100, 255);
 
-    ofxUICanvas* gui = new ofxUICanvas(0, 0, 0, 0);
-    viewGuis.push_back(ofPtr<ofxUICanvas>(gui));
+    ofxUICanvas* gui = new ofxUICanvas(0, UI_TOP_BAR_HEIGHT, 0, 0);
+    viewGuis["main"] = ofPtr<ofxUICanvas>(gui);
     // gui->setUIColors(colorBack, colorOutline, colorOutlineHighlight, colorFill, colorFillHighlight, colorPadded, colorPaddedOutline);
     // gui->setUIColors(color_back, color_outline, color_outline_highlight, color_fill, color_fill_highlight, color_padded_rect, color_padded_rect_outline);
     // gui->setTheme(ofx_theme);
@@ -105,6 +105,7 @@ void LayoutApp::setupUI() {
 
     setupUIServer();
     setupUILayouts();
+    setupUI_TopBar();
     // setupUIRenderOpts();
 }
 
@@ -117,7 +118,7 @@ void LayoutApp::setupUIServer() {
     // serverGui->setTheme(ofx_theme);
     uiColors.apply(*serverGui);
     // serverGui->color_back = ofColor(60,60,60);
-    viewGuis.push_back(ofPtr<ofxUICanvas>(serverGui));
+    viewGuis["server"] = ofPtr<ofxUICanvas>(serverGui);
     ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
 
     // TODO make radio
@@ -151,11 +152,11 @@ void LayoutApp::setupUIServer() {
 
 void LayoutApp::setupUILayouts() {
     int w = 240;
-    ofxUICanvas* layoutGui = new ofxUICanvas(UI_START_X, 0, 240, ofGetHeight());
+    ofxUICanvas* layoutGui = new ofxUICanvas(UI_START_X, UI_TOP_BAR_HEIGHT, 240, ofGetHeight());
     // layoutGui->setTheme(ofx_theme);
     uiColors.apply(*layoutGui);
     // layoutGui->color_back = ofColor(60,60,60);
-    viewGuis.push_back(ofPtr<ofxUICanvas>(layoutGui));
+    viewGuis["layout"] = ofPtr<ofxUICanvas>(layoutGui);
     ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
 
     layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
@@ -231,6 +232,8 @@ void LayoutApp::renderSkeletons2D() {
 void LayoutApp::draw(){
     ofBackground(0xD8D8D8);
 
+    refreshUI_TopBar();
+
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {
         float transition = i - renderers_transition_i;
@@ -292,11 +295,11 @@ void LayoutApp::guiEventLayouts(ofxUIEventArgs &e ) {
     if (e.widget->getName() == "Reset") {
         layoutRenderTransform = LayoutProjectionDynamic();
 
-        BOOST_FOREACH(ofPtr<ofxUICanvas> viewGui, viewGuis) {
-            ofxUIWidget* spinner = viewGui->getWidget("Z Spin");
+        BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
+            ofxUIWidget* spinner = viewGuiPair.second->getWidget("Z Spin");
             if (spinner != NULL) ((ofxUIRotarySlider*) spinner)->setValue(0);
 
-            ofxUIWidget* zoomer = viewGui->getWidget("Zoom");
+            ofxUIWidget* zoomer = viewGuiPair.second->getWidget("Zoom");
             if (zoomer != NULL) ((ofxUISlider*) zoomer)->setValue(0);
         }
     }
@@ -388,13 +391,13 @@ void LayoutApp::keyPressed(int key){
             // layoutRenderTransform = LayoutProjectionDynamic();
             break;
         case 'y':
-            BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
-                gui->enable();
+            BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
+                viewGuiPair.second->enable();
             }
             break;
         case 'u':
-            BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
-                gui->disable();
+            BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
+                viewGuiPair.second->disable();
             }
             break;
         case 'm':

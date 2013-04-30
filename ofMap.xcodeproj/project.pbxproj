@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00dceb4c6387c6f9d935b487c9cb7279 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c0f37a2b9df40e0144b2733b717b32e9 /* ofxTCPManager.cpp */; };
+		025515D1172F297F00A30900 /* TopBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025515D0172F297F00A30900 /* TopBar.cpp */; };
 		028CADB417175C0700F28BFD /* GEVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CAD9F17175C0700F28BFD /* GEVisualizer.cpp */; };
 		028CADB517175C0700F28BFD /* GEVisualizerFakeData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA117175C0700F28BFD /* GEVisualizerFakeData.cpp */; };
 		028CADB617175C0700F28BFD /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA217175C0700F28BFD /* Layout.cpp */; };
@@ -93,6 +94,7 @@
 /* Begin PBXFileReference section */
 		02078B631725E3E200069E0C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		02078B641725E3E200069E0C /* TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeStamp.h; sourceTree = "<group>"; };
+		025515D0172F297F00A30900 /* TopBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopBar.cpp; sourceTree = "<group>"; };
 		028CAD9817175C0700F28BFD /* PassThroughApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassThroughApp.h; sourceTree = "<group>"; };
 		028CAD9917175C0700F28BFD /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyManyApp.h; sourceTree = "<group>"; };
 		028CAD9A17175C0700F28BFD /* ViewApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewApp.h; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				028CADA517175C0700F28BFD /* GuiRenderOpts.cpp */,
 				028CADA617175C0700F28BFD /* LayoutApp.cpp */,
 				028CADA717175C0700F28BFD /* LayoutApp.h */,
+				025515D0172F297F00A30900 /* TopBar.cpp */,
 			);
 			path = LayoutApp;
 			sourceTree = "<group>";
@@ -752,6 +755,7 @@
 				028CADBC17175C0700F28BFD /* tinyxml.cpp in Sources */,
 				028CADBD17175C0700F28BFD /* tinyxmlerror.cpp in Sources */,
 				028CADBE17175C0700F28BFD /* tinyxmlparser.cpp in Sources */,
+				025515D1172F297F00A30900 /* TopBar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

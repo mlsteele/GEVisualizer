@@ -13,17 +13,18 @@
 class ViewApp : public ViewAppBase {
 public:
     void enable()  {
-        BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
-            gui->enable();
+        BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
+            viewGuiPair.second->enable();
         }
     }
 
     void disable() {
-        BOOST_FOREACH (ofPtr<ofxUICanvas> gui, viewGuis) {
-            gui->disable();
+        BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
+            viewGuiPair.second->disable();
         }
     }
 
 public:
-    vector<ofPtr<ofxUICanvas> > viewGuis;
+    typedef pair<string, ofPtr<ofxUICanvas> > viewGui_t;
+    map<string, ofPtr<ofxUICanvas> > viewGuis;
 };
