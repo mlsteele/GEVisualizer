@@ -36,8 +36,9 @@ void LayoutApp::setupLayouts() {
     // TODO: clean up memory!
     if (reload) layoutRenderers.clear();
 
-    POINT2D screen_px_corner = {135, 100 + UI_TOP_BAR_HEIGHT};
-    POINT2D real_corner = {0, 0};
+    // TODO this screen corner sucks
+    POINT2D screen_px_corner = {0, UI_TOP_BAR_HEIGHT};
+    POINT2D real_corner = {-14, -8.5};
     double screenPixelsPerMeter = 9.5;
 
     vector<string> layout_info_files;
