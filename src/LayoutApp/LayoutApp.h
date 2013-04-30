@@ -67,12 +67,13 @@ public:
     LayoutProjectionDynamic layoutRenderTransform;
 
     // layout measurements
-    const int UI_TOP_BAR_HEIGHT = 47;
-    const int UI_BUTTON_TB_W = 90;
-    const int UI_BUTTON_TB_H = 28;
-    const int UI_TB_MID_SPACEX = 260;
-    const int UI_BUTTON_TB_SERVER_IP_W = 240;
-    const int UI_BUTTON_TB_CLI_PORT_W = 130;
+    const int UI_TOP_BAR_HEIGHT = 50;
+    const int UI_BUTTON_TB_W = 110;
+    const int UI_BUTTON_TB_H = 32;
+    const int UI_TB_MID_SPACEX = 170;
+    const int UI_BUTTON_TB_SERVER_IP_W = 279;
+    const int UI_BUTTON_TB_CLI_PORT_W = 164;
+    const int UI_BUTTON_TB_SENSC_W = 130;
 
     const int UI_START_X = ofGetWidth() - 240;
     int UI_START_Y = ofGetHeight() - 100;

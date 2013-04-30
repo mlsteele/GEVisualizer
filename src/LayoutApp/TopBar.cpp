@@ -11,11 +11,11 @@ void LayoutApp::setupUI_TopBar() {
 
     guiTopBar->addWidgetRight(new ofxUILabelButton(
         "Connect", (bool) false, UI_BUTTON_TB_W, UI_BUTTON_TB_H,
-        0, 0, OFX_UI_FONT_SMALL));
+        0, 0, OFX_UI_FONT_MEDIUM));
 
     guiTopBar->addWidgetRight(new ofxUILabelButton(
         "Server Info", (bool) false, UI_BUTTON_TB_W, UI_BUTTON_TB_H,
-        0, 0, OFX_UI_FONT_SMALL));
+        0, 0, OFX_UI_FONT_MEDIUM));
 
     guiTopBar->addWidgetRight(new ofxUISpacer(
         0, 0,
@@ -23,15 +23,15 @@ void LayoutApp::setupUI_TopBar() {
 
     guiTopBar->addWidgetRight(new ofxUILabelButton(
         "Server IP", (bool) false, UI_BUTTON_TB_SERVER_IP_W, UI_BUTTON_TB_H,
-        0, 0, OFX_UI_FONT_SMALL));
+        0, 0, OFX_UI_FONT_MEDIUM));
 
     guiTopBar->addWidgetRight(new ofxUILabelButton(
         "Client Port", (bool) false, UI_BUTTON_TB_CLI_PORT_W, UI_BUTTON_TB_H,
-        0, 0, OFX_UI_FONT_SMALL));
+        0, 0, OFX_UI_FONT_MEDIUM));
 
     guiTopBar->addWidgetRight(new ofxUILabelButton(
-        "Sensor Count", (bool) false, UI_BUTTON_TB_CLI_PORT_W, UI_BUTTON_TB_H,
-        0, 0, OFX_UI_FONT_SMALL));
+        "Sensor Count", (bool) false, UI_BUTTON_TB_SENSC_W, UI_BUTTON_TB_H,
+        0, 0, OFX_UI_FONT_MEDIUM));
 
     refreshUI_TopBar();
 }
