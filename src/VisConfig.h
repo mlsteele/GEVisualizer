@@ -32,24 +32,6 @@ public:
             return false;
         }
 
-        // read QuickStart
-        file >> word;
-        if( word != "QuickStart:" ){
-            file.close();
-            printf("ERROR: Failed to read QuickStart header!\n");
-            return false;
-        }
-        file >> quick_start;
-
-        // read FakeData
-        file >> word;
-        if( word != "FakeData:" ){
-            file.close();
-            printf("ERROR: Failed to read FakeData header!\n");
-            return false;
-        }
-        file >> fake_data;
-
         // read GEServerHost
         file >> word;
         if( word != "GEServerHost:" ){
@@ -76,6 +58,24 @@ public:
             return false;
         }
         file >> ge_client_port;
+
+        // read QuickStart
+        file >> word;
+        if( word != "QuickStart:" ){
+            file.close();
+            printf("ERROR: Failed to read QuickStart header!\n");
+            return false;
+        }
+        file >> quick_start;
+
+        // read FakeData
+        file >> word;
+        if( word != "FakeData:" ){
+            file.close();
+            printf("ERROR: Failed to read FakeData header!\n");
+            return false;
+        }
+        file >> fake_data;
 
         file.close();
         return true;
