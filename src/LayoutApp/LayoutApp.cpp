@@ -1,5 +1,4 @@
 #include "LayoutApp.h"
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/regex.hpp>
 
@@ -104,52 +103,10 @@ void LayoutApp::setupUI() {
     titleLabel = new ofxUILabel(titleLabelBase, OFX_UI_FONT_LARGE);
     gui->addWidgetDown(titleLabel);
 
-    setupUIServer();
     setupUI_TopBar();
     setupUI_ViewControl();
+    setupUI_ViewOptions();
     setupUI_MapSelect();
-    // setupUIRenderOpts();
-}
-
-void LayoutApp::setupUIServer() {
-    int h = 100;
-    int UI_START_Y = ofGetHeight() - 100;
-    // ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, UI_START_X, 100);
-    // ofxUICanvas* serverGui = new ofxUICanvas(0, ofGetHeight() - h, ofGetWidth() - 240, h);
-    ofxUICanvas* serverGui = new ofxUICanvas(0, UI_START_Y, ofGetWidth() - 240, h);
-    // serverGui->setTheme(ofx_theme);
-    uiColors.apply(*serverGui);
-    // serverGui->color_back = ofColor(60,60,60);
-    viewGuis["server"] = ofPtr<ofxUICanvas>(serverGui);
-    ofAddListener(serverGui->newGUIEvent, this, &LayoutApp::guiEventServer);
-
-    // TODO make radio
-    vector<string> toggleable_attributes;
-    toggleable_attributes.push_back("Locations");
-    // toggleable_attributes.push_back("Texture");
-    toggleable_attributes.push_back("Presence");
-    toggleable_attributes.push_back("Users");
-    toggleable_attributes.push_back("Skeletons");
-
-    ofxUIWidget* cursor;
-
-    cursor = serverGui->addWidgetDown(new ofxUILabelButton(
-        "Register", (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL));
-    serverGui->addWidgetSouthOf(new ofxUILabelButton(
-        "Unregister", (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
-
-    cursor = serverGui->addWidgetEastOf(new ofxUILabelButton(
-        "Stream", (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
-    serverGui->addWidgetSouthOf(new ofxUILabelButton(
-        "Unstream", (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
-
-    BOOST_FOREACH (string attr, toggleable_attributes) {
-        cursor = serverGui->addWidgetEastOf(new ofxUILabelButton(
-            "Show " + attr, (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
-        serverGui->addWidgetSouthOf(new ofxUILabelButton(
-            "Hide " + attr, (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
-    }
-
 }
 
 void LayoutApp::update(){
@@ -214,6 +171,7 @@ void LayoutApp::draw(){
     // ((ofxUIScrollableCanvas*) &*viewGuis["MapSelect"])->drawScrollableRect();
 
     refreshUI_TopBar();
+    refreshUI_ViewOptions();
 
     // render layouts
     for (int i = 0; i < layoutRenderers.size(); i++) {
@@ -238,80 +196,7 @@ void LayoutApp::exit() {
     // TODO cleanup gui memory
 }
 
-void LayoutApp::guiEvent(ofxUIEventArgs &e ) {
-    if(e.widget->getName() == "BACKGROUND VALUE")
-    {
-        ofxUISlider *slider = (ofxUISlider *) e.widget;    
-        ofBackground(slider->getScaledValue());
-    }
-    else if(e.widget->getName() == "FULLSCREEN")
-    {
-        ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-        ofSetFullscreen(toggle->getValue());   
-    }
-}
-
-void LayoutApp::guiEventServer(ofxUIEventArgs &e) {
-    // TODO debounce buttons
-    if (e.widget->getKind() == OFX_UI_WIDGET_LABELBUTTON) {
-        ofxUILabelButton& btn = *((ofxUILabelButton*)e.widget);
-        if (btn.getValue()) {
-            printf("%i %i %s\n", btn.getKind(), btn.getValue(), btn.getName().c_str());
-
-            if (btn.getName() == "Register") {
-                gelink.connect(visConfig.ge_server_host, visConfig.ge_server_port, visConfig.ge_client_port);
-            }
-
-            if (btn.getName() == "Unregister") {
-                gelink.disconnect();
-            }
-
-            if (btn.getName() == "Stream") {
-                gelink.sendLocationInfo();
-                gelink.streamUserPresenceData(true);
-                gelink.streamUserLocationData(true);
-                gelink.streamUserJointData(true);
-            }
-
-            if (btn.getName() == "Unstream") {
-                gelink.streamUserPresenceData(false);
-                gelink.streamUserLocationData(false);
-                gelink.streamUserJointData(false);
-            }
-
-            if (boost::starts_with(btn.getName(), "Show") || boost::starts_with(btn.getName(), "Hide")) {
-                printf("rendermode button pressed ");
-                string btn_name = btn.getName();
-                printf("(%s) ", btn_name.c_str());
-                bool state = boost::starts_with(btn.getName(), "Show");
-                printf("[%i] ", state);
-                string mode = string(btn.getName().begin() + 5, btn.getName().end());
-                printf("(%s)\n", mode.c_str());
-
-                if (mode == "Locations") {
-                    mainRenderMode.locations = state;
-                }
-                else if (mode == "Texture") {
-                    mainRenderMode.texture = state;
-                }
-                else if (mode == "Presence") {
-                    mainRenderMode.presence = state;
-                }
-                else if (mode == "Users") {
-                    mainRenderMode.userLocation = state;
-                }
-                else if (mode == "Skeletons") {
-                    mainRenderMode.skeletons = state;
-                }
-
-                // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
-                // button.setVisible(!button.isVisible());
-                // printf("rmbutton visibility (%s) -> %i\n", button.getButtonID().c_str(), button.isVisible());
-            }
-
-        }
-    }
-}
+void LayoutApp::guiEvent(ofxUIEventArgs &e ) {}
 
 void LayoutApp::keyPressed(int key){
     // UImainView.keyPressedEvent(key);

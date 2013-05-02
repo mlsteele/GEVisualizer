@@ -5,6 +5,7 @@
 #define OFX_UI_NO_XML
 #include "ofxUI.h"
 #include <boost/regex.hpp>
+#include <boost/foreach.hpp>
 
 // #include "ofUi/ofUIMainView.h"
 #include "ViewApp.h"
@@ -24,15 +25,15 @@ public:
     void setup();
     void setupLayouts();
     void setupUI();
-    void setupUIServer();
-    void setupUIRenderOpts();
 
     void setupUI_TopBar();
     void setupUI_ViewControl();
+    void setupUI_ViewOptions();
     void setupUI_MapSelect();
 
     void refreshUI_TopBar();
     void refreshUI_ViewControl();
+    void refreshUI_ViewOptions();
     void refreshUI_MapSelect();
 
     // frame steps
@@ -59,6 +60,7 @@ public:
     void guiEventRenderOpts(ofxUIEventArgs& e);
     void guiEvent_TopBar(ofxUIEventArgs& e);
     void guiEvent_ViewControl(ofxUIEventArgs& e);
+    void guiEvent_ViewOptions(ofxUIEventArgs& e);
     void guiEvent_MapSelect(ofxUIEventArgs& e);
 
     // config
@@ -94,6 +96,10 @@ public:
     const int UI_VC_BTNS_Y = 150;
     const int UI_VC_BTN_W = 119;
     const int UI_VC_BTN_H = 32;
+    // ViewOptions
+    const int UI_VOPTS_WIDTH = 150;
+    const int UI_VOPTS_HEIGHT = 300;
+    const int UI_VOPTS_BTN_W = 125;
     // Map Select
     const int UI_MAPS_WIDTH  = UI_VC_WIDTH;
     const int UI_MAPS_HEIGHT = 350;

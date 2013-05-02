@@ -9,6 +9,7 @@ void LayoutApp::setupUI_ViewControl() {
     viewGuis["ViewControl"] = guiViewControl;
     ofAddListener(guiViewControl->newGUIEvent, this, &LayoutApp::guiEvent_ViewControl);
 
+    // guiViewControl.setFont(&fontVerd10)
     // guiViewControl->setWidgetSpacing(100);
 
     guiViewControl->addWidget(new ofxUIRotarySlider(
@@ -25,7 +26,7 @@ void LayoutApp::setupUI_ViewControl() {
         "Reset View", (bool) false, UI_VC_BTN_W, UI_VC_BTN_H,
         button_side_padding, UI_VC_BTNS_Y, OFX_UI_FONT_MEDIUM));
 
-    guiViewControl->addWidget(new ofxUILabelButton(
+    guiViewControl->addWidget(new ofxUILabelToggle(
         "View Options", (bool) false, UI_VC_BTN_W, UI_VC_BTN_H,
         UI_VC_BTN_W + button_side_padding * 2, UI_VC_BTNS_Y, OFX_UI_FONT_MEDIUM));
 }
@@ -51,9 +52,5 @@ void LayoutApp::guiEvent_ViewControl(ofxUIEventArgs &e) {
             ofxUIWidget* zoomer = viewGuiPair.second->getWidget("Zoom");
             if (zoomer != NULL) ((ofxUISlider*) zoomer)->setValue(0);
         }
-    }
-
-    if (e.widget->getName() == "View Options") {
-        printf("WARN: View Options not implemented\n");
     }
 }

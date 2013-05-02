@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		00dceb4c6387c6f9d935b487c9cb7279 /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c0f37a2b9df40e0144b2733b717b32e9 /* ofxTCPManager.cpp */; };
-		021F804517305460003E2920 /* ViewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 021F804417305460003E2920 /* ViewControl.cpp */; };
-		025515D1172F297F00A30900 /* TopBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 025515D0172F297F00A30900 /* TopBar.cpp */; };
-		027EE8691732BAFB0028D833 /* MapSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 027EE8681732BAFB0028D833 /* MapSelect.cpp */; };
 		028CADB417175C0700F28BFD /* GEVisualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CAD9F17175C0700F28BFD /* GEVisualizer.cpp */; };
 		028CADB517175C0700F28BFD /* GEVisualizerFakeData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA117175C0700F28BFD /* GEVisualizerFakeData.cpp */; };
 		028CADB617175C0700F28BFD /* Layout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA217175C0700F28BFD /* Layout.cpp */; };
-		028CADB717175C0700F28BFD /* GuiRenderOpts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA517175C0700F28BFD /* GuiRenderOpts.cpp */; };
-		028CADB817175C0700F28BFD /* LayoutApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA617175C0700F28BFD /* LayoutApp.cpp */; };
 		028CADB917175C0700F28BFD /* LayoutRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADA817175C0700F28BFD /* LayoutRenderer.cpp */; };
 		028CADBA17175C0700F28BFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADAB17175C0700F28BFD /* main.cpp */; };
 		028CADBB17175C0700F28BFD /* SkeletonRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADAC17175C0700F28BFD /* SkeletonRenderer.cpp */; };
 		028CADBC17175C0700F28BFD /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADB017175C0700F28BFD /* tinyxml.cpp */; };
 		028CADBD17175C0700F28BFD /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADB217175C0700F28BFD /* tinyxmlerror.cpp */; };
 		028CADBE17175C0700F28BFD /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 028CADB317175C0700F28BFD /* tinyxmlparser.cpp */; };
+		029ED4751732F20600337B57 /* LayoutApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 029ED46F1732F20600337B57 /* LayoutApp.cpp */; };
+		029ED4761732F20600337B57 /* uiMapSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 029ED4711732F20600337B57 /* uiMapSelect.cpp */; };
+		029ED4771732F20600337B57 /* uiTopBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 029ED4721732F20600337B57 /* uiTopBar.cpp */; };
+		029ED4781732F20600337B57 /* uiViewControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 029ED4731732F20600337B57 /* uiViewControl.cpp */; };
+		029ED4791732F20600337B57 /* uiViewOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 029ED4741732F20600337B57 /* uiViewOptions.cpp */; };
 		035f125683ef112b263ff275ba2349ab /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = c54dc7a5c30cb956123a88cc294b91ab /* UdpSocket.cpp */; };
 		03a01fc41cf9b3bb9eae5c9bf2fd18d4 /* svgtiny.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8b71869552d144a2eaa45b2413328254 /* svgtiny.cpp */; };
 		07666e3d771a9f4de76135bb85c7cff2 /* ofxSVG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = dee3bc1a9d1cdd20558fe1261030e80c /* ofxSVG.cpp */; };
@@ -96,9 +96,6 @@
 /* Begin PBXFileReference section */
 		02078B631725E3E200069E0C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		02078B641725E3E200069E0C /* TimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeStamp.h; sourceTree = "<group>"; };
-		021F804417305460003E2920 /* ViewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewControl.cpp; sourceTree = "<group>"; };
-		025515D0172F297F00A30900 /* TopBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopBar.cpp; sourceTree = "<group>"; };
-		027EE8681732BAFB0028D833 /* MapSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapSelect.cpp; sourceTree = "<group>"; };
 		028CAD9817175C0700F28BFD /* PassThroughApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassThroughApp.h; sourceTree = "<group>"; };
 		028CAD9917175C0700F28BFD /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyManyApp.h; sourceTree = "<group>"; };
 		028CAD9A17175C0700F28BFD /* ViewApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewApp.h; sourceTree = "<group>"; };
@@ -111,9 +108,6 @@
 		028CADA117175C0700F28BFD /* GEVisualizerFakeData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GEVisualizerFakeData.cpp; sourceTree = "<group>"; };
 		028CADA217175C0700F28BFD /* Layout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Layout.cpp; sourceTree = "<group>"; };
 		028CADA317175C0700F28BFD /* Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Layout.h; sourceTree = "<group>"; };
-		028CADA517175C0700F28BFD /* GuiRenderOpts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuiRenderOpts.cpp; sourceTree = "<group>"; };
-		028CADA617175C0700F28BFD /* LayoutApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutApp.cpp; sourceTree = "<group>"; };
-		028CADA717175C0700F28BFD /* LayoutApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutApp.h; sourceTree = "<group>"; };
 		028CADA817175C0700F28BFD /* LayoutRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutRenderer.cpp; sourceTree = "<group>"; };
 		028CADA917175C0700F28BFD /* LayoutRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRenderer.h; sourceTree = "<group>"; };
 		028CADAA17175C0700F28BFD /* LocationData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationData.h; sourceTree = "<group>"; };
@@ -124,6 +118,12 @@
 		028CADB117175C0700F28BFD /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		028CADB217175C0700F28BFD /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		028CADB317175C0700F28BFD /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		029ED46F1732F20600337B57 /* LayoutApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutApp.cpp; sourceTree = "<group>"; };
+		029ED4701732F20600337B57 /* LayoutApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutApp.h; sourceTree = "<group>"; };
+		029ED4711732F20600337B57 /* uiMapSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uiMapSelect.cpp; sourceTree = "<group>"; };
+		029ED4721732F20600337B57 /* uiTopBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uiTopBar.cpp; sourceTree = "<group>"; };
+		029ED4731732F20600337B57 /* uiViewControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uiViewControl.cpp; sourceTree = "<group>"; };
+		029ED4741732F20600337B57 /* uiViewOptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = uiViewOptions.cpp; sourceTree = "<group>"; };
 		02D69B191720924500F2D0A5 /* VisConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisConfig.h; sourceTree = "<group>"; };
 		02E479621708FC5F009691CB /* ProxyManyApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProxyManyApp.h; path = src/AppController/ProxyManyApp.h; sourceTree = "<group>"; };
 		02EF66EF172B2EF700DB024B /* ofxUIColorSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxUIColorSet.h; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 				028CADA117175C0700F28BFD /* GEVisualizerFakeData.cpp */,
 				028CADA217175C0700F28BFD /* Layout.cpp */,
 				028CADA317175C0700F28BFD /* Layout.h */,
-				028CADA417175C0700F28BFD /* LayoutApp */,
+				029ED46E1732F20600337B57 /* LayoutApp */,
 				028CADA817175C0700F28BFD /* LayoutRenderer.cpp */,
 				028CADA917175C0700F28BFD /* LayoutRenderer.h */,
 				028CADAA17175C0700F28BFD /* LocationData.h */,
@@ -308,19 +308,6 @@
 			path = AppController;
 			sourceTree = "<group>";
 		};
-		028CADA417175C0700F28BFD /* LayoutApp */ = {
-			isa = PBXGroup;
-			children = (
-				028CADA517175C0700F28BFD /* GuiRenderOpts.cpp */,
-				028CADA617175C0700F28BFD /* LayoutApp.cpp */,
-				028CADA717175C0700F28BFD /* LayoutApp.h */,
-				027EE8681732BAFB0028D833 /* MapSelect.cpp */,
-				025515D0172F297F00A30900 /* TopBar.cpp */,
-				021F804417305460003E2920 /* ViewControl.cpp */,
-			);
-			path = LayoutApp;
-			sourceTree = "<group>";
-		};
 		028CADAF17175C0700F28BFD /* XMLReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +317,19 @@
 				028CADB317175C0700F28BFD /* tinyxmlparser.cpp */,
 			);
 			path = XMLReader;
+			sourceTree = "<group>";
+		};
+		029ED46E1732F20600337B57 /* LayoutApp */ = {
+			isa = PBXGroup;
+			children = (
+				029ED46F1732F20600337B57 /* LayoutApp.cpp */,
+				029ED4701732F20600337B57 /* LayoutApp.h */,
+				029ED4711732F20600337B57 /* uiMapSelect.cpp */,
+				029ED4721732F20600337B57 /* uiTopBar.cpp */,
+				029ED4731732F20600337B57 /* uiViewControl.cpp */,
+				029ED4741732F20600337B57 /* uiViewOptions.cpp */,
+			);
+			path = LayoutApp;
 			sourceTree = "<group>";
 		};
 		18240ecce4076fb0833a8578697ffa74 /* ofxNetwork */ = {
@@ -753,17 +753,17 @@
 				028CADB417175C0700F28BFD /* GEVisualizer.cpp in Sources */,
 				028CADB517175C0700F28BFD /* GEVisualizerFakeData.cpp in Sources */,
 				028CADB617175C0700F28BFD /* Layout.cpp in Sources */,
-				028CADB717175C0700F28BFD /* GuiRenderOpts.cpp in Sources */,
-				028CADB817175C0700F28BFD /* LayoutApp.cpp in Sources */,
 				028CADB917175C0700F28BFD /* LayoutRenderer.cpp in Sources */,
 				028CADBA17175C0700F28BFD /* main.cpp in Sources */,
 				028CADBB17175C0700F28BFD /* SkeletonRenderer.cpp in Sources */,
 				028CADBC17175C0700F28BFD /* tinyxml.cpp in Sources */,
 				028CADBD17175C0700F28BFD /* tinyxmlerror.cpp in Sources */,
 				028CADBE17175C0700F28BFD /* tinyxmlparser.cpp in Sources */,
-				025515D1172F297F00A30900 /* TopBar.cpp in Sources */,
-				021F804517305460003E2920 /* ViewControl.cpp in Sources */,
-				027EE8691732BAFB0028D833 /* MapSelect.cpp in Sources */,
+				029ED4751732F20600337B57 /* LayoutApp.cpp in Sources */,
+				029ED4761732F20600337B57 /* uiMapSelect.cpp in Sources */,
+				029ED4771732F20600337B57 /* uiTopBar.cpp in Sources */,
+				029ED4781732F20600337B57 /* uiViewControl.cpp in Sources */,
+				029ED4791732F20600337B57 /* uiViewOptions.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
