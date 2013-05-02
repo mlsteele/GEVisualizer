@@ -187,7 +187,7 @@ void LayoutApp::renderSkeletons2D() {
 
             renderMode2D.node_label_location_index = -1;
 
-            projection2D.view_rect = ofRectangle(20, 40, 230, 230);
+            projection2D.view_rect = ofRectangle(0, ofGetHeight() - UI_SKELV_H, UI_SKELV_W, UI_SKELV_H);
             projection2D.real_center.x = 0;
             projection2D.real_center.y = 0;
             projection2D.screenPixelsPerMeter = 70;

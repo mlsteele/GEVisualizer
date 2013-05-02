@@ -97,6 +97,9 @@ public:
     // Map Select
     const int UI_MAPS_WIDTH  = UI_VC_WIDTH;
     const int UI_MAPS_HEIGHT = 350;
+    // Skeleton View
+    const int UI_SKELV_W = 317;
+    const int UI_SKELV_H = 262;
 
 
     const int UI_START_X = ofGetWidth() - 240;
