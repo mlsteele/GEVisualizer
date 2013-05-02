@@ -25,10 +25,15 @@ public:
     void setupLayouts();
     void setupUI();
     void setupUIServer();
-    void setupUILayouts();
     void setupUIRenderOpts();
+
     void setupUI_TopBar();
+    void setupUI_ViewControl();
+    void setupUI_MapSelect();
+
     void refreshUI_TopBar();
+    void refreshUI_ViewControl();
+    void refreshUI_MapSelect();
 
     // frame steps
     void update();
@@ -50,10 +55,11 @@ public:
 
     // gui callbacks
     void guiEvent(ofxUIEventArgs& e);
-    void guiEventLayouts(ofxUIEventArgs& e);
     void guiEventServer(ofxUIEventArgs& e);
     void guiEventRenderOpts(ofxUIEventArgs& e);
     void guiEvent_TopBar(ofxUIEventArgs& e);
+    void guiEvent_ViewControl(ofxUIEventArgs& e);
+    void guiEvent_MapSelect(ofxUIEventArgs& e);
 
     // config
     VisConfig visConfig;
@@ -67,13 +73,31 @@ public:
     LayoutProjectionDynamic layoutRenderTransform;
 
     // layout measurements
-    const int UI_TOP_BAR_HEIGHT = 50;
-    const int UI_BUTTON_TB_W = 110;
-    const int UI_BUTTON_TB_H = 32;
-    const int UI_TB_MID_SPACEX = 170;
+    // TopBar
+    const int UI_TOP_BAR_HEIGHT        = 50;
+    const int UI_BUTTON_TB_W           = 110;
+    const int UI_BUTTON_TB_H           = 32;
+    const int UI_TB_MID_SPACEX         = 170;
     const int UI_BUTTON_TB_SERVER_IP_W = 279;
-    const int UI_BUTTON_TB_CLI_PORT_W = 164;
-    const int UI_BUTTON_TB_SENSC_W = 130;
+    const int UI_BUTTON_TB_CLI_PORT_W  = 164;
+    const int UI_BUTTON_TB_SENSC_W     = 130;
+    // ViewControl
+    const int UI_VC_WIDTH  = 255;
+    const int UI_VC_HEIGHT = 206;
+    const int UI_VC_ROTATION_X = 142;
+    const int UI_VC_ROTATION_Y = 25;
+    const int UI_VC_ROTATION_RAD = 70;
+    const int UI_VC_ZOOM_X = 20;
+    const int UI_VC_ZOOM_Y = 72;
+    const int UI_VC_ZOOM_W = 84;
+    const int UI_VC_ZOOM_H = 24;
+    const int UI_VC_BTNS_Y = 150;
+    const int UI_VC_BTN_W = 119;
+    const int UI_VC_BTN_H = 32;
+    // Map Select
+    const int UI_MAPS_WIDTH  = UI_VC_WIDTH;
+    const int UI_MAPS_HEIGHT = 400;
+
 
     const int UI_START_X = ofGetWidth() - 240;
     int UI_START_Y = ofGetHeight() - 100;

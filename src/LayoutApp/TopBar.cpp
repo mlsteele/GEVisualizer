@@ -4,7 +4,7 @@
 void LayoutApp::setupUI_TopBar() {
     ofPtr<ofxUICanvas> guiTopBar(new ofxUICanvas(0, 0, ofGetWidth(), UI_TOP_BAR_HEIGHT));
     uiColors.apply(*guiTopBar);
-    viewGuis["topbar"] = guiTopBar;
+    viewGuis["TopBar"] = guiTopBar;
     ofAddListener(guiTopBar->newGUIEvent, this, &LayoutApp::guiEvent_TopBar);
 
     guiTopBar->setWidgetSpacing((UI_TOP_BAR_HEIGHT - UI_BUTTON_TB_H) / 2.f - 2);
@@ -37,7 +37,7 @@ void LayoutApp::setupUI_TopBar() {
 }
 
 void LayoutApp::refreshUI_TopBar() {
-    ofPtr<ofxUICanvas> guiTopBar(viewGuis["topbar"]);
+    ofPtr<ofxUICanvas> guiTopBar(viewGuis["TopBar"]);
 
     ((ofxUILabelButton*) guiTopBar->getWidget("Server IP"))->setLabelText("Server IP: ???.???.???.???:?????");
     ((ofxUILabelButton*) guiTopBar->getWidget("Client Port"))->setLabelText("Client Port: ?????");

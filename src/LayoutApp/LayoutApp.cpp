@@ -105,8 +105,9 @@ void LayoutApp::setupUI() {
     gui->addWidgetDown(titleLabel);
 
     setupUIServer();
-    setupUILayouts();
     setupUI_TopBar();
+    setupUI_ViewControl();
+    setupUI_MapSelect();
     // setupUIRenderOpts();
 }
 
@@ -148,28 +149,6 @@ void LayoutApp::setupUIServer() {
         serverGui->addWidgetSouthOf(new ofxUILabelButton(
             "Hide " + attr, (bool) false, 124, 40, 0, 0, OFX_UI_FONT_SMALL), cursor->getName());
     }
-
-}
-
-void LayoutApp::setupUILayouts() {
-    int w = 240;
-    ofxUICanvas* layoutGui = new ofxUICanvas(UI_START_X, UI_TOP_BAR_HEIGHT, 240, ofGetHeight());
-    // layoutGui->setTheme(ofx_theme);
-    uiColors.apply(*layoutGui);
-    // layoutGui->color_back = ofColor(60,60,60);
-    viewGuis["layout"] = ofPtr<ofxUICanvas>(layoutGui);
-    ofAddListener(layoutGui->newGUIEvent, this, &LayoutApp::guiEventLayouts);
-
-    layoutGui->addWidgetDown(new ofxUIRotarySlider((float) w/4, (float) 0, (float) 360, (float) 0, (string) "Z Spin"));
-    layoutGui->addWidgetDown(new ofxUISlider("Zoom", 1, 5, 1, w, 25));
-    layoutGui->addWidgetDown(new ofxUILabelButton("Reset", (bool) false, 210, 40, 0, 0, OFX_UI_FONT_MEDIUM));
-
-    vector<string> layoutNames;
-    BOOST_FOREACH (LayoutRenderer& layoutRenderer, layoutRenderers) {
-        layoutNames.push_back(layoutRenderer.layout->layoutName);
-    }
-
-    layoutGui->addWidgetDown(new ofxUIRadio("Floors", layoutNames, 0, 50, 50));
 
 }
 
@@ -268,41 +247,6 @@ void LayoutApp::guiEvent(ofxUIEventArgs &e ) {
     {
         ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
         ofSetFullscreen(toggle->getValue());   
-    }
-}
-
-void LayoutApp::guiEventLayouts(ofxUIEventArgs &e ) {
-    if (e.widget->getKind() == OFX_UI_WIDGET_TOGGLE) {
-        for (int i = 0; i < layoutRenderers.size(); i++) {
-            Layout& layout = *layoutRenderers[i].layout;
-            if (boost::ends_with(e.widget->getName(), layout.layoutName)) {
-                renderers_active_i = i;
-                return;
-            }
-        }
-        printf("WARN: failed to find matching layout for button\n");
-    }
-
-    if (e.widget->getName() == "Z Spin") {
-        float val = (*(ofxUIRotarySlider*) e.widget).getScaledValue();
-        layoutRenderTransform.zRotation = val;
-    }
-
-    if (e.widget->getName() == "Zoom") {
-        float val = (*(ofxUISlider*) e.widget).getScaledValue();
-        layoutRenderTransform.zoomFactor = val;
-    }
-
-    if (e.widget->getName() == "Reset") {
-        layoutRenderTransform = LayoutProjectionDynamic();
-
-        BOOST_FOREACH(viewGui_t viewGuiPair, viewGuis) {
-            ofxUIWidget* spinner = viewGuiPair.second->getWidget("Z Spin");
-            if (spinner != NULL) ((ofxUIRotarySlider*) spinner)->setValue(0);
-
-            ofxUIWidget* zoomer = viewGuiPair.second->getWidget("Zoom");
-            if (zoomer != NULL) ((ofxUISlider*) zoomer)->setValue(0);
-        }
     }
 }
 
