@@ -96,7 +96,7 @@ public:
     const int UI_VC_BTN_H = 32;
     // Map Select
     const int UI_MAPS_WIDTH  = UI_VC_WIDTH;
-    const int UI_MAPS_HEIGHT = 400;
+    const int UI_MAPS_HEIGHT = 350;
 
 
     const int UI_START_X = ofGetWidth() - 240;

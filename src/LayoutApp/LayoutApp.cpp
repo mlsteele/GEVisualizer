@@ -211,6 +211,7 @@ void LayoutApp::renderSkeletons2D() {
 
 void LayoutApp::draw(){
     ofBackground(0xD8D8D8);
+    // ((ofxUIScrollableCanvas*) &*viewGuis["MapSelect"])->drawScrollableRect();
 
     refreshUI_TopBar();
 
