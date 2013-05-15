@@ -21,12 +21,12 @@ void LayoutApp::setup(){
     setupLayouts();
     setupUI();
 
-    mainRenderMode.structure = true;
-    mainRenderMode.locations = true;
-    mainRenderMode.texture = false;
-    mainRenderMode.presence = true;
+    mainRenderMode.structure    = true;
+    mainRenderMode.locations    = true;
+    mainRenderMode.texture      = false;
+    mainRenderMode.presence     = true;
     mainRenderMode.userLocation = true;
-    mainRenderMode.skeletons = true;
+    mainRenderMode.skeletons    = true;
 }
 
 void LayoutApp::setupLayouts() {
@@ -36,9 +36,9 @@ void LayoutApp::setupLayouts() {
     if (reload) layoutRenderers.clear();
 
     // TODO this screen corner sucks
-    POINT2D screen_px_corner = {0, UI_TOP_BAR_HEIGHT};
-    POINT2D real_corner = {-14, -8.5};
-    double screenPixelsPerMeter = 9.5;
+    POINT2D screen_px_corner    = {5, UI_TOP_BAR_HEIGHT + 50};
+    POINT2D real_corner         = {-14, -8.5};
+    double screenPixelsPerMeter = 9;
 
     vector<string> layout_info_files;
     if (visConfig.quick_start) {

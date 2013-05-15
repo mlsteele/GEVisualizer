@@ -102,7 +102,7 @@ public:
     const int UI_VOPTS_BTN_W = 125;
     // Map Select
     const int UI_MAPS_WIDTH  = UI_VC_WIDTH;
-    const int UI_MAPS_HEIGHT = 350;
+    const int UI_MAPS_HEIGHT = ofGetHeight() - UI_VC_HEIGHT - UI_TOP_BAR_HEIGHT;
     // Skeleton View
     const int UI_SKELV_W = 317;
     const int UI_SKELV_H = 262;
