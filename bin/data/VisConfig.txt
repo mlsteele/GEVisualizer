@@ -1,5 +1,5 @@
 VISUALIZER_CONFIG_FILE_V1.0
-GEServerHost: 18.133.7.63
+GEServerHost: ge.media.mit.edu
 GEServerPort: 5000
 GEClientPort: 5087
 QuickStart: 0
