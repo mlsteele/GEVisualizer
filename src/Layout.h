@@ -32,7 +32,6 @@ private:
     int floorLevel;
     int numLocationNodes;
     RECT svgBoundingRect;
-    // map id_map;
 
     // permanent
     vector< Location > locations;

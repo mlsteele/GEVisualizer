@@ -7,15 +7,10 @@ int main( ){
     ofAppGlutWindow window;
     ofSetupOpenGL(&window, 1024,768, OF_WINDOW);
 
-    // ofSetVerticalSync(true);
-    // ofPtr<DummyApp> dummy(new DummyApp());
-    // ofRunApp(new ClickThroughApp(dummy));
-
-    //  ViewControllerApp vc;
-    //  vc.addApp("layouts", ofPtr<ofBaseApp>(new LayoutApp()));
-    //  vc.addApp("dummy", ofPtr<ofBaseApp>(new DummyApp()));
-    //  vc.selectApp("dummy");
-    //  ofRunApp(&vc);
+    // ViewControllerApp is used here because of a suspicion that
+    // LayoutApp might be combined with other OF apps.
+    // It could be replaced with just
+    // ofRunApp(new LayoutApp())
 
     ViewControllerApp* vc = new ViewControllerApp();
     vc->registerApp("layouts", ofPtr<ViewControllerApp::MemberApp>(new LayoutApp()));

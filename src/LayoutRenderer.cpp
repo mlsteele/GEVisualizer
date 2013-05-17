@@ -9,18 +9,8 @@ string format_double_to_string(double n) {
     return ss.str();
 }
 
-// // returns data or a NULL if none is present in list
-// template <typename T>
-// T* extract_streamed_data(vector<T>& list, unsigned int locationID) {
-//     BOOST_FOREACH (T& thing, list) {
-//         if (thing.locationID == locationID) {
-//             return &thing;
-//         }
-//     }
-//     return NULL;
-// }
-
-// returns data or a NULL if none is present in list
+// Search through a list which might contain something about a location with an ID of locationID.
+// returns a pointer to the relevant data or a NULL if none is present in list.
 template <typename T>
 const T* extract_streamed_data(const vector<T>& list, unsigned int locationID) {
     BOOST_FOREACH (const T& thing, list) {
@@ -31,6 +21,8 @@ const T* extract_streamed_data(const vector<T>& list, unsigned int locationID) {
     return NULL;
 }
 
+// Transform coordinates from drawing position into screen pixel coordinates
+// This is specific to OpenFrameworks inversion of the y axis.
 POINT3D getWinCoords(POINT3D& pTransformed) {
     GLdouble x = pTransformed.x;
     GLdouble y = pTransformed.y;
@@ -56,6 +48,7 @@ POINT3D getWinCoords(POINT3D& pTransformed) {
     return pWindow;
 }
 
+// Utility method for drawing into screen space when starting form perspective space
 // WARN: method contains unmatched ofPushMatrix()
 void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
     POINT3D winCoords = getWinCoords(p3d);
@@ -71,8 +64,6 @@ void pushUnprojectedMatrix(GLfloat rootModelView[], POINT3D p3d) {
 //         delete[] textureData;
 //     }
 // }
-
-
 
 void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corner, double screenPixelsPerMeter) {
     Layout& l = *layout;
@@ -108,6 +99,8 @@ void LayoutRenderer::setupProjection(POINT2D screen_px_corner, POINT2D real_corn
     texture.loadData(textureData, textureSize[0], textureSize[1], GL_RGBA);
 }
 
+// Calculates translation offset from projection input
+// does not apply any matrices
 void LayoutRenderer::reloadProjection() {
     projection.offset.x = - projection.real_corner.x + (projection.screen_px_corner.x / projection.screenPixelsPerMeter);
     projection.offset.y = - projection.real_corner.y + (projection.screen_px_corner.y / projection.screenPixelsPerMeter);
@@ -115,6 +108,7 @@ void LayoutRenderer::reloadProjection() {
     projection.scale.y = projection.screenPixelsPerMeter;
 }
 
+// Disabled texture implementation
 /*
 // TODO: make this more efficient (less loops)
 void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
@@ -170,41 +164,43 @@ void LayoutRenderer::recalculateTexture(GEVisualizer& store) {
 }
 */
 
-void LayoutRenderer::mouseTestRecalculateTexture() {
-    const unsigned int w = textureSize[0];
-    const unsigned int h = textureSize[1];
+// void LayoutRenderer::mouseTestRecalculateTexture() {
+//     const unsigned int w = textureSize[0];
+//     const unsigned int h = textureSize[1];
 
-    // loop and fill against locations
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++){
-            double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
-            double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
+//     // loop and fill against locations
+//     for (int i = 0; i < w; i++) {
+//         for (int j = 0; j < h; j++){
+//             double screen_x_mtrs = projection.real_corner.x + i / projection.screenPixelsPerMeter;
+//             double screen_y_mtrs = projection.real_corner.y + j / projection.screenPixelsPerMeter;
 
-            double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
-            double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
-            // double interest_x = localLocation->position.x;
-            // double interest_y = localLocation->position.y;
-            // if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
+//             double interest_x = projection.real_corner.x + ofGetMouseX() / projection.screenPixelsPerMeter - projection.offset.x;
+//             double interest_y = projection.real_corner.y + ofGetMouseY() / projection.screenPixelsPerMeter - projection.offset.y;
+//             // double interest_x = localLocation->position.x;
+//             // double interest_y = localLocation->position.y;
+//             // if (i == j && i == 0) printf("%.5f, %.5f\n", interest_x, interest_y);
 
-            const double two_sigma_squared = 2*10*10;
-            const double weight = 1;
-            // const double weight = 1;
-            auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
-            auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
+//             const double two_sigma_squared = 2*10*10;
+//             const double weight = 1;
+//             // const double weight = 1;
+//             auto distr_x = weight * exp(-pow((screen_x_mtrs - interest_x), 2.) / two_sigma_squared);
+//             auto distr_y = weight * exp(-pow((screen_y_mtrs - interest_y), 2.) / two_sigma_squared);
 
-            // RGBA
-            // textureData[(j * w + i) * 4 + 0] = 255;
-            // textureData[(j * w + i) * 4 + 1] = 255;
-            // textureData[(j * w + i) * 4 + 2] = 255;
-            textureData[(j * w + i) * 4 + 3] = distr_x * distr_y * 255;
-        }
-    }
-}
+//             // RGBA
+//             // textureData[(j * w + i) * 4 + 0] = 255;
+//             // textureData[(j * w + i) * 4 + 1] = 255;
+//             // textureData[(j * w + i) * 4 + 2] = 255;
+//             textureData[(j * w + i) * 4 + 3] = distr_x * distr_y * 255;
+//         }
+//     }
+// }
 
-// store is the data store for ge information
+// store is the data store for GE data
 // transition is 0 for normal view, positive for offset up, negative for offset down
 // transition bounds of [-1, 1] are nominally the points at which a renderer should be disabled
 void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStore, float transition) {
+    // Store root view for later drawing to screen in the middle of a block of code
+    // which was otherwise wrapped in matrix transformations
     GLfloat rootModelView[16];
     glGetFloatv(GL_MODELVIEW_MATRIX, rootModelView);
 
@@ -261,6 +257,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
 
     ofEnableSmoothing();
 
+    // Draw walls in floor plan
+    // TODO how about drawing elevators?
     // map boundary
     if (renderMode.structure) {
         ofSetLineWidth(2);
@@ -319,8 +317,15 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
         }
     }
 
-    // locations locuses
+    // Render locations and things which are attached to locations (skeletons, etc.)
     if (renderMode.locations) {
+        // loop over several collections at once
+        // collection 1: locationInfo from GE server locations
+        // collection 2: localLocation from locations loaded from text file
+        // both locationInfo and localLocation have to exist in order to render anything
+        // because as of 5/17 only local contains position information and only server has live data
+        // collection 3: userLocationData from server info on users
+        // collection 4: locationSkeletonData from server info bodies
         BOOST_FOREACH (const LocationInfo& locationInfo, dataStore.getLocationInfo()) {
             const Location* localLocation = extract_streamed_data(layout->locations, locationInfo.locationID);
             if (!localLocation) continue;
@@ -329,6 +334,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             if (renderMode.presence) {
                  presenceData = extract_streamed_data(dataStore.getPresenceData(), locationInfo.locationID);
             }
+            // NOTE: whether to render presence (renderMode.presence) is now implied in whether
+            // presenceData is NULL or not. This applies for the other collections as well.
 
             const UserLocationData* userLocationData = NULL;
             if (renderMode.userLocation) {
@@ -340,6 +347,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 locationSkeletonData = extract_streamed_data(dataStore.getUserJointData(), locationInfo.locationID);
             }
 
+            // drawing overhead info
             POINT3D loc3dpos;
             loc3dpos.x = localLocation->position.x * projection.scale.x;
             loc3dpos.y = localLocation->position.y * projection.scale.y;
@@ -357,7 +365,7 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 hoverClosestLocationDistance = mouseDist;
             }
 
-            // draw presence indication
+            // draw presence indicator
             if (presenceData) {
                 ofSetHexColor(0xD83DFF); // purple
                 if (presenceData->presenceEstimate > 0) {
@@ -376,6 +384,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
             ofCircle(loc3dpos.x, loc3dpos.y, 5);
 
             // hovering beam rings
+            // the name may make them look like a cheap star trek prop
+            // and they do.
             // ofNoFill();
             // ofSetHexColor(0x5DCAE6);
             // glEnable(GL_BLEND);
@@ -434,6 +444,8 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                 ofPopMatrix();
             }
 
+            // This block was for displaying projected user positions to smooth data
+            // and extrapolate based on direction of movement where people might go next.
             // // draw pdata location estimates
             // if (renderMode.userLocation) {
             //     BOOST_FOREACH (auto& pair, dataStore.getUserPData()) {
@@ -513,22 +525,9 @@ void LayoutRenderer::render(LayoutRenderMode& renderMode, GEVisualizer& dataStor
                     );
                 }
             }
-
-
-            // draw name in non-skew loop
         }
     }
 
     ofPopMatrix(); // skew
-
-    // map name
-    // ofPushMatrix();
-    //     ofTranslate(0, -50);
-    //     // map name
-    //     // ofDrawBitmapString(layout->layoutName, 5, 17 );
-    //     ofSetHexColor(0x000000);
-    //     fontMapNameLabel->drawString(layout->layoutName, 5, 17 );
-    // ofPopMatrix();
-
     ofPopMatrix(); // translation
 }

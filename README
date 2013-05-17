@@ -30,12 +30,6 @@ Only the debug target has been tested.
 Settings including server locations are stored in ofMap/bin/data/VisConfig.txt
 
 
--- Development Notes
-Some quick things you might want to play with:
-UI Layout -> instance variables in src/LayoutApp/LayoutApp.h
-Layout Panes -> separate .cpp files in src/LayoutApp
-
-
 -- Floor Data
 Floor layout data is located in ofMap/bin/data
 
@@ -43,3 +37,18 @@ Each layout is comprised of three files:
 - A PDF from MIT's online resources. This is not used by the program.
 - An SVG which was traced in illustrator and contains the basic wall structure of the floor.
 - A .TXT which describes location position and orientation as well as names the paired SVG file
+
+
+-- Development Notes
+Some quick things you might want to play with:
+UI Layout -> instance variables in src/LayoutApp/LayoutApp.h
+Layout Panes -> separate .cpp files in src/LayoutApp
+
+The majority of the drawing code lives in LayoutRenderer.render, which seems too big
+for its own good. Refactoring that function might make life a lot easier down the road.
+
+
+-- Future Features
+re-enable texture drawing
+render look-ahead
+show elevator position / movement (between floors)
