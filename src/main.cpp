@@ -17,8 +17,8 @@ int main( ){
     //  vc.selectApp("dummy");
     //  ofRunApp(&vc);
 
-    ViewControllerApp vc;
-    vc.registerApp("layouts", ofPtr<ViewControllerApp::MemberApp>(new LayoutApp()));
-    vc.enableApp("layouts");
-    ofRunApp(&vc);
+    ViewControllerApp* vc = new ViewControllerApp();
+    vc->registerApp("layouts", ofPtr<ViewControllerApp::MemberApp>(new LayoutApp()));
+    vc->enableApp("layouts");
+    ofRunApp(vc);
 }
