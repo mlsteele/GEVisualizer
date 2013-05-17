@@ -248,7 +248,7 @@ void LayoutApp::mouseDragged(int x, int y, int button) {
     // drag layouts
     // TODO make this less dumb
     LayoutRenderer& active_renderer = layoutRenderers[renderers_active_i];
-    bool inLayoutViewBounds = (x > 0) && (x < UI_START_X) && (y > 0) && (y < UI_START_Y);
+    bool inLayoutViewBounds = (x > 0) && (x < ofGetWidth() - UI_VC_WIDTH) && (y > UI_TOP_BAR_HEIGHT) && (y < ofGetHeight());
 
     if (inLayoutViewBounds) {
         float pandx = (ofGetMouseX() - lastMouseX);

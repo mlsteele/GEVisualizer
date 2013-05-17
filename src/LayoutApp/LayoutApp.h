@@ -115,9 +115,6 @@ public:
     const int UI_SKELV_H = 262;
 
 
-    const int UI_START_X = ofGetWidth() - 240;
-    int UI_START_Y = ofGetHeight() - 100;
-
     // ui storage
     vector<LayoutRenderer> layoutRenderers;
     ofxUIColorSet uiColors;
