@@ -47,6 +47,10 @@ Layout Panes -> separate .cpp files in src/LayoutApp
 The majority of the drawing code lives in LayoutRenderer.render, which seems too big
 for its own good. Refactoring that function might make life a lot easier down the road.
 
+Run doxygen from the ofMap directory to generate html automatic documentation.
+The source contains no comments which are formatted for doxygen, so it will be less
+instructive, but perhaps easier to browse for an overview of class properties.
+
 
 -- Future Features
 re-enable texture drawing
