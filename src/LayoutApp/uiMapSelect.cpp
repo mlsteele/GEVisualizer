@@ -1,3 +1,9 @@
+// uiMapSelect
+// UI pane for LayoutApp
+// Handles layout selection
+
+// TODO add building selection
+
 #include "LayoutApp.h"
 #include <boost/lexical_cast.hpp>
 

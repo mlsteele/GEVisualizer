@@ -1,3 +1,10 @@
+/*
+    Layout
+
+    Stores wall positions and location positions.
+    Loads data from svg and info txt files.
+*/
+
 #pragma once
 
 #include "ofMain.h"

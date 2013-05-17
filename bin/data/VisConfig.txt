@@ -5,4 +5,10 @@ GEClientPort: 5087
 QuickStart: 0
 FakeData: 0
 
-// FakeData: only loads a few floors, faster startup, for development.
+--- Notes only below this line ---
+
+GEServerHost - IP or address of the GE server
+GEServerPort - Port on which to connect to the GE server
+GEClientPort - Local port on which to receive from the GE server
+QuickStart - Pnly loads a few floors, faster startup, for development.
+FakeData - Simulates some data for debugging. Data comes from GEVisualizerFakeData.cpp. This mode will note play nice once connected to the GE server.

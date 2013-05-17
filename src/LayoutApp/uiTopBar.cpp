@@ -1,3 +1,7 @@
+// uiTopBar
+// UI pane for LayoutApp
+// Top bar in UI. Handles server connection and some statistics.
+
 #include "LayoutApp.h"
 #include <boost/lexical_cast.hpp>
 

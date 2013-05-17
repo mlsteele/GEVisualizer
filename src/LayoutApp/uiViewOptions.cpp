@@ -1,3 +1,7 @@
+// uiViewOptions
+// UI pane for LayoutApp
+// Handles render option controls
+
 #include "LayoutApp.h"
 #include <boost/lexical_cast.hpp>
 

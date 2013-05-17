@@ -1,9 +1,13 @@
+/*
+    ProxyManyApps
+
+    Proxies all calls to several ofBaseApp's identified by name.
+*/
+
 #pragma once
 #include <boost/foreach.hpp>
 
 #include "ofMain.h"
-
-// #define PROXY_MANY_APPS_FORWARD_TO_PROXYAPPS
 
 class ProxyManyApps : public ofBaseApp {
 private: typedef pair<string, ofPtr<ofBaseApp> > proxyApps_kv;
@@ -25,5 +29,3 @@ public:
 protected:
     map<string, ofPtr<ofBaseApp> > proxyApps;
 };
-
-// #undef PROXY_MANY_APPS_FORWARD_TO_PROXYAPPS

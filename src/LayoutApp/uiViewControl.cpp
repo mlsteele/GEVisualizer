@@ -1,3 +1,7 @@
+// uiViewControl
+// UI pane for LayoutApp
+// Handles transformation controls and view options toggle
+
 #include "LayoutApp.h"
 #include <boost/lexical_cast.hpp>
 

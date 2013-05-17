@@ -2,58 +2,13 @@
 <Bucket
    type = "1"
    version = "1.0">
-   <FileBreakpoints>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "204"
-         endingLineNumber = "204"
-         landmarkName = "renderBase(const SkeletonData&amp; skel, const RenderMode&amp; renderMode, boost::function&lt; POINT3D(POINT3D&amp;) &gt; point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont&amp; font)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "196"
-         endingLineNumber = "196"
-         landmarkName = "renderBase(const SkeletonData&amp; skel, const RenderMode&amp; renderMode, boost::function&lt; POINT3D(POINT3D&amp;) &gt; point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont&amp; font)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "src/SkeletonRenderer.cpp"
-         timestampString = "386640261.896548"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "198"
-         endingLineNumber = "198"
-         landmarkName = "renderBase(const SkeletonData&amp; skel, const RenderMode&amp; renderMode, boost::function&lt; POINT3D(POINT3D&amp;) &gt; point_pretransform, double screenPixelsPerMeter, ofTrueTypeFont&amp; font)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
+   <ExceptionBreakpoints>
+      <ExceptionBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "src/AppController/ProxyManyApp.h"
-         timestampString = "386639831.937045"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "11"
-         endingLineNumber = "11"
-         landmarkName = "class ProxyManyApps"
-         landmarkType = "3">
-      </FileBreakpoint>
-   </FileBreakpoints>
+         scope = "0"
+         stopOnStyle = "0">
+      </ExceptionBreakpoint>
+   </ExceptionBreakpoints>
 </Bucket>

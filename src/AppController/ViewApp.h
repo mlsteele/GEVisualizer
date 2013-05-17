@@ -1,4 +1,12 @@
-// TODO: add controller introspection
+/*
+    ViewApp
+
+    Class derived from ofBaseApp represents an OF app which can be part of a program using ViewControllerApp.
+    Contains ofxUI containers and switches.
+*/
+
+// TODO: add a way for apps to access controller
+
 #pragma once
 #include <boost/foreach.hpp>
 

@@ -1,0 +1,45 @@
+GE Visualization Tool
+
+-- Files & Directories:
+ofMap/ (incomplete listing)
+  src/ - source files
+  bin/
+    data/ - layout configuration, general configuration, fonts
+  mock.graffle - omnigraffle mockup of UI
+  ofMap.xcodeproj - xcode project to build project
+
+
+-- Compilation Notes
+
+Dependencies
+- OpenFrameworks
+- Boost (has been tested with the version "#define BOOST_VERSION 105200")
+- ofxUI (which should live in the OF addons folder, a copy is in ofMap/bin/data just in case)
+
+You will likely have to change the xcode project to point to your installation
+of openframeworks as this project did not live in the standard OF subdirectory
+on my development machine.
+
+src/XMLReader may conflict with the xml OF addon. The xml addon is not
+required for this project.
+
+Only the debug target has been tested.
+
+
+-- Running Notes
+Settings including server locations are stored in ofMap/bin/data/VisConfig.txt
+
+
+-- Development Notes
+Some quick things you might want to play with:
+UI Layout -> instance variables in src/LayoutApp/LayoutApp.h
+Layout Panes -> separate .cpp files in src/LayoutApp
+
+
+-- Floor Data
+Floor layout data is located in ofMap/bin/data
+
+Each layout is comprised of three files:
+- A PDF from MIT's online resources. This is not used by the program.
+- An SVG which was traced in illustrator and contains the basic wall structure of the floor.
+- A .TXT which describes location position and orientation as well as names the paired SVG file

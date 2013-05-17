@@ -1,3 +1,5 @@
+// Fake data for debugging visualizer
+
 #include "GEVisualizer.h"
 #include <boost/foreach.hpp>
 

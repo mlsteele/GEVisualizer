@@ -1,4 +1,10 @@
-// ViewAppBase exists only to avoid circular inclusion
+/*
+    ViewAppBase
+
+    ViewAppBase exists only to avoid circular dependencies around ViewApp and ViewControllerApp.
+    However, ViewApp cannot yet refer to ViewControllerApp so for now this does nothing.
+*/
+
 #pragma once
 
 #include "ofMain.h"

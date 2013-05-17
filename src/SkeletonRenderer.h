@@ -1,3 +1,9 @@
+/*
+    SkeletonRenderer
+
+    Namespace which contains methods for rendering user skeleton data to the screen.
+*/
+
 #pragma once
 
 #include "ofMain.h"

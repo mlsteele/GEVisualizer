@@ -1,3 +1,10 @@
+/*
+    LayoutApp
+
+    Visualizer app which shows a map of a floors as well as controls
+    for server connection and data visualization.
+*/
+
 #pragma once
 
 #include "ofMain.h"

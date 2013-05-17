@@ -1,3 +1,9 @@
+/*
+    ViewControllerApp
+
+    OF app which can proxy and manage multiple OF apps, switching between which ones are enabled.
+*/
+
 #pragma once
 #include <boost/foreach.hpp>
 
@@ -40,6 +46,7 @@ public:
     }
 
     // TODO FIXME this should be a const method
+    // otherwise it might return invalid apps
     MemberApp& getApp(string name) {
         validate_name(name);
         return *apps[name];

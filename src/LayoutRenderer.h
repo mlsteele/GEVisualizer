@@ -1,3 +1,9 @@
+/*
+    LayoutRenderer
+
+    Attaches to a Layout and handles rendering.
+*/
+
 #pragma once
 
 #include "ofMain.h"

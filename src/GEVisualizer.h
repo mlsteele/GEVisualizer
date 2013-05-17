@@ -1,3 +1,9 @@
+/*
+    GEVisualizer
+
+    Data storage and GE server OSC connection manager.
+*/
+
 #pragma once
 
 #include "ofMain.h"

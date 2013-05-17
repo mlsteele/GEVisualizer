@@ -1,3 +1,10 @@
+/*
+    PassThroughApp
+
+    Proxies all calls to an ofBaseApp.
+    This class doesn't make any sense and is therefore not used anywhere.
+*/
+
 #pragma once
 
 #include "ofMain.h"

@@ -1,3 +1,9 @@
+/*
+    VisConfig
+
+    Store and parser for VisConfig.txt configuration file
+*/
+
 #pragma once
 
 #include "ofMain.h"
